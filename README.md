@@ -172,6 +172,56 @@ Then:
 
 ---
 
+### 🌍 Localization
+
+This template includes built-in support for multilingual apps using [`easy_localization`](https://pub.dev/packages/easy_localization).
+
+#### ✅ Supported Locales:
+- English (`en`)
+- Arabic (`ar`)
+
+#### 📁 Translation Files:
+
+```
+lib/core/localization/language/
+├── en.dart
+└── ar.dart
+```
+
+#### 🔧 Setup
+
+1. **Wrap your app with `EasyLocalization`:**
+
+```dart
+return EasyLocalization(
+  supportedLocales: const [Locale('en'), Locale('ar')],
+  path: 'lib/core/localization/language',
+  fallbackLocale: const Locale('en'),
+  child: MyApp(),
+);
+```
+
+2. **Usage in widgets:**
+
+```dart
+Text('hello'.tr()), // loads value for 'hello' from en.dart or ar.dart
+```
+
+3. **Change language programmatically:**
+
+```dart
+context.setLocale(Locale('ar'));
+```
+
+---
+
+### 📝 Tip
+
+Make sure to register your `.dart` localization files if you're using code-based maps instead of JSON, using `EasyLocalizationLoader` or custom loaders.
+
+
+---
+
 ## 📖 License
 
 [MIT](LICENSE)
