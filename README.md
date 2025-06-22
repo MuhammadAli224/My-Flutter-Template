@@ -53,8 +53,8 @@ lib/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-template-repo.git
-cd your-template-repo
+git clone https://github.com/MuhammadAli224/My-Flutter-Template.git
+cd My-Flutter-Template
 ```
 
 Or click **"Use this template"** on GitHub to start a new project based on it.
@@ -186,5 +186,5 @@ Feel free to open issues or pull requests to improve the template!
 
 ## 📬 Contact
 
-Created with 💙 by [Your Name]  
-GitHub: [your_username](https://github.com/your_username)
+Created with 💙 by Muhammad Ali
+GitHub: [Muhammad Ali](https://github.com/MuhammadAli224)
