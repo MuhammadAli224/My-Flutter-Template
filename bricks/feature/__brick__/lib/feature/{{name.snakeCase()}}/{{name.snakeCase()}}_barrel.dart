@@ -1,7 +1,7 @@
 export 'data/datasources/{{name.snakeCase()}}/local_{{name.snakeCase()}}_data_source.dart';
 export 'data/datasources/{{name.snakeCase()}}/remote_{{name.snakeCase()}}_data_source.dart';
 export 'data/endpoint/{{name.snakeCase()}}_endpoint.dart';
-export 'data/model/{{name.snakeCase()}}_model.dart';
+export 'data/model/{{name.snakeCase()}}_dto.dart';
 export 'data/repository/{{name.snakeCase()}}_repository_impl.dart';
 export 'di/{{name.snakeCase()}}_di.dart';
 export 'domain/entities/{{name.snakeCase()}}_entity.dart';
