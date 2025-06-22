@@ -1,0 +1,12 @@
+export 'data/datasources/{{name.snakeCase()}}/local_{{name.snakeCase()}}_data_source.dart';
+export 'data/datasources/{{name.snakeCase()}}/remote_{{name.snakeCase()}}_data_source.dart';
+export 'data/endpoint/{{name.snakeCase()}}_endpoint.dart';
+export 'data/model/{{name.snakeCase()}}_model.dart';
+export 'data/repository/{{name.snakeCase()}}_repository_impl.dart';
+export 'di/{{name.snakeCase()}}_di.dart';
+export 'domain/entities/{{name.snakeCase()}}_entity.dart';
+export 'domain/mappers/{{name.snakeCase()}}_mapper.dart';
+export 'domain/repository/{{name.snakeCase()}}_repository.dart';
+export 'domain/usecases/get_{{name.snakeCase()}}_case.dart';
+export 'presentation/{{name.snakeCase()}}/cubit/{{name.snakeCase()}}_cubit.dart';
+export 'presentation/{{name.snakeCase()}}/pages/{{name.snakeCase()}}_page.dart';

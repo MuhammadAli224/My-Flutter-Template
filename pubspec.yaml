@@ -1,0 +1,97 @@
+name: flutter_app
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # Core Tool Packages
+  dartz: ^0.10.1
+  dio: ^5.8.0+1
+  logger:
+  gap: ^3.0.1
+  jiffy: ^6.3.2
+  flutter_screenutil: ^5.9.3
+  auto_size_text:
+  hugeicons: ^0.0.11
+  uuid: ^4.5.1
+  connectivity_plus: ^6.1.4
+  ntp: ^2.0.0
+  pinput: ^5.0.1
+  flutter_dotenv:
+  scrollable_list_tab_scroller: ^3.1.1
+  shimmer:
+  flutter_carousel_widget:
+  flutter_html: ^3.0.0
+  html: ^0.15.6
+  percent_indicator: ^4.2.5
+  #  flutter_time_guard: ^0.0.6
+
+
+  # State Management
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.1
+  get_it: ^8.0.3
+  equatable:
+
+  # Generator and DB
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  freezed_annotation:
+  flutter_secure_storage: ^9.2.4
+  json_annotation:
+
+  # Routing
+  go_router: ^15.2.3
+
+  # Images
+  image_picker: ^1.1.2
+  path_provider: ^2.1.5
+  # pretty_qr_code:
+  path:
+  cached_network_image_plus:
+
+  # Localization
+  easy_localization: ^3.0.7+1
+
+
+
+  # Notification
+  onesignal_flutter: ^5.3.3
+
+
+dev_dependencies:
+  flutter_lints:
+  freezed: ^2.5.7
+  json_serializable: ^6.9.0
+  hive_generator:
+  dependency_validator: ^4.1.2
+  build_runner: ^2.4.11
+  flutter_native_splash:
+
+
+
+
+  #  flutter pub run build_runner build --delete-conflicting-outputs
+  #  flutter pub run build_runner watch --delete-conflicting-outputs
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/fonts/Almarai/
+    - assets/images/
+    - assets/lottie/
+    - .env
+
