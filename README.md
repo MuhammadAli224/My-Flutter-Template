@@ -237,4 +237,5 @@ Feel free to open issues or pull requests to improve the template!
 ## 📬 Contact
 
 Created with 💙 by Muhammad Ali
+
 GitHub: [Muhammad Ali](https://github.com/MuhammadAli224)
