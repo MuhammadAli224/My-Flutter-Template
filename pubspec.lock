@@ -427,14 +427,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1"
-  flutter_html:
-    dependency: "direct main"
-    description:
-      name: flutter_html
-      sha256: "38a2fd702ffdf3243fb7441ab58aa1bc7e6922d95a50db76534de8260638558d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -614,7 +606,7 @@ packages:
     source: hosted
     version: "2.0.1"
   html:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: html
       sha256: "6d1264f2dffa1b1101c25a91dff0dc2daee4c18e87cd8538729773c073dbf602"
@@ -781,14 +773,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
-  list_counter:
-    dependency: transitive
-    description:
-      name: list_counter
-      sha256: c447ae3dfcd1c55f0152867090e67e219d42fe6d4f2807db4bbe8b8d69912237
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
   logger:
     dependency: "direct main"
     description:
@@ -861,14 +845,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.0"
-  ntp:
-    dependency: "direct main"
-    description:
-      name: ntp
-      sha256: "198db73e5059b334b50dbe8c626011c26576778ee9fc53f4c55c1d89d08ed2d2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -949,14 +925,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.0"
-  percent_indicator:
-    dependency: "direct main"
-    description:
-      name: percent_indicator
-      sha256: "157d29133bbc6ecb11f923d36e7960a96a3f28837549a20b65e5135729f0f9fd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.5"
   petitparser:
     dependency: transitive
     description:
@@ -965,14 +933,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
-  pinput:
-    dependency: "direct main"
-    description:
-      name: pinput
-      sha256: "8a73be426a91fefec90a7f130763ca39772d547e92f19a827cf4aa02e323d35a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.0.1"
   platform:
     dependency: transitive
     description:
@@ -1045,30 +1005,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
-  scrollable_list_tab_scroller:
-    dependency: "direct main"
-    description:
-      name: scrollable_list_tab_scroller
-      sha256: e2f7b961b5eedde6dd94ceea73e39424db932adf2d914a99341f94dd49fc0265
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.1"
-  scrollable_positioned_list:
-    dependency: transitive
-    description:
-      name: scrollable_positioned_list
-      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.8"
-  scrolls_to_top:
-    dependency: transitive
-    description:
-      name: scrolls_to_top
-      sha256: "8d6684d936b9c1a19c19ee93c836251ae9c803023290762a30cb7657e88e272e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   shared_preferences:
     dependency: transitive
     description:
@@ -1306,14 +1242,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
-  universal_platform:
-    dependency: transitive
-    description:
-      name: universal_platform
-      sha256: "64e16458a0ea9b99260ceb5467a214c1f298d647c659af1bff6d3bf82536b1ec"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   uuid:
     dependency: "direct main"
     description:
