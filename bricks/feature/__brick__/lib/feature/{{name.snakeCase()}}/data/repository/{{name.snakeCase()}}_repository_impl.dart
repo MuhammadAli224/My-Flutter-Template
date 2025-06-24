@@ -7,8 +7,8 @@ final NetworkInfo _networkInfo;
 
 
 {{name.pascalCase()}}RepositoryImpl({required NetworkInfo networkInfo,
-{{name.pascalCase()}}RemoteDataSource remote,
-{{name.pascalCase()}}LocalDataSource local,
+required {{name.pascalCase()}}RemoteDataSource remote,
+required {{name.pascalCase()}}LocalDataSource local,
 
 })
     : _remote = remote,
@@ -31,8 +31,8 @@ return right(entityResponse);
 } else {
 return left(ServerFailure(message: apiResponse.message));
 }
-} catch (e) {
-return handleRepoDataError(e);
+} catch (e,t) {
+return handleRepoDataError(e,t);
 }
 }
 

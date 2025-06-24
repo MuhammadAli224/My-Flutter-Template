@@ -10,8 +10,6 @@ class AuthRegisterCase {
     required String email,
     required String phone,
     required String password,
-    required String taxNumber,
-    required String comericalNumber,
     required CancelToken cancelToken,
   }) {
     return repository.register(
@@ -19,8 +17,6 @@ class AuthRegisterCase {
       email: email,
       phone: phone,
       password: password,
-      taxNumber: taxNumber,
-      comericalNumber: comericalNumber,
       cancelToken: cancelToken,
     );
   }

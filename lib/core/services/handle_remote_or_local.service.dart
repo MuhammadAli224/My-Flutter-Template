@@ -26,12 +26,9 @@ class RepositoryUtils {
       if (localOnly) {
         final localData = await localFetcher?.call();
         if (localData != null) {
-          return Right(ApiResponse(
-            success: true,
-            data: localData,
-            message: '',
-            code: 200,
-          ));
+          return Right(
+            ApiResponse(success: true, data: localData, message: '', code: 200),
+          );
         } else {
           return Left(ServerFailure(message: 'No local data available'));
         }
@@ -55,17 +52,14 @@ class RepositoryUtils {
 
       final localData = await localFetcher?.call();
       if (localData != null) {
-        return Right(ApiResponse(
-          success: true,
-          data: localData,
-          message: '',
-          code: 200,
-        ));
+        return Right(
+          ApiResponse(success: true, data: localData, message: '', code: 200),
+        );
       }
 
       return Left(ServerFailure(message: noConnectionMessage));
-    } catch (e) {
-      return handleRepoDataError(e);
+    } catch (e, t) {
+      return handleRepoDataError(e, t);
     }
   }
 }

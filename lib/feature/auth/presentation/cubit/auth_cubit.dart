@@ -15,8 +15,6 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController taxNumberController = TextEditingController();
-  TextEditingController comericalNumberController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   AuthCubit({
@@ -25,12 +23,12 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
     required AuthLoginCase loginCase,
     required AuthGetUserCase getUserCase,
     // required AuthUpdateProfileCase updateProfileCase,
-  })  : _register = registerCase,
-        _logout = logoutCase,
-        _login = loginCase,
-        _getUser = getUserCase,
-        // _updateProfile = updateProfileCase,
-        super(const AuthState.initial());
+  }) : _register = registerCase,
+       _logout = logoutCase,
+       _login = loginCase,
+       _getUser = getUserCase,
+       // _updateProfile = updateProfileCase,
+       super(const AuthState.initial());
 
   Future<void> login() async {
     if (!formKey.currentState!.validate()) return;
@@ -59,14 +57,13 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
       password: passwordController.text.trim(),
       name: userNameController.text.trim(),
       phone: phoneController.text.trim(),
-      taxNumber: taxNumberController.text.trim(),
-      comericalNumber: comericalNumberController.text.trim(),
       cancelToken: cancelToken,
     );
     if (isClosed) return;
     result.fold(
       (failure) => safeEmit(
-          AuthState.error(message: failure.message, title: failure.title)),
+        AuthState.error(message: failure.message, title: failure.title),
+      ),
       (response) {
         _reset();
         safeEmit(AuthState.loaded(response.data!, response.message));
@@ -80,7 +77,8 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
     if (isClosed) return;
     result.fold(
       (failure) => safeEmit(
-          AuthState.error(message: failure.message, title: failure.title)),
+        AuthState.error(message: failure.message, title: failure.title),
+      ),
       (response) {
         // emit(AuthState.loaded(response.data!, response.message));
       },
@@ -93,8 +91,6 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
     passwordController.clear();
     phoneController.clear();
     userNameController.clear();
-    taxNumberController.clear();
-    comericalNumberController.clear();
   }
 
   Future<void> getUser() async {
@@ -104,7 +100,7 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
     result.fold(
       (failure) => safeEmit(AuthState.error(message: failure.message)),
       (user) {
-        safeEmit(AuthState.loaded(user, ''));
+        safeEmit(AuthState.loaded(user.data!, ''));
       },
     );
   }
@@ -116,7 +112,5 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
     passwordController.dispose();
     phoneController.dispose();
     userNameController.dispose();
-    taxNumberController.dispose();
-    comericalNumberController.dispose();
   }
 }

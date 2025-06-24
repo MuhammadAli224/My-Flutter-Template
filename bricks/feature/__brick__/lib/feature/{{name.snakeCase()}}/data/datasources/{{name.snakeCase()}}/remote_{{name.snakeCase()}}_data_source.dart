@@ -1,7 +1,7 @@
 import '../../../../../global_imports.dart';
 
 abstract class {{name.pascalCase()}}RemoteDataSource {
-Future<ApiResponse<{{name.pascalCase()}}Model>> get{{name.pascalCase()}}();
+Future<ApiResponse<{{name.pascalCase()}}DTO>> get{{name.pascalCase()}}();
 }
 
 class {{name.pascalCase()}}RemoteDataSourceImpl implements {{name.pascalCase()}}RemoteDataSource {
@@ -10,7 +10,7 @@ final AuthLocalDataSource _authLocalDataSource;
 
 {{name.pascalCase()}}RemoteDataSourceImpl(this.api, this._authLocalDataSource);
 @override
-Future<ApiResponse<{{name.pascalCase()}}Model>> get{{name.pascalCase()}}() async {
+Future<ApiResponse<{{name.pascalCase()}}DTO>> get{{name.pascalCase()}}() async {
 final token = await _authLocalDataSource.getToken();
 if (token == null) {
 return ApiResponse(success: false, message: 'Token is null', code: 421);
@@ -20,7 +20,7 @@ final response = await api.getData(
 language: GlobalContext.context.locale.languageCode,
 );
 
-final apiResponse= ApiResponse<{{name.pascalCase()}}Model>.fromJson(response,(json) => {{name.pascalCase()}}Model.fromJson(json));
+final apiResponse= ApiResponse<{{name.pascalCase()}}DTO>.fromJson(response,(json) => {{name.pascalCase()}}DTO.fromJson(json));
 return apiResponse;
 
 }

@@ -20,7 +20,6 @@ export 'package:logger/logger.dart';
 export 'package:onesignal_flutter/onesignal_flutter.dart';
 
 export 'core/core.dart';
-export 'dependencies/dependencies_injection.dart';
 ////////////// Features
 
 export 'feature/auth/auth_barrel.dart';

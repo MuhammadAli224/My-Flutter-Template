@@ -6,6 +6,7 @@ export 'constant/box_key.dart';
 export 'constant/env_constant.dart';
 export 'constant/routes.dart';
 export 'context/global.dart';
+export 'dependencies/dependencies_injection.dart';
 // Enum Folder
 export 'enum/datasource_enum.dart';
 // Error Folder

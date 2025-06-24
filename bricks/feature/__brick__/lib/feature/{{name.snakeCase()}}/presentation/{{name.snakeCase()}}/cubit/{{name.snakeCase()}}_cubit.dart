@@ -15,10 +15,10 @@ Future<void> fetchItems() async {
 final  result =
 await controller(cancelToken);
 if (isClosed) return;
-result.fold(
-(failure) => safeEmit({{name.pascalCase()}}State.error(failure.message)),
-({{name.camelCase()}}) => safeEmit({{name.pascalCase()}}State.loaded({{name.camelCase()}})),
-);
+// result.fold(
+// (failure) => safeEmit({{name.pascalCase()}}State.error(failure.message)),
+// ({{name.camelCase()}}) => safeEmit({{name.pascalCase()}}State.loaded({{name.camelCase()}})),
+// );
 }
   }
 
