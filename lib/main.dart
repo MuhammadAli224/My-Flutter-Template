@@ -68,20 +68,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
             appBarTheme: const AppBarTheme(centerTitle: true),
-            switchTheme: SwitchThemeData(
-              trackColor: WidgetStateProperty.resolveWith(
-                (states) =>
-                    states.contains(WidgetState.selected)
-                        ? Colors.green
-                        : Colors.white,
-              ),
-              thumbColor: WidgetStateProperty.resolveWith(
-                (states) =>
-                    states.contains(WidgetState.selected)
-                        ? Colors.white
-                        : Colors.black,
-              ),
-            ),
+            fontFamily: 'Almarai',
           ),
           routerConfig: goRouters,
         );

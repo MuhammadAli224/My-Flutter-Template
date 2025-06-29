@@ -81,6 +81,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Almarai
+      fonts:
+        - asset: assets/fonts/Almarai/Almarai-Regular.ttf
+        - asset: assets/fonts/Almarai/Almarai-Bold.ttf
+
   assets:
     - assets/
     - assets/fonts/
