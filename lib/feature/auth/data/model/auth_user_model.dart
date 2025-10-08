@@ -4,7 +4,7 @@ part 'auth_user_model.freezed.dart';
 part 'auth_user_model.g.dart';
 
 @freezed
-class AuthUserModel with _$AuthUserModel {
+abstract class AuthUserModel with _$AuthUserModel {
   @HiveType(typeId: 100, adapterName: 'AuthUserModelAdapter')
   const factory AuthUserModel({
     @HiveField(1) @JsonKey(name: "id")  required int id,

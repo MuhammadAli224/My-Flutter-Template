@@ -14,8 +14,8 @@ void init{{name.pascalCase()}}DI() {
   getIt.registerLazySingleton<{{name.pascalCase()}}Repository>(
   () => {{name.pascalCase()}}RepositoryImpl(remote: getIt(),local: getIt(),networkInfo:getIt()));
 
-  getIt.registerLazySingleton<{{name.pascalCase()}}UseCase>(
-  () => {{name.pascalCase()}}UseCase(getIt()),
+  getIt.registerLazySingleton<Get{{name.pascalCase()}}UseCase>(
+  () => Get{{name.pascalCase()}}UseCase(getIt()),
   );
 
 

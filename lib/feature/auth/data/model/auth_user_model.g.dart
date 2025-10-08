@@ -6,18 +6,18 @@ part of 'auth_user_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AuthUserModelAdapter extends TypeAdapter<_$AuthUserModelImpl> {
+class AuthUserModelAdapter extends TypeAdapter<_AuthUserModel> {
   @override
-  final int typeId = 100;
+  final typeId = 100;
 
   @override
-  _$AuthUserModelImpl read(BinaryReader reader) {
+  _AuthUserModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$AuthUserModelImpl(
-      id: fields[1] as int,
+    return _AuthUserModel(
+      id: (fields[1] as num).toInt(),
       name: fields[2] as String,
       email: fields[3] as String?,
       phone: fields[4] as String,
@@ -26,7 +26,7 @@ class AuthUserModelAdapter extends TypeAdapter<_$AuthUserModelImpl> {
   }
 
   @override
-  void write(BinaryWriter writer, _$AuthUserModelImpl obj) {
+  void write(BinaryWriter writer, _AuthUserModel obj) {
     writer
       ..writeByte(5)
       ..writeByte(1)
@@ -56,8 +56,8 @@ class AuthUserModelAdapter extends TypeAdapter<_$AuthUserModelImpl> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AuthUserModelImpl _$$AuthUserModelImplFromJson(Map<String, dynamic> json) =>
-    _$AuthUserModelImpl(
+_AuthUserModel _$AuthUserModelFromJson(Map<String, dynamic> json) =>
+    _AuthUserModel(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       email: json['email'] as String?,
@@ -65,7 +65,7 @@ _$AuthUserModelImpl _$$AuthUserModelImplFromJson(Map<String, dynamic> json) =>
       fcmToken: json['fcm_token'] as String?,
     );
 
-Map<String, dynamic> _$$AuthUserModelImplToJson(_$AuthUserModelImpl instance) =>
+Map<String, dynamic> _$AuthUserModelToJson(_AuthUserModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

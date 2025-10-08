@@ -4,7 +4,7 @@ part 'server_pagination.freezed.dart';
 part 'server_pagination.g.dart';
 
 @freezed
-class ServerPagination with _$ServerPagination {
+abstract class ServerPagination with _$ServerPagination {
   const factory ServerPagination({
     @JsonKey(name: "current_page") required int currentPage,
     @JsonKey(name: "last_page") required int lastPage,

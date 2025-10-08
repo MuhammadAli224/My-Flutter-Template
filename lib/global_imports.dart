@@ -13,8 +13,10 @@ export 'package:flutter_secure_storage/flutter_secure_storage.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:get_it/get_it.dart';
 export 'package:go_router/go_router.dart';
-export 'package:hive/hive.dart';
-export 'package:hive_flutter/adapters.dart';
+
+export 'package:hive_ce/hive.dart';
+export 'package:hive_ce_flutter/adapters.dart';
+
 export 'package:hugeicons/hugeicons.dart';
 export 'package:logger/logger.dart';
 export 'package:onesignal_flutter/onesignal_flutter.dart';

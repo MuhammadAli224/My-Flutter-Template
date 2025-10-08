@@ -6,9 +6,8 @@ part of 'server_pagination.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ServerPaginationImpl _$$ServerPaginationImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ServerPaginationImpl(
+_ServerPagination _$ServerPaginationFromJson(Map<String, dynamic> json) =>
+    _ServerPagination(
       currentPage: (json['current_page'] as num).toInt(),
       lastPage: (json['last_page'] as num).toInt(),
       perPage: (json['per_page'] as num).toInt(),
@@ -18,8 +17,7 @@ _$ServerPaginationImpl _$$ServerPaginationImplFromJson(
       prevPageUrl: json['prev_page_url'] as String?,
     );
 
-Map<String, dynamic> _$$ServerPaginationImplToJson(
-        _$ServerPaginationImpl instance) =>
+Map<String, dynamic> _$ServerPaginationToJson(_ServerPagination instance) =>
     <String, dynamic>{
       'current_page': instance.currentPage,
       'last_page': instance.lastPage,

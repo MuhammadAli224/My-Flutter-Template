@@ -8,13 +8,9 @@ const {{name.pascalCase()}}Page({super.key});
 Widget build(BuildContext context) {
 return Scaffold(
 appBar: AppBar(title: const Text('{{name.pascalCase()}}')),
-body: BlocBuilder<{{name.pascalCase()}}Cubit, {{name.pascalCase()}}State>(
-builder: (context, state) {
-return state.when(
-initial: () => const Center(child: Text('Init')),
-loading: () => const Center(child: CircularProgressIndicator()),
-loaded: (items) => Container(),
-error: (msg) => Center(child: Text(msg)),
+body: BlocProvider(
+create: (context) => getIt<{{name.pascalCase()}}Cubit>(),
+child:Container()),
 );
 },
 ),

@@ -4,7 +4,7 @@ part '{{name.snakeCase()}}_state.dart';
 part '{{name.snakeCase()}}_cubit.freezed.dart';
 
 class {{name.pascalCase()}}Cubit extends Cubit<{{name.pascalCase()}}State> with CubitLifecycleMixin<{{name.pascalCase()}}State> {
-final {{name.pascalCase()}}UseCase controller;
+final Get{{name.pascalCase()}}UseCase controller;
 
 {{name.pascalCase()}}Cubit(this.controller) : super(const {{name.pascalCase()}}State.initial());
 
