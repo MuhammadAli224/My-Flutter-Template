@@ -1,6 +1,5 @@
 import '../../../../global_imports.dart';
 
-
 final getIt = GetIt.instance;
 
 void initGetIt() async {
@@ -18,10 +17,10 @@ void initGetIt() async {
   AndroidOptions getAndroidOptions() =>
       const AndroidOptions(encryptedSharedPreferences: true);
   getIt.registerSingleton<FlutterSecureStorage>(
-      FlutterSecureStorage(aOptions: getAndroidOptions()));
+    FlutterSecureStorage(aOptions: getAndroidOptions()),
+  );
 
   //======================== Features  =========================================
-
 
   initAuthDI();
 }
