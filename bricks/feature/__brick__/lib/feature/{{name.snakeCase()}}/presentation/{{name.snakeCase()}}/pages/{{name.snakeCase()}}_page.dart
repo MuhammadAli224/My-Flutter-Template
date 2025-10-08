@@ -11,9 +11,7 @@ appBar: AppBar(title: const Text('{{name.pascalCase()}}')),
 body: BlocProvider(
 create: (context) => getIt<{{name.pascalCase()}}Cubit>(),
 child:Container()),
-);
-},
-),
+
 );
 }
 }
