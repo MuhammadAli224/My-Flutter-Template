@@ -34,7 +34,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       AuthEndpoint.login,
       {"login": identify, "password": password},
       cancelToken: cancelToken,
-      language: GlobalContext.context.locale.languageCode,
     );
     final apiResponse = ApiResponse<AuthUserModel>.fromJson(
       response,
@@ -52,7 +51,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       AuthEndpoint.logout,
       {},
       cancelToken: cancelToken,
-      language: GlobalContext.context.locale.languageCode,
       token: token,
     );
 
@@ -70,7 +68,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     final response = await apiServices.getData(
       AuthEndpoint.getUser,
-      language: GlobalContext.context.locale.languageCode,
       cancelToken: cancelToken,
       token: token,
     );

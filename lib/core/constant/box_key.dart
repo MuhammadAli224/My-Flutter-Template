@@ -6,4 +6,5 @@ class BoxKey {
   ////////////////////
   static const String token = "token";
   static const String authUserBox = "authUserBox";
+  static const String languageCode = "languageCode";
 }

@@ -17,7 +17,6 @@ return ApiResponse(success: false, message: 'Token is null', code: 421);
 }
 final response = await api.getData(
 {{name.pascalCase()}}Endpoint.get{{name.pascalCase()}},
-language: GlobalContext.context.locale.languageCode,
 );
 
 final apiResponse= ApiResponse<{{name.pascalCase()}}DTO>.fromJson(response,(json) => {{name.pascalCase()}}DTO.fromJson(json));
