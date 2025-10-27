@@ -13,16 +13,20 @@ class AuthActionButton extends StatelessWidget {
         state.whenOrNull(
           loaded: (auth, message) {
             showBar(
-                title: AppStrings.hello.tr(args: [auth.name]),
-                message: message,
-                contentType: BarContentType.success);
+              context,
+              title: AppStrings.hello.tr(args: [auth.name]),
+              message: message,
+              contentType: BarContentType.success,
+            );
             context.go(AppRoutes.home);
           },
           error: (msg, title) {
             showBar(
-                title: AppStrings.error.tr(args: ['']),
-                message: msg,
-                contentType: BarContentType.failure);
+              context,
+              title: AppStrings.error.tr(args: ['']),
+              message: msg,
+              contentType: BarContentType.failure,
+            );
           },
         );
       },

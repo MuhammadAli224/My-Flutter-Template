@@ -71,6 +71,8 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Almarai',
           ),
           routerConfig: goRouters,
+          scaffoldMessengerKey:GlobalContext.scaffoldMessengerKey,
+
         );
       },
     );
