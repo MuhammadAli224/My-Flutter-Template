@@ -2,7 +2,6 @@ import '../../global_imports.dart';
 
 class ApiServices {
   final Dio _dio;
-  static const String _acceptLanguage = "Accepted-Language";
   static const String _authorization = "Authorization";
 
   static Future<Map<String, String>> get getHeaders async {
@@ -23,6 +22,8 @@ class ApiServices {
       headers: headers,
     );
     _dio.interceptors.clear();
+    _dio.interceptors.add(HeaderInterceptor());
+
     _dio.interceptors.add(DioInterceptor());
   }
 
@@ -32,7 +33,10 @@ class ApiServices {
         String? token,
         CancelToken? cancelToken,
       }) async {
+    final headers = await ApiServices.getHeaders;
+    _dio.options.headers.addAll(headers);
     _handleTokenAuth(token);
+
 
     final response = await _dio.post(url, data: data, cancelToken: cancelToken);
     return response.data;
@@ -44,6 +48,8 @@ class ApiServices {
         String? token,
         CancelToken? cancelToken,
       }) async {
+    final headers = await ApiServices.getHeaders;
+    _dio.options.headers.addAll(headers);
     _handleTokenAuth(token);
 
     final response = await _dio.put(url, data: data, cancelToken: cancelToken);
@@ -57,6 +63,8 @@ class ApiServices {
         Map<String, dynamic>? queryParameters,
       }) async {
 
+    final headers = await ApiServices.getHeaders;
+    _dio.options.headers.addAll(headers);
     _handleTokenAuth(token);
 
     final response = await _dio.get(
@@ -75,6 +83,8 @@ class ApiServices {
         CancelToken? cancelToken,
       }) async {
 
+    final headers = await ApiServices.getHeaders;
+    _dio.options.headers.addAll(headers);
     _handleTokenAuth(token);
 
     String fileName = image.path.split('/').last;

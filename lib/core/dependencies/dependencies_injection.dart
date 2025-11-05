@@ -8,8 +8,8 @@ void initGetIt() async {
   final appBox = await Hive.openBox(BoxKey.appBox);
   getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
   //======================== Services ==========================================
-  getIt.registerSingleton<HeadersProvider>(
-    HeadersProvider(hive: getIt(instanceName: BoxKey.appBox)),
+  getIt.registerLazySingleton<HeadersProvider>(
+        () => HeadersProvider(hive: getIt<Box>(instanceName: BoxKey.appBox)),
   );
   getIt.registerSingleton<ApiServices>(ApiServices(Dio()));
 
