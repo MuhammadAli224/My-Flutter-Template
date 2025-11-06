@@ -1,6 +1,6 @@
-# 🚀 Flutter Clean Architecture Template
+# 🚀 Flutter MVVM Clean Architecture Template
 
-A production-ready Flutter project template built using **Clean Architecture**, **Cubit**, **Hive**, **Dio**, **Freezed**, and **Mason Bricks** for feature generation. This template provides a scalable and modular approach for developing Flutter apps efficiently.
+A production-ready Flutter project template built using **Clean Architecture**, **Cubit**, **Hive CE**, **Dio**, **Freezed**, and **Mason Bricks** for feature generation. This template provides a scalable and modular approach for developing Flutter apps efficiently.
 
 ---
 
@@ -25,10 +25,8 @@ lib/
 │       ├── domain/
 │       │   ├── entities/
 │       │   │   └── new_feature_entity.dart
-│       │   ├── mapper/
-│       │   │   └── new_feature_mapper.dart
 │       │   ├── usecases/
-│       │   │   └── get_new_feature_case.dart
+│       │   │   └── get_new_feature_use_case.dart
 │       │   └── repository/
 │       │       └── new_feature_repository.dart
 │       ├── di/
@@ -112,9 +110,9 @@ This template uses **Cubit** (from the `flutter_bloc` package) for state managem
 
 Dio is used for making network requests. It is wrapped inside your custom remote data sources.
 
-### 💾 Hive
+### 💾 Hive CE
 
-Hive is used for local caching in the `local_new_feature_data_source.dart`.
+Instead of Hive, this template uses `hive_ce` for local caching in the `local_new_feature_data_source.dart`. It provides lightweight, fast, and type-safe storage.
 
 ---
 
@@ -133,6 +131,18 @@ Used in:
 
 ---
 
+
+### 🔄 DTO ↔ Entity Mapping
+
+This template uses AutoMapper to `automatically` generate mapping code between:
+
+- DTOs (`new_feature_dto.dart`)
+
+- Entities (`new_feature_entity.dart`)
+
+This eliminates manual boilerplate mapping code and keeps your layers clean.
+
+---
 ## 🧪 Dependency Injection
 
 Each feature has its own `di/new_feature_di.dart`, which contains:
@@ -161,14 +171,15 @@ Then:
 
 ## 🧰 Tools Used
 
-| Tool        | Purpose                        |
-|-------------|--------------------------------|
-| 🧱 Mason     | Generate features via bricks   |
-| 🧠 Cubit     | Lightweight state management   |
-| 🧊 Freezed   | Code generation for classes    |
-| 🧪 Dio       | HTTP requests handling         |
-| 📦 Hive      | Local storage                  |
+| Tool           | Purpose                        |
+|----------------|--------------------------------|
+| 🧱 Mason       | Generate features via bricks   |
+| 🧠 Cubit       | Lightweight state management   |
+| 🧊 Freezed     | Code generation for classes    |
+| 🧪 Dio         | HTTP requests handling         |
+| 📦 Hive CE     | Local storage                  |
 | 🔧 BuildRunner | Code generation               |
+| 🔄 AutoMapper  | Auto-generate DTO ↔ Entity mapping|                
 
 ---
 
