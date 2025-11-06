@@ -3,11 +3,11 @@ import '../../global_imports.dart';
 class ApiResponse<T> {
   final T? data;
   final List<T>? list;
-  final String message;
+  final String description;
   final int code;
   final String? error;
   final String? token;
-  final bool success;
+  final bool hasError;
   final ServerPagination? pagination;
 
   ApiResponse({
@@ -15,23 +15,31 @@ class ApiResponse<T> {
     this.error,
     this.token,
     this.list,
-    required this.message,
+    required this.description,
     required this.code,
-    this.success = true,
+    this.hasError = true,
     this.pagination,
   });
 
   factory ApiResponse.fromJson(
-      Map<String, dynamic> json, T Function(dynamic) fromJsonT) {
-    final dynamic rawData = json['data'];
+      Map<String, dynamic> json,
+      T Function(dynamic) fromJsonT, {
+        String? path,
+      }) {
+    dynamic rawData = json['data'];
+    if (path != null) {
+      rawData = rawData[path];
+    }
+
     final paginationJson = json['pagination'];
     return ApiResponse<T>(
-      success: json['success'] ?? false,
-      message: json['message'] ?? AppStrings.unknownError.tr(),
+      hasError: json['hasError'] ?? false,
+      description: json['description'] ?? AppStrings.unknownError.tr(),
       code: json['code'] ?? 200,
       error: json['error'] is String ? json['error'] : null,
       token: json['token'] is String ? json['token'] : null,
-      pagination: paginationJson is Map<String, dynamic>
+      pagination:
+      paginationJson is Map<String, dynamic>
           ? ServerPagination.fromJson(paginationJson)
           : null,
       data: rawData is Map<String, dynamic> ? fromJsonT(rawData) : null,
@@ -43,11 +51,11 @@ class ApiResponse<T> {
     return ApiResponse<R>(
       data: data != null ? mapper(data as T) : null,
       list: list?.map(mapper).toList(),
-      message: message,
+      description: description,
       code: code,
       error: error,
       token: token,
-      success: success,
+      hasError: hasError,
       pagination: pagination,
     );
   }
@@ -55,21 +63,21 @@ class ApiResponse<T> {
   ApiResponse<T> copyWith({
     T? data,
     List<T>? list,
-    String? message,
+    String? description,
     int? code,
     String? error,
     String? token,
-    bool? success,
+    bool? hasError,
     ServerPagination? pagination,
   }) {
     return ApiResponse<T>(
       data: data ?? this.data,
       list: list ?? this.list,
-      message: message ?? this.message,
+      description: description ?? this.description,
       code: code ?? this.code,
       error: error ?? this.error,
       token: token ?? this.token,
-      success: success ?? this.success,
+      hasError: hasError ?? this.hasError,
       pagination: pagination ?? this.pagination,
     );
   }
@@ -80,10 +88,10 @@ class ApiResponse<T> {
         data: $data, 
         list: $list,
         token: $token, 
-        message: $message, 
+        description: $description, 
         code: $code, 
         error: $error, 
-        success: $success
+        success: $hasError
         pagination: $pagination
 ''';
   }

@@ -24,7 +24,7 @@ final apiResponse = await _remote.get{{name.pascalCase()}}();
 
 
 if (apiResponse.success && apiResponse.data != null) {
-final entityResponse = apiResponse.map((model) => model.toEntity());
+final entityResponse = apiResponse.map((model) =>  {{name.pascalCase()}}Mapper().convert<{{name.pascalCase()}}DTO, {{name.pascalCase()}}Entity>(model));
 return right(entityResponse);
 // await local.cacheToken(apiResponse.data!.token!);
 
@@ -35,5 +35,22 @@ return left(ServerFailure(message: apiResponse.message));
 return handleRepoDataError(e,t);
 }
 }
+
+// @override
+// Future<Either<Failure, ApiResponse<{{name.pascalCase()}}Entity>>> fetchAll({
+// CancelToken? cancelToken,
+// required DataSource datasource,
+// }) async {
+// return CacheHelper.fetchWithCache<{{name.pascalCase()}}DTO, {{name.pascalCase()}}Entity>(
+// datasource: datasource,
+// getLocal: _local.getModel,
+// saveLocal: _local.saveModel,
+// fetchRemote: () => _remote.get{{name.pascalCase()}}(),
+// mapper:
+// (dto) =>
+// {{name.pascalCase()}}Mapper().convert<{{name.pascalCase()}}DTO, {{name.pascalCase()}}Entity>(dto),
+// networkInfo: _networkInfo,
+// );
+// }
 
 }

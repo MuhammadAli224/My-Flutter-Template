@@ -16,3 +16,8 @@ const factory {{name.pascalCase()}}DTO({
 factory {{name.pascalCase()}}DTO.fromJson(Map<String, dynamic> json) =>
 _${{name.pascalCase()}}DTOFromJson(json);
 }
+@AutoMappr([
+MapType<{{name.pascalCase()}}DTO, {{name.pascalCase()}}Entity>(),
+MapType<{{name.pascalCase()}}Entity, {{name.pascalCase()}}DTO>(),
+])
+class {{name.pascalCase()}}Mapper extends ${{name.pascalCase()}}Mapper {}

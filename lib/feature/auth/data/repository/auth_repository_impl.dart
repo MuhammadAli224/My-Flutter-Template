@@ -27,7 +27,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final user = await local.getUser();
         if (user != null) {
           return right(
-            ApiResponse(message: '', code: 200, data: user.toEntity()),
+            ApiResponse(description: '', code: 200, data: user.toEntity()),
           );
         }
       }
@@ -36,13 +36,13 @@ class AuthRepositoryImpl implements AuthRepository {
         cancelToken: cancelToken,
       );
 
-      if (apiResponse.success) {
+      if (!apiResponse.hasError) {
         final entityResponse = apiResponse.map((model) => model.toEntity());
 
         await local.saveUser(apiResponse.data!);
         return right(entityResponse);
       } else {
-        return left(ServerFailure(message: apiResponse.message));
+        return left(ServerFailure(message: apiResponse.description));
       }
     } on DioException catch (e, t) {
       if (e.type == DioExceptionType.receiveTimeout ||
@@ -51,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final localModel = await local.getUser();
         if (localModel != null) {
           return right(
-            ApiResponse(message: '', code: 200, data: localModel.toEntity()),
+            ApiResponse(description: '', code: 200, data: localModel.toEntity()),
           );
         }
         return left(
@@ -79,14 +79,14 @@ class AuthRepositoryImpl implements AuthRepository {
         cancelToken: cancelToken,
       );
 
-      if (apiResponse.success && apiResponse.data != null) {
+      if (!apiResponse.hasError && apiResponse.data != null) {
         final entityResponse = apiResponse.map((model) => model.toEntity());
 
         await local.saveToken(apiResponse.token!);
 
         return right(entityResponse);
       } else {
-        return left(ServerFailure(message: apiResponse.message));
+        return left(ServerFailure(message: apiResponse.description));
       }
     } catch (e, t) {
       return handleRepoDataError(e, t);
@@ -107,7 +107,7 @@ class AuthRepositoryImpl implements AuthRepository {
         cancelToken: cancelToken,
       );
 
-      if (apiResponse.success) {
+      if (!apiResponse.hasError) {
         await local.deleteToken();
         await local.deleteUser();
         final entityResponse = apiResponse.map((model) => model.toEntity());
@@ -115,7 +115,7 @@ class AuthRepositoryImpl implements AuthRepository {
         return right(entityResponse);
       } else {
         return left(
-          ServerFailure(message: apiResponse.message, title: apiResponse.error),
+          ServerFailure(message: apiResponse.description, title: apiResponse.error),
         );
       }
     } catch (e, t) {

@@ -44,7 +44,7 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
       (failure) => safeEmit(AuthState.error(message: failure.message)),
       (response) {
         _reset();
-        safeEmit(AuthState.loaded(response.data!, response.message));
+        safeEmit(AuthState.loaded(response.data!, response.description));
       },
     );
   }
@@ -66,7 +66,7 @@ class AuthCubit extends Cubit<AuthState> with CubitLifecycleMixin<AuthState> {
       ),
       (response) {
         _reset();
-        safeEmit(AuthState.loaded(response.data!, response.message));
+        safeEmit(AuthState.loaded(response.data!, response.description));
       },
     );
   }

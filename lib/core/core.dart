@@ -34,7 +34,7 @@ export 'router/routes.dart';
 // Service Folder
 export 'services/api.service.dart';
 export 'services/app.service.dart';
-export 'services/handle_remote_or_local.service.dart';
+export 'services/cache_helper.dart';
 export 'services/hive.service.dart';
 export 'services/header_provider.service.dart';
 // Utils Folder
