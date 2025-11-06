@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 class SettingTile extends StatelessWidget {
   final String title;
@@ -35,9 +34,9 @@ class SettingTile extends StatelessWidget {
           title: AutoSizeText(title, style: titleTextStyle),
           subtitle: subtitle != null ? AutoSizeText(subtitle!) : null,
           leading: leading != null
-              ? HugeIcon(
+              ? Icon(
                   size: 23.h,
-                  icon: leading!,
+                   leading!,
                   color: leadingColor ?? Colors.black)
               : null,
         ),

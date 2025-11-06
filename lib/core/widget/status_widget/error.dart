@@ -2,7 +2,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 import '../../extension/space_extension.dart';
 import '../../utils/text_style.dart';
@@ -26,7 +25,7 @@ class ErrorScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(HugeIcons.strokeRoundedAlert02,
+            Icon(Icons.warning_rounded,
                 color: Colors.red, size: 100.sp),
             10.gap,
             Padding(

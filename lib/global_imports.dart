@@ -17,7 +17,6 @@ export 'package:go_router/go_router.dart';
 export 'package:hive_ce/hive.dart';
 export 'package:hive_ce_flutter/adapters.dart';
 
-export 'package:hugeicons/hugeicons.dart';
 export 'package:logger/logger.dart';
 export 'package:onesignal_flutter/onesignal_flutter.dart';
 
