@@ -135,4 +135,8 @@ const Map<String, String> arLan = {
   'warning': 'تنبيه',
   'confirm': 'تأكيد',
   'apply': 'نطبيق',
+  "youAreOffline": "أنت غير متصل بالانترنت",
+  "noInternet": "لا يوجد إتصال",
+  "internetConnectionRestored": "تم إستعادة الاتصال بالانترنت",
+  "connected": "تم الإتصال",
 };

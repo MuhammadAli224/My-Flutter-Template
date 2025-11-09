@@ -155,4 +155,8 @@ const Map<String, String> enLan = {
   'nameAr': 'Name Arabic',
   'nameEn': 'Name English',
   'warning': 'Warning',
+  "youAreOffline": "You are offline",
+  "noInternet": "No Internet",
+  "internetConnectionRestored": "Internet Connection Restored",
+  "connected": "Connected",
 };

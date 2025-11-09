@@ -37,12 +37,7 @@ Future<void> main() async {
   };
   runApp(
     EasyLocalization(
-      supportedLocales: const [
-        Locale('en'),
-        Locale('ar'),
-        Locale('bn'),
-        Locale('ur'),
-      ],
+      supportedLocales: const [Locale('en'), Locale('ar')],
       startLocale: const Locale('ar', "SA"),
       fallbackLocale: const Locale('en'),
       saveLocale: true,
@@ -58,23 +53,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (_, child) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          theme: ThemeData(
-            useMaterial3: true,
-            appBarTheme: const AppBarTheme(centerTitle: true),
-            fontFamily: 'Almarai',
-          ),
-          routerConfig: goRouters,
-          scaffoldMessengerKey:GlobalContext.scaffoldMessengerKey,
-
-        );
-      },
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => getIt<ConnectionCubit>())],
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<ConnectionCubit, ConnectionState>(
+            builder: (context, state) {
+              return ScreenUtilInit(
+                builder: (_, child) {
+                  return MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                    theme: ThemeData(
+                      useMaterial3: true,
+                      appBarTheme: const AppBarTheme(centerTitle: true),
+                      fontFamily: 'Almarai',
+                    ),
+                    routerConfig: goRouters,
+                    scaffoldMessengerKey: GlobalContext.scaffoldMessengerKey,
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -13,7 +13,8 @@ void initGetIt() async {
   );
   getIt.registerSingleton<ApiServices>(ApiServices(Dio()));
 
-  getIt.registerSingleton<NetworkInfo>(NetworkInfoImpl(Connectivity()));
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(Connectivity()));
+  getIt.registerLazySingleton(() => ConnectionCubit(getIt<NetworkInfo>()));
 
   //======================== Hive Boxes ========================================
 

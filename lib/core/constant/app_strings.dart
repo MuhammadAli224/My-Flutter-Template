@@ -170,6 +170,10 @@ abstract class AppStrings {
   static const String tryAgain = "tryAgain";
   static const String confirm = "confirm";
   static const String apply = "apply";
+  static const String connected = "connected";
+  static const String internetConnectionRestored = "internetConnectionRestored";
+  static const String noInternet = "noInternet";
+  static const String youAreOffline = "youAreOffline";
 
   /////////////////////////////
 }
