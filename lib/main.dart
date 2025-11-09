@@ -54,25 +54,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => getIt<ConnectionCubit>())],
+      providers: [
+        BlocProvider(create: (context) =>
+        ThemeCubit()
+          ..init()),
+
+        BlocProvider(create: (context) => getIt<ConnectionCubit>())],
       child: Builder(
         builder: (context) {
-          return BlocBuilder<ConnectionCubit, ConnectionState>(
-            builder: (context, state) {
-              return ScreenUtilInit(
-                builder: (_, child) {
-                  return MaterialApp.router(
-                    debugShowCheckedModeBanner: false,
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    theme: ThemeData(
-                      useMaterial3: true,
-                      appBarTheme: const AppBarTheme(centerTitle: true),
-                      fontFamily: 'Almarai',
-                    ),
-                    routerConfig: goRouters,
-                    scaffoldMessengerKey: GlobalContext.scaffoldMessengerKey,
+          return BlocBuilder<ThemeCubit, ThemeData>(
+            builder: (context, theme) {
+              return BlocBuilder<ConnectionCubit, ConnectionState>(
+                builder: (context, state) {
+                  return ScreenUtilInit(
+                    builder: (_, child) {
+                      return MaterialApp.router(
+                        debugShowCheckedModeBanner: false,
+                        localizationsDelegates: context.localizationDelegates,
+                        supportedLocales: context.supportedLocales,
+                        locale: context.locale,
+                        // theme: ThemeData(
+                        //   useMaterial3: true,
+                        //   appBarTheme: const AppBarTheme(centerTitle: true),
+                        //   fontFamily: 'Almarai',
+                        // ),
+                        theme: theme,
+                        routerConfig: goRouters,
+                        scaffoldMessengerKey: GlobalContext
+                            .scaffoldMessengerKey,
+                      );
+                    },
                   );
                 },
               );
