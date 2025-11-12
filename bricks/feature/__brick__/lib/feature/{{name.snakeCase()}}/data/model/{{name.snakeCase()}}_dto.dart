@@ -1,4 +1,5 @@
 import '../../../../global_imports.dart';
+import '{{name.snakeCase()}}_dto.auto_mappr.dart';
 
 
 part '{{name.snakeCase()}}_dto.freezed.dart';
