@@ -1,11 +1,5 @@
-import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../constant/app_strings.dart';
-import '../context/global.dart';
-import '../function/show_snackbar.dart';
-import 'network_info.dart';
+import '../../global_imports.dart';
 
 part 'connection_cubit.freezed.dart';
 part 'connection_state.dart';
@@ -18,7 +12,15 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   }
 
   void _monitor() {
+    bool isFirstCheck = true;
+
     networkInfo.onConnectionChange.listen((connected) {
+      if (isFirstCheck) {
+        isFirstCheck = false;
+        emit(connected ? const ConnectionOnline() : const ConnectionOffline());
+        return;
+      }
+
       if (connected) {
         if (state is! ConnectionOnline) {
           _showConnectedBar();
