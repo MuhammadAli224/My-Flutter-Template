@@ -51,7 +51,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       AuthEndpoint.logout,
       {},
       cancelToken: cancelToken,
-      token: token,
+
     );
 
     final apiResponse = ApiResponse.fromJson(
@@ -69,7 +69,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await apiServices.getData(
       AuthEndpoint.getUser,
       cancelToken: cancelToken,
-      token: token,
+
     );
 
     final apiResponse = ApiResponse.fromJson(

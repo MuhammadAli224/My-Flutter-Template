@@ -2,93 +2,72 @@ import '../../global_imports.dart';
 
 class ApiServices {
   final Dio _dio;
-  static const String _authorization = "Authorization";
+  final HeadersProvider _headersProvider;
 
-  static Future<Map<String, String>> get getHeaders async {
-    final headersProvider = getIt<HeadersProvider>();
-    return await headersProvider.getHeaders();
-  }
-
-  ApiServices(this._dio) {
+  ApiServices(this._dio, this._headersProvider) {
     _configureDio();
   }
 
-  Future<void> _configureDio() async {
-    final headers = await getHeaders;
+  void _configureDio() {
     _dio.options = BaseOptions(
       baseUrl: EnvConstant.server,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
-      headers: headers,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
     );
-    _dio.interceptors.clear();
-    _dio.interceptors.add(HeaderInterceptor());
 
+    _dio.interceptors.clear();
+    _dio.interceptors.add(HeaderInterceptor(_headersProvider));
     _dio.interceptors.add(DioInterceptor());
   }
 
+  /// POST
   Future<Map<String, dynamic>> postData(
       String url,
       Map<String, dynamic> data, {
-        String? token,
         CancelToken? cancelToken,
       }) async {
-    final headers = await ApiServices.getHeaders;
-    _dio.options.headers.addAll(headers);
-    _handleTokenAuth(token);
-
-
     final response = await _dio.post(url, data: data, cancelToken: cancelToken);
-    return response.data;
+    return _parseResponse(response);
   }
 
+  /// PUT
   Future<Map<String, dynamic>> putData(
       String url,
       Map<String, dynamic> data, {
-        String? token,
         CancelToken? cancelToken,
       }) async {
-    final headers = await ApiServices.getHeaders;
-    _dio.options.headers.addAll(headers);
-    _handleTokenAuth(token);
-
     final response = await _dio.put(url, data: data, cancelToken: cancelToken);
-    return response.data;
+    return _parseResponse(response);
   }
 
+  /// GET
   Future<Map<String, dynamic>> getData(
       String url, {
-        String? token,
-        CancelToken? cancelToken,
         Map<String, dynamic>? queryParameters,
+        CancelToken? cancelToken,
       }) async {
-
-    final headers = await ApiServices.getHeaders;
-    _dio.options.headers.addAll(headers);
-    _handleTokenAuth(token);
-
     final response = await _dio.get(
       url,
-      cancelToken: cancelToken,
       queryParameters: queryParameters,
+      cancelToken: cancelToken,
     );
-    return response.data;
+    return _parseResponse(response);
   }
 
+  /// POST with File upload
   Future<Map<String, dynamic>> postWithImage(
       String url,
       Map<String, dynamic> data,
       File image, {
-        String? token,
         CancelToken? cancelToken,
       }) async {
+    final fileName = image.path.split('/').last;
 
-    final headers = await ApiServices.getHeaders;
-    _dio.options.headers.addAll(headers);
-    _handleTokenAuth(token);
-
-    String fileName = image.path.split('/').last;
-    FormData formData = FormData.fromMap({
+    final formData = FormData.fromMap({
       ...data,
       "image": await MultipartFile.fromFile(image.path, filename: fileName),
     });
@@ -98,14 +77,13 @@ class ApiServices {
       data: formData,
       cancelToken: cancelToken,
     );
-    return response.data;
+    return _parseResponse(response);
   }
 
-  void _handleTokenAuth(String? token) {
-    if (token != null) {
-      _dio.options.headers[_authorization] = "Bearer $token";
-    } else {
-      _dio.options.headers.remove(_authorization);
+  Map<String, dynamic> _parseResponse(Response response) {
+    if (response.data is Map<String, dynamic>) {
+      return response.data as Map<String, dynamic>;
     }
+    return {"data": response.data};
   }
 }

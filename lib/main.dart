@@ -1,3 +1,4 @@
+import 'core/services/token/token_cubit.dart';
 import 'global_imports.dart';
 
 var logger = Logger(printer: PrettyPrinter(colors: true, printEmojis: true));
@@ -58,6 +59,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) =>
         ThemeCubit()
           ..init()),
+        BlocProvider(create: (_) => getIt<TokenCubit>()),
 
         BlocProvider(create: (context) => getIt<ConnectionCubit>())],
       child: Builder(
