@@ -56,34 +56,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) =>
-        ThemeCubit()
-          ..init()),
+        BlocProvider(create: (context) => ThemeCubit()..init()),
         BlocProvider(create: (_) => getIt<TokenCubit>()),
 
-        BlocProvider(create: (context) => getIt<ConnectionCubit>())],
+        BlocProvider(create: (context) => getIt<ConnectionCubit>()),
+      ],
       child: Builder(
         builder: (context) {
-          return BlocBuilder<ThemeCubit, ThemeData>(
-            builder: (context, theme) {
-              return BlocBuilder<ConnectionCubit, ConnectionState>(
-                builder: (context, state) {
-                  return ScreenUtilInit(
-                    builder: (_, child) {
+          final locale = context.locale;
+          return ScreenUtilInit(
+            builder: (_, child) {
+              return BlocBuilder<ThemeCubit, ThemeData>(
+                builder: (_, theme) {
+                  return BlocBuilder<ConnectionCubit, ConnectionState>(
+                    builder: (context, state) {
                       return MaterialApp.router(
                         debugShowCheckedModeBanner: false,
                         localizationsDelegates: context.localizationDelegates,
                         supportedLocales: context.supportedLocales,
-                        locale: context.locale,
-                        // theme: ThemeData(
-                        //   useMaterial3: true,
-                        //   appBarTheme: const AppBarTheme(centerTitle: true),
-                        //   fontFamily: 'Almarai',
-                        // ),
+                        locale: locale,
                         theme: theme,
                         routerConfig: goRouters,
-                        scaffoldMessengerKey: GlobalContext
-                            .scaffoldMessengerKey,
+                        scaffoldMessengerKey:
+                        GlobalContext.scaffoldMessengerKey,
                       );
                     },
                   );
