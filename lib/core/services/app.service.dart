@@ -6,6 +6,11 @@ import 'notification/fcm.service.dart';
 
 class AppServices {
   Future<void> initAppServices() async {
+
+
+    // await Firebase.initializeApp(
+    //   options: DefaultFirebaseOptions.currentPlatform,
+    // );
     HttpOverrides.global = MyHttpOverrides();
     Bloc.observer = AppBlocObserver();
     Future.wait([

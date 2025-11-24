@@ -320,7 +320,7 @@ class NotificationsController {
             wakeUpScreen: true,
             bigPicture: bigPicture,
             roundedLargeIcon: true,
-            largeIcon: "asset://${Assets.imagesQaiaLogo}",
+            largeIcon: "asset://${Assets.imagesAppNewIcon}",
             notificationLayout: NotificationLayout.BigPicture,
             payload: payload,
           ),
