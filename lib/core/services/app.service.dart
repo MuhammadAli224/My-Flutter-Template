@@ -1,18 +1,23 @@
+import 'package:flutter/services.dart';
+
 import '../../global_imports.dart';
+import 'notification/awesome_notification.service.dart';
+import 'notification/fcm.service.dart';
+
 class AppServices {
   Future<void> initAppServices() async {
-    // OneSignal.Debug.setLogLevel(OSLogLevel.warn);
-    // OneSignal.initialize("859c8631-4529-4786-8658-7134daad2adb");
-    // OneSignal.Notifications.requestPermission(false);
+    HttpOverrides.global = MyHttpOverrides();
+    Bloc.observer = AppBlocObserver();
+    Future.wait([
+      ScreenUtil.ensureScreenSize(),
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]),
+    ]);
 
-    Future.wait(
-      [
-        ScreenUtil.ensureScreenSize(),
-      ],
-    );
-
-    // await FcmHelper.initFcm();
-    // await NotificationsController.initializeLocalNotifications();
+    await FcmHelper.initFcm();
+    await NotificationsController.initializeLocalNotifications();
     // await NotificationsController.initializeIsolateReceivePort();
     // NotificationsController.startListeningNotificationEvents();
   }

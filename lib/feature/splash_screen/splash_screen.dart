@@ -72,8 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
       initGetIt();
       await getIt<AppServices>().initAppServices();
 
-      HttpOverrides.global = MyHttpOverrides();
-      Bloc.observer = AppBlocObserver();
+
     } catch (e) {
       logger.e("Init error: $e");
     }

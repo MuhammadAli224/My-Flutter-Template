@@ -59,6 +59,7 @@ dependencies:
 
   # Notification
   onesignal_flutter: ^5.3.4
+  awesome_notifications: ^0.10.1
 
 
 dev_dependencies:
