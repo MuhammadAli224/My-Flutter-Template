@@ -1,16 +1,19 @@
 import 'package:dio/dio.dart';
 
 import '../../main.dart';
-import '../extension/map_extension.dart';
 
 class DioInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    String query = options.queryParameters.isEmpty
+        ? ''
+        : '?${options.queryParameters.entries.map((e) => '${e.key}=${Uri.encodeComponent(e.value.toString())}').join('&')}';
+
     logger.i('''====================START====================
     HTTP method => ${options.method} 
     Header  => ${options.headers}
     data  => ${options.data as Map<String, dynamic>?}
-    Request Url => ${options.baseUrl}${options.path}${options.queryParameters.format}''');
+    Request Url => ${options.baseUrl}${options.path}$query''');
 
     return super.onRequest(options, handler);
   }
