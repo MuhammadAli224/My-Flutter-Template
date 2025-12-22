@@ -215,7 +215,7 @@ return EasyLocalization(
 2. **Usage in widgets:**
 
 ```dart
-Text('hello'.tr()), // loads value for 'hello' from en.dart or ar.dart
+Text('hello'.tr()), // loads value for 'hello' from en.json or ar.json
 ```
 
 3. **Change language programmatically:**

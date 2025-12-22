@@ -19,7 +19,6 @@ export 'extension/space_extension.dart';
 export 'function/handle_repo_error.dart';
 export 'function/show_snackbar.dart';
 // Localization Folder
-export 'localization/localization.dart';
 export 'mixin/cubit_lifecycle_mixin.dart';
 export 'mixin/sync_hive_mixin.dart';
 // Mixin Folder

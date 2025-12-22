@@ -174,6 +174,7 @@ abstract class AppStrings {
   static const String internetConnectionRestored = "internetConnectionRestored";
   static const String noInternet = "noInternet";
   static const String youAreOffline = "youAreOffline";
-
+  static const String passwordNotMatchHint = "passwordNotMatchHint";
+  static const String emptyConfirmPasswordHint = "emptyConfirmPasswordHint";
   /////////////////////////////
 }

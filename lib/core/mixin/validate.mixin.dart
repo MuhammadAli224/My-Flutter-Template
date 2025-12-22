@@ -108,4 +108,19 @@ mixin FormValidationMixin {
     }
     return null;
   }
+
+  String? validateConfirmPassword({
+    required String? password,
+    required String? confirmPassword,
+  }) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return AppStrings.emptyConfirmPasswordHint.tr();
+    }
+
+    if (password != confirmPassword) {
+      return AppStrings.passwordNotMatchHint.tr();
+    }
+
+    return null;
+  }
 }

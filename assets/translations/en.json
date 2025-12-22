@@ -1,4 +1,4 @@
-const Map<String, String> enLan = {
+ {
   "now": "Now",
   "badRequest": "Invalid connection request",
   "unauthorized": "Unauthorized",
@@ -62,20 +62,20 @@ const Map<String, String> enLan = {
 
   "version": "version",
   "loadingInitData": "Loading System Initialization",
-  'noInternetConnection': "No Internet Connection!",
-  'cantProceed': "Can't Proceed",
-  'retry': "retry",
-  'active': "active",
-  'inActive': "inActive",
-  'subscribe': "Subscribe",
-  'expireIn': "Expire In",
+  "noInternetConnection": "No Internet Connection!",
+  "cantProceed": "Can't Proceed",
+  "retry": "retry",
+  "active": "active",
+  "inActive": "inActive",
+  "subscribe": "Subscribe",
+  "expireIn": "Expire In",
 
   "or": "or",
 
   "name": "name",
   "save": "save {}",
 
-  'language': 'language',
+  "language": "language",
 
   "phoneNumber": "Phone number",
   "otp": "OTP",
@@ -90,8 +90,8 @@ const Map<String, String> enLan = {
   "total": "Total",
 
   "back": "Back",
-  "backToHome": 'Back To Home',
-  'exitHint': 'Press back again to exit',
+  "backToHome": "Back To Home",
+  "exitHint": "Press back again to exit",
 
   "edit": "Edit {}",
   "add": "Add {}",
@@ -103,8 +103,8 @@ const Map<String, String> enLan = {
 
   "print": "Print",
 
-  'ar': 'العربية',
-  'en': 'English',
+  "ar": "العربية",
+  "en": "English",
 
   "register": "Register",
   "enterEmailHint": "Please enter your email to continue.",
@@ -152,11 +152,13 @@ const Map<String, String> enLan = {
   "daily": "Daily",
   "confirm": "Confirm",
   "apply": "Apply",
-  'nameAr': 'Name Arabic',
-  'nameEn': 'Name English',
-  'warning': 'Warning',
+  "nameAr": "Name Arabic",
+  "nameEn": "Name English",
+  "warning": "Warning",
   "youAreOffline": "You are offline",
   "noInternet": "No Internet",
   "internetConnectionRestored": "Internet Connection Restored",
   "connected": "Connected",
-};
+   "passwordNotMatchHint":  "Passwords do not match",
+   "emptyConfirmPasswordHint": "Please confirm your password"
+}

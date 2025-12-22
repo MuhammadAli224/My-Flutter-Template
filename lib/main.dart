@@ -16,34 +16,30 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   EasyLocalization.ensureInitialized();
   ErrorWidget.builder = (FlutterErrorDetails details) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Oops! An error occurred')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error, color: Colors.red, size: 80),
-            20.gap,
-            Text(AppStrings.unknownError.tr(), style: AppTextStyle.style18B),
-            10.gap,
-            Text(
-              details.exceptionAsString(),
-              style: const TextStyle(color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.error, color: Colors.red, size: 80),
+          20.gap,
+          Text(AppStrings.unknownError.tr(), style: AppTextStyle.style18B),
+          10.gap,
+          Text(
+            details.exceptionAsString(),
+            style: const TextStyle(color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   };
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
-      startLocale: const Locale('ar', "SA"),
-      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('ar'),
+      fallbackLocale: const Locale('ar'),
       saveLocale: true,
-      path: '/',
-      assetLoader: CodeAssetLoader(),
+      path: 'assets/translations',
       child: const MyApp(),
     ),
   );
@@ -78,7 +74,7 @@ class MyApp extends StatelessWidget {
                         theme: theme,
                         routerConfig: goRouters,
                         scaffoldMessengerKey:
-                        GlobalContext.scaffoldMessengerKey,
+                            GlobalContext.scaffoldMessengerKey,
                       );
                     },
                   );
