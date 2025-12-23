@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../generated/assets.dart';
 import '../../../main.dart';
 import '../../constant/notification_channel.dart';
-import '../../context/global.dart';
+import '../../core.dart';
 import '../../model/notification_channel_model.dart';
 
 class NotificationsController {
@@ -26,7 +26,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.basicChannel.key,
           channelName: NotificationChannelKey.basicChannel.name,
           channelDescription: NotificationChannelKey.basicChannel.description,
-          defaultColor: const Color(0xFF9D50DD),
+          defaultColor: AppColor.primaryColor,
           ledColor: Colors.white,
           importance: NotificationImportance.High,
         ),
@@ -35,7 +35,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.basicChannel.key,
           channelName: 'Badge indicator notifications',
           channelDescription:
-              'Notification channel to activate badge indicator',
+          'Notification channel to activate badge indicator',
           channelShowBadge: true,
           defaultColor: const Color(0xFF9D50DD),
           ledColor: Colors.yellow,
@@ -45,7 +45,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.categoryChannel.key,
           channelName: NotificationChannelKey.categoryChannel.name,
           channelDescription:
-              NotificationChannelKey.categoryChannel.description,
+          NotificationChannelKey.categoryChannel.description,
           defaultColor: const Color(0xFF9D50DD),
           importance: NotificationImportance.Max,
           ledColor: Colors.white,
@@ -70,7 +70,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.scheduleChannel.key,
           channelName: NotificationChannelKey.scheduleChannel.name,
           channelDescription:
-              NotificationChannelKey.scheduleChannel.description,
+          NotificationChannelKey.scheduleChannel.description,
           defaultColor: const Color(0xFF9D50DD),
           ledColor: const Color(0xFF9D50DD),
           vibrationPattern: lowVibrationPattern,
@@ -106,11 +106,11 @@ class NotificationsController {
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationsController.onActionReceivedMethod,
       onNotificationCreatedMethod:
-          NotificationsController.onNotificationCreatedMethod,
+      NotificationsController.onNotificationCreatedMethod,
       onNotificationDisplayedMethod:
-          NotificationsController.onNotificationDisplayedMethod,
+      NotificationsController.onNotificationDisplayedMethod,
       onDismissActionReceivedMethod:
-          NotificationsController.onDismissActionReceivedMethod,
+      NotificationsController.onDismissActionReceivedMethod,
     );
   }
 
@@ -138,15 +138,16 @@ class NotificationsController {
   // ***************************************************************
   ///  Notifications events are only delivered after call this method
   static Future<void> startListeningNotificationEvents() async {
-    AwesomeNotifications()
-        .setListeners(onActionReceivedMethod: onActionReceivedMethod);
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: onActionReceivedMethod,
+    );
   }
 
   /// Use this method to detect when a new notification or a schedule is created
   @pragma("vm:entry-point")
   static Future<void> onNotificationCreatedMethod(
-    ReceivedNotification receivedNotification,
-  ) async {
+      ReceivedNotification receivedNotification,
+      ) async {
     var message =
         'Notification created on ${receivedNotification.createdLifeCycle?.name}';
     logger.d(message);
@@ -155,8 +156,8 @@ class NotificationsController {
   /// Use this method to detect every time that a new notification is displayed
   @pragma("vm:entry-point")
   static Future<void> onNotificationDisplayedMethod(
-    ReceivedNotification receivedNotification,
-  ) async {
+      ReceivedNotification receivedNotification,
+      ) async {
     var message1 =
         'Notification displayed on ${receivedNotification.displayedLifeCycle?.name}';
     var message2 =
@@ -165,14 +166,13 @@ class NotificationsController {
     logger.d(message1);
     logger.d(message2);
     logger.d(receivedNotification.toMap());
-
   }
 
   /// Use this method to detect if the user dismissed a notification
   @pragma("vm:entry-point")
   static Future<void> onDismissActionReceivedMethod(
-    ReceivedAction receivedAction,
-  ) async {
+      ReceivedAction receivedAction,
+      ) async {
     var message =
         'Notification dismissed on ${receivedAction.dismissedLifeCycle?.name}';
     logger.w(message);
@@ -181,8 +181,8 @@ class NotificationsController {
   /// Use this method to detect when the user taps on a notification or action button
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(
-    ReceivedAction receivedAction,
-  ) async {
+      ReceivedAction receivedAction,
+      ) async {
     if (receivePort != null) {
       await onActionReceivedMethodImpl(receivedAction);
     } else {
@@ -204,8 +204,8 @@ class NotificationsController {
   }
 
   static Future<void> onActionReceivedMethodImpl(
-    ReceivedAction receivedAction,
-  ) async {
+      ReceivedAction receivedAction,
+      ) async {
     var message =
         'Action ${receivedAction.actionType?.name} received on ${receivedAction.actionLifeCycle?.name}';
     logger.d(message);
@@ -280,8 +280,8 @@ class NotificationsController {
   // ***************************************************************
 
   static Future<void> interceptInitialCallActionRequest() async {
-    ReceivedAction? receivedAction =
-        await AwesomeNotifications().getInitialNotificationAction();
+    ReceivedAction? receivedAction = await AwesomeNotifications()
+        .getInitialNotificationAction();
 
     if (receivedAction?.channelKey == 'call_channel') {
       initialAction = receivedAction;
@@ -329,7 +329,7 @@ class NotificationsController {
     });
   }
 
-  static scheduleNotification({
+  static Future<void> scheduleNotification({
     required String title,
     required String body,
     required int id,
@@ -348,10 +348,11 @@ class NotificationsController {
         channelKey: NotificationChannelKey.scheduleChannel.key,
         payload: payload,
       ),
-      schedule: NotificationCalendar
+      schedule:
+      NotificationCalendar
       // .fromDate(
       // date: date, allowWhileIdle: true, preciseAlarm: true));
-      (
+        (
         year: date.year,
         month: date.month,
         day: date.day,
@@ -377,9 +378,9 @@ class NotificationsController {
   }
 
   static void handleNotificationPayload(
-    BuildContext context,
-    Map<String, dynamic> payload,
-  ) {
+      BuildContext context,
+      Map<String, dynamic> payload,
+      ) {
     // final notificationCubit = context.read<NotificationsCubit>();
     //
     // final notificationModel = NotificationPayloadModel.fromJson(payload);
@@ -394,17 +395,17 @@ class NotificationsController {
     // }
   }
 
-  static cancelScheduleNotification({required int id}) async {
+  static Future<void> cancelScheduleNotification({required int id}) async {
     await AwesomeNotifications().cancelSchedule(id);
   }
 
-  static cancelAllScheduleNotification() async {
+  static Future<void> cancelAllScheduleNotification() async {
     await AwesomeNotifications().cancelAllSchedules();
   }
 
   static Future<void> getAllScheduleNotifications() async {
     List<NotificationModel> allScheduleNotifications =
-        await AwesomeNotifications().listScheduledNotifications();
+    await AwesomeNotifications().listScheduledNotifications();
     logger.e(allScheduleNotifications.length);
     logger.e("Scheduled Notifications :$allScheduleNotifications");
   }
