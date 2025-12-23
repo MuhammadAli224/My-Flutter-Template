@@ -26,10 +26,7 @@ class TokenCubit extends Cubit<TokenState> {
     emit(TokenState.loaded(token));
   }
 
-  Future<void> clearToken() async {
-    await _storage.delete(key: _tokenKey);
-    emit(const TokenState.initial());
-  }
+
 
   String? get currentToken =>
       state.maybeWhen(loaded: (token) => token, orElse: () => null);
@@ -40,5 +37,12 @@ class TokenCubit extends Cubit<TokenState> {
 
   Future<String?> getFcmToken() async {
     return await _storage.read(key: _fcmTokenKey);
+  }
+
+  Future<void> logout() async {
+    await _storage.delete(key: _tokenKey);
+    await _storage.delete(key: _fcmTokenKey);
+
+    emit(const TokenState.initial());
   }
 }

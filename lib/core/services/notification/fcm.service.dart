@@ -57,6 +57,14 @@ class FcmHelper {
     }
   }
 
+  static Future<void> logout() async {
+    try {
+      await messaging.deleteToken();
+    } catch (error) {
+      logger.e(error);
+    }
+  }
+
   static void _fcmForegroundHandler(RemoteMessage message) {
     if (message.notification != null) {
       NotificationsController.createNewNotification(
