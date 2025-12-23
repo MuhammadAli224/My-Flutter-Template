@@ -8,6 +8,7 @@ part 'token_state.dart';
 class TokenCubit extends Cubit<TokenState> {
   final FlutterSecureStorage _storage;
   static const _tokenKey = 'access_token';
+  static const _fcmTokenKey = 'fcm_token';
 
   TokenCubit(this._storage) : super(const TokenState.initial()) {
     _loadToken();
@@ -32,4 +33,12 @@ class TokenCubit extends Cubit<TokenState> {
 
   String? get currentToken =>
       state.maybeWhen(loaded: (token) => token, orElse: () => null);
+
+  Future<void> saveFcmToken(String token) async {
+    await _storage.write(key: _fcmTokenKey, value: token);
+  }
+
+  Future<String?> getFcmToken() async {
+    return await _storage.read(key: _fcmTokenKey);
+  }
 }
