@@ -10,7 +10,7 @@ class HeadersProvider {
   static const String _acceptLanguage = "Accept-Language";
 
   Future<Map<String, String>> getHeaders({Map<String, String>? extra}) async {
-    final language = await hive.get(BoxKey.languageCode, defaultValue: 'en');
+    final language = await hive.get(BoxKey.languageCode, defaultValue: 'ar');
     final token = tokenCubit.currentToken;
 
     final headers = <String, String>{
@@ -28,6 +28,7 @@ class HeadersProvider {
 
 class HeaderInterceptor extends Interceptor {
   final HeadersProvider headersProvider;
+
   HeaderInterceptor(this.headersProvider);
 
   @override

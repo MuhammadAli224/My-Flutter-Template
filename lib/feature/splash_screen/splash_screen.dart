@@ -44,12 +44,12 @@ class _SplashScreenState extends State<SplashScreen>
         _fadeController.forward();
         await _initializeApp();
         // Future.delayed(const Duration(seconds: 2), () async {
-        final token = await getIt<AuthLocalDataSource>().getToken();
-        if (token != null) {
+        // final token = await getIt<AuthLocalDataSource>().getToken();
+        // if (token != null) {
           context.go(AppRoutes.home);
-        } else {
-          // context.go(AppRoutes.mainScreen);
-        }
+        // } else {
+        //   // context.go(AppRoutes.mainScreen);
+        // }
         // });
       }
     });
@@ -65,11 +65,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> _initializeApp() async {
     try {
-      await EnvConstant.init();
 
-      await HiveServices().init();
 
-      initGetIt();
       await getIt<AppServices>().initAppServices();
 
 

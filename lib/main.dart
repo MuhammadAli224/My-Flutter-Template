@@ -14,6 +14,11 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EnvConstant.init();
+
+  await HiveServices().init();
+
+  await initGetIt();
   EasyLocalization.ensureInitialized();
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return Center(
