@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/extension/space_extension.dart';
 import '../../../../core/utils/border_radius.dart';
-import '../../../../core/utils/color.dart';
+import '../../core.dart';
+import '../../utils/gradient.dart';
 import 'button_constant.dart';
 
 class AppButton extends StatelessWidget {
@@ -12,7 +12,7 @@ class AppButton extends StatelessWidget {
   final Widget Function(BuildContext context, bool isFocused, bool isHovered)
   builder;
   final void Function()? onPressed;
-
+  final Border? border;
   final EdgeInsetsGeometry? contentPadding;
 
   final bool isDestructive;
@@ -26,6 +26,7 @@ class AppButton extends StatelessWidget {
     required this.isDestructive,
     this.color,
     this.borderRadius,
+    this.border,
   });
 
   factory AppButton.text({
@@ -34,6 +35,9 @@ class AppButton extends StatelessWidget {
     required void Function()? onPressed,
     Color? color,
     Color? fontColor,
+    EdgeInsetsGeometry? contentPadding,
+    double? fontSize,
+
     bool isDestructive = false,
     BorderRadius? borderRadius,
     Key? key,
@@ -45,16 +49,90 @@ class AppButton extends StatelessWidget {
       height: height,
       onPressed: onPressed,
       isDestructive: isDestructive,
-      builder:
-          (_, __, ___) => Text(
+      contentPadding: contentPadding,
+      builder: (_, _, _) => Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: fontColor ?? AppColor.white,
+          fontSize: fontSize??AppButtonTextFontSize.fromButtonHeights(height),
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  factory AppButton.transparent({
+    required String text,
+    double height = AppButtonHeights.sm,
+    required void Function()? onPressed,
+    Color? fontColor,
+    Color? borderColor,
+    BorderRadius? borderRadius,
+    EdgeInsetsGeometry? contentPadding,
+    double? fontSize,
+    Key? key,
+  }) {
+    return AppButton(
+      key: key,
+      contentPadding: contentPadding,
+      color: Colors.transparent,
+      height: height,
+      onPressed: onPressed,
+      border: Border.all(color: borderColor ?? AppColor.white),
+      borderRadius: borderRadius,
+      builder: (_, _, _) => Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: fontColor ?? AppColor.white,
+          fontSize: fontSize ?? AppButtonTextFontSize.fromButtonHeights(height),
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      isDestructive: false,
+    );
+  }
+
+  factory AppButton.transparentWithWidget({
+    required String text,
+    double height = AppButtonHeights.sm,
+    double? fontSize,
+    required void Function()? onPressed,
+    Color? fontColor,
+    Color? borderColor,
+    EdgeInsetsGeometry? contentPadding,
+    BorderRadius? borderRadius,
+    required Widget child,
+    Key? key,
+  }) {
+    return AppButton(
+      key: key,
+      color: Colors.transparent,
+      height: height,
+      onPressed: onPressed,
+      contentPadding: contentPadding,
+      border: Border.all(color: borderColor ?? AppColor.white),
+      borderRadius: borderRadius,
+      builder: (_, _, _) => Row(
+        mainAxisAlignment: .center,
+        crossAxisAlignment: .center,
+        spacing: 5,
+        children: [
+          Text(
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: fontColor ?? AppColor.white,
-              fontSize: AppButtonTextFontSize.fromButtonHeights(height),
+              fontSize:
+              fontSize ?? AppButtonTextFontSize.fromButtonHeights(height),
               fontWeight: FontWeight.w500,
             ),
           ),
+          child,
+        ],
+      ),
+      isDestructive: false,
     );
   }
 
@@ -74,48 +152,45 @@ class AppButton extends StatelessWidget {
       height: height,
       onPressed: onPressed,
       isDestructive: isDestructive,
-      builder:
-          (_, __, ___) => Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              leadingIconAssetName != null
-                  ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        leadingIconAssetName,
-                        color: AppColor.white,
-                        size: AppButtonIconSize.fromButtonHeights(height),
-                      ),
-                      8.gap,
-                    ],
-                  )
-                  : Container(),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: TextStyle(
+      builder: (_, _, _) => Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (leadingIconAssetName != null)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  leadingIconAssetName,
                   color: AppColor.white,
-                  fontSize: AppButtonTextFontSize.fromButtonHeights(height),
-                  fontWeight: FontWeight.w400,
+                  size: AppButtonIconSize.fromButtonHeights(height),
                 ),
-              ),
-              trailingIconAssetName != null
-                  ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      8.gap,
-                      Icon(
-                        trailingIconAssetName,
-                        color: AppColor.white,
-                        size: AppButtonIconSize.fromButtonHeights(height),
-                      ),
-                    ],
-                  )
-                  : Container(),
-            ],
+                8.gap,
+              ],
+            ),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: AppColor.white,
+              fontSize: AppButtonTextFontSize.fromButtonHeights(height),
+              fontWeight: FontWeight.w400,
+            ),
           ),
+          if (trailingIconAssetName != null)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                8.gap,
+                Icon(
+                  trailingIconAssetName,
+                  color: AppColor.white,
+                  size: AppButtonIconSize.fromButtonHeights(height),
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 
@@ -135,57 +210,37 @@ class AppButton extends StatelessWidget {
       color: color,
       isDestructive: isDestructive,
       contentPadding: AppButtonIconOnlyPadding.fromButtonHeights(height),
-      builder:
-          (_, __, ___) => Icon(
-            iconAssetName,
-            color: AppColor.white,
-            size: AppButtonIconSize.fromButtonHeights(height),
-          ),
+      builder: (_, _, _) => Icon(
+        iconAssetName,
+        color: AppColor.white,
+        size: AppButtonIconSize.fromButtonHeights(height),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    late Color primaryColor;
-    late Color disabledColor;
-    late Color hoverColor;
-    late Color focusColor;
-    if (!isDestructive) {
-      primaryColor = color ?? AppColor.primaryColor;
-      disabledColor = AppColor.primaryColor200;
-      hoverColor = AppColor.primaryColor600;
-      focusColor = AppColor.primaryColor;
-    } else {
-      primaryColor = color ?? AppColor.primaryColor;
-      disabledColor = AppColor.red200;
-      hoverColor = AppColor.red600;
-      focusColor = AppColor.primaryColor;
-    }
     return Container(
       decoration: BoxDecoration(
+        gradient: color == null ? AppGradient.green : null,
+        border: border,
         borderRadius:
-            borderRadius ?? BorderRadius.circular(AppBorderRadius.sm8),
+        borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
       ),
-      child: Material(
-        color: onPressed != null ? primaryColor : disabledColor,
+      child: InkWell(
         borderRadius:
-            borderRadius ?? BorderRadius.circular(AppBorderRadius.sm8),
-        child: InkWell(
-          borderRadius:
-              borderRadius ?? BorderRadius.circular(AppBorderRadius.sm8),
-          hoverColor: hoverColor,
-          focusColor: focusColor,
-          onTap: onPressed,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius:
-                  borderRadius ?? BorderRadius.circular(AppBorderRadius.sm8),
-            ),
-            child: Padding(
-              padding:
-                  contentPadding ?? AppButtonPadding.fromButtonHeights(height),
-              child: builder(context, true, true),
-            ),
+        borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
+
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius:
+            borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
+          ),
+          child: Padding(
+            padding:
+            contentPadding ?? AppButtonPadding.fromButtonHeights(height),
+            child: builder(context, true, true),
           ),
         ),
       ),

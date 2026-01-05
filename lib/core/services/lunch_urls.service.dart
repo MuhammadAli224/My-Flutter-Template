@@ -7,7 +7,7 @@
 //   static Future<void> openLink(String url) async {
 //     final uri = Uri.parse(url);
 //     try {
-//       await launchUrl(uri, mode: LaunchMode.externalApplication);
+//       await launchUrl(uri, mode: LaunchMode.externalApplication);00000000000000['pp
 //     } catch (e) {
 //       logger.e("❌ Could not launch $url , $e");
 //     }

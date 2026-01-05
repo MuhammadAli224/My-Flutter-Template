@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.10.0
 
 
 dependencies:
@@ -29,7 +29,7 @@ dependencies:
 
 
   # State Management
-  bloc: ^9.1.0
+  bloc: ^9.2.0
   flutter_bloc: ^9.1.1
   get_it: ^9.0.5
   equatable:
