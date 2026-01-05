@@ -28,7 +28,7 @@ class ThemeCubit extends Cubit<ThemeData> {
     scaffoldBackgroundColor: MaterialTheme.lightScheme().surface,
     canvasColor: MaterialTheme.lightScheme().surface,
     appBarTheme: const AppBarTheme(centerTitle: true),
-    fontFamily: 'Almarai',
+    fontFamily: 'IBMPlexSansArabic',
   );
 
   static final ThemeData _darkTheme = ThemeData(
@@ -41,7 +41,7 @@ class ThemeCubit extends Cubit<ThemeData> {
       secondary: MaterialTheme.darkScheme().secondary,
       onSurface: Colors.white,
     ),
-    fontFamily: 'Almarai',
+    fontFamily: 'IBMPlexSansArabic',
     scaffoldBackgroundColor: const Color(0xFF121212),
     canvasColor: const Color(0xFF1E1E1E),
     cardColor: const Color(0xFF242424),

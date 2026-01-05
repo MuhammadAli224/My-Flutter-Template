@@ -1,5 +1,4 @@
 import '../../global_imports.dart';
-import 'token/token_cubit.dart';
 
 class HeadersProvider {
   final Box<dynamic> hive;
