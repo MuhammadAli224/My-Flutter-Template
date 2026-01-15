@@ -8,17 +8,13 @@ class HeadersProvider {
 
   static const String _acceptLanguage = "Accept-Language";
 
-  Future<Map<String, String>> getHeaders({Map<String, String>? extra}) async {
+  Future<Map<String, String>> getHeaders() async {
     final language = await hive.get(BoxKey.languageCode, defaultValue: 'ar');
     final token = tokenCubit.currentToken;
 
     final headers = <String, String>{
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
       _acceptLanguage: language,
       if (token != null) 'Authorization': 'Bearer $token',
-
-      if (extra != null) ...extra,
     };
 
     return headers;
@@ -36,7 +32,13 @@ class HeaderInterceptor extends Interceptor {
       RequestInterceptorHandler handler,
       ) async {
     final headers = await headersProvider.getHeaders();
-    options.headers.addAll(headers);
+    headers.forEach((key, value) {
+      options.headers.putIfAbsent(key, () => value);
+    });
+
+    if (options.data is FormData) {
+      options.headers.remove('Content-Type');
+    }
     return handler.next(options);
   }
 }

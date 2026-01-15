@@ -13,10 +13,10 @@ class ApiServices {
       baseUrl: EnvConstant.server,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'Accept': 'application/json',
+      // },
     );
 
     _dio.interceptors.clear();
@@ -29,8 +29,15 @@ class ApiServices {
       String url,
       Map<String, dynamic> data, {
         CancelToken? cancelToken,
+        Map<String, String>? headers,
+        bool isFormData = false,
       }) async {
-    final response = await _dio.post(url, data: data, cancelToken: cancelToken);
+    final response = await _dio.post(
+      url,
+      data: isFormData ? FormData.fromMap({...data}) : data,
+      cancelToken: cancelToken,
+    );
+
     return _parseResponse(response);
   }
 
