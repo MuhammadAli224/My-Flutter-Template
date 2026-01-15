@@ -5,32 +5,70 @@ import '../../main.dart';
 class DioInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String query = options.queryParameters.isEmpty
+    final query = options.queryParameters.isEmpty
         ? ''
         : '?${options.queryParameters.entries.map((e) => '${e.key}=${Uri.encodeComponent(e.value.toString())}').join('&')}';
 
-    logger.i('''====================START====================
-    HTTP method => ${options.method} 
-    Header  => ${options.headers}
-    data  => ${options.data as Map<String, dynamic>?}
-    Request Url => ${options.baseUrl}${options.path}$query''');
+    final dataLog = _formatData(options.data);
 
-    return super.onRequest(options, handler);
+    logger.i('''
+==================== START REQUEST ====================
+HTTP Method => ${options.method}
+URL => ${options.baseUrl}${options.path}$query
+Headers => ${options.headers}
+Data => $dataLog
+=====================================================
+''');
+
+    super.onRequest(options, handler);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final options = err.requestOptions;
-    logger.e('''Error: ${err.error}
-    Message: ${err.message}
-    Option :${options.method}'''); // Error log
-    return super.onError(err, handler);
+    final dataLog = _formatData(options.data);
+
+    logger.e('''
+==================== ERROR ====================
+Error => ${err.error}
+Message => ${err.message}
+HTTP Method => ${options.method}
+URL => ${options.baseUrl}${options.path}
+Headers => ${options.headers}
+Data => $dataLog
+==============================================
+''');
+
+    super.onError(err, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.w('''Response => StatusCode: ${response.statusCode}
-    Response => Body: ${response.data}''');
-    return super.onResponse(response, handler);
+    logger.w('''
+==================== RESPONSE ====================
+Status Code => ${response.statusCode}
+Body => ${response.data}
+===============================================
+''');
+
+    super.onResponse(response, handler);
+  }
+
+  String _formatData(dynamic data) {
+    if (data == null) return 'null';
+
+    if (data is FormData) {
+      return '''
+FormData:
+Fields => ${data.fields}
+Files => ${data.files.map((f) => f.key).toList()}
+''';
+    }
+
+    if (data is Map<String, dynamic>) {
+      return data.toString();
+    }
+
+    return data.toString();
   }
 }
