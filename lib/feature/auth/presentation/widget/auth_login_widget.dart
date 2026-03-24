@@ -24,8 +24,8 @@ class AuthLoginWidget extends StatelessWidget with FormValidationMixin {
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Image.asset(Assets.imagesAppNewIcon,
-                height: 0.3.sh, width: double.infinity),
+            // Image.asset(Assets.imagesAppNewIcon,
+            //     height: 0.3.sh, width: double.infinity),
             AppTextFormField(
               label:
                   "${AppStrings.email.tr()} ${AppStrings.or.tr()} ${AppStrings.phoneNumber.tr()}",
