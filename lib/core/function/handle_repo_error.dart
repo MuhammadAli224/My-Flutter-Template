@@ -1,7 +1,7 @@
 import '../../global_imports.dart';
 
 Either<Failure, T> handleRepoDataError<T>(Object e, StackTrace t) {
-  logger.e(
+  AppLogger.e(
     "Error is : $e, "
     "StackTrace is : $t",
     stackTrace: StackTrace.current,

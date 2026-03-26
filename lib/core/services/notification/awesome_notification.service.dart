@@ -4,8 +4,6 @@ import 'dart:ui';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
-import '../../../generated/assets.dart';
-import '../../../main.dart';
 import '../../constant/notification_channel.dart';
 import '../../core.dart';
 import '../../model/notification_channel_model.dart';
@@ -35,7 +33,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.basicChannel.key,
           channelName: 'Badge indicator notifications',
           channelDescription:
-          'Notification channel to activate badge indicator',
+              'Notification channel to activate badge indicator',
           channelShowBadge: true,
           defaultColor: const Color(0xFF9D50DD),
           ledColor: Colors.yellow,
@@ -45,7 +43,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.categoryChannel.key,
           channelName: NotificationChannelKey.categoryChannel.name,
           channelDescription:
-          NotificationChannelKey.categoryChannel.description,
+              NotificationChannelKey.categoryChannel.description,
           defaultColor: const Color(0xFF9D50DD),
           importance: NotificationImportance.Max,
           ledColor: Colors.white,
@@ -70,7 +68,7 @@ class NotificationsController {
           channelKey: NotificationChannelKey.scheduleChannel.key,
           channelName: NotificationChannelKey.scheduleChannel.name,
           channelDescription:
-          NotificationChannelKey.scheduleChannel.description,
+              NotificationChannelKey.scheduleChannel.description,
           defaultColor: const Color(0xFF9D50DD),
           ledColor: const Color(0xFF9D50DD),
           vibrationPattern: lowVibrationPattern,
@@ -106,11 +104,11 @@ class NotificationsController {
     AwesomeNotifications().setListeners(
       onActionReceivedMethod: NotificationsController.onActionReceivedMethod,
       onNotificationCreatedMethod:
-      NotificationsController.onNotificationCreatedMethod,
+          NotificationsController.onNotificationCreatedMethod,
       onNotificationDisplayedMethod:
-      NotificationsController.onNotificationDisplayedMethod,
+          NotificationsController.onNotificationDisplayedMethod,
       onDismissActionReceivedMethod:
-      NotificationsController.onDismissActionReceivedMethod,
+          NotificationsController.onDismissActionReceivedMethod,
     );
   }
 
@@ -146,47 +144,47 @@ class NotificationsController {
   /// Use this method to detect when a new notification or a schedule is created
   @pragma("vm:entry-point")
   static Future<void> onNotificationCreatedMethod(
-      ReceivedNotification receivedNotification,
-      ) async {
+    ReceivedNotification receivedNotification,
+  ) async {
     var message =
         'Notification created on ${receivedNotification.createdLifeCycle?.name}';
-    logger.d(message);
+    AppLogger.d(message);
   }
 
   /// Use this method to detect every time that a new notification is displayed
   @pragma("vm:entry-point")
   static Future<void> onNotificationDisplayedMethod(
-      ReceivedNotification receivedNotification,
-      ) async {
+    ReceivedNotification receivedNotification,
+  ) async {
     var message1 =
         'Notification displayed on ${receivedNotification.displayedLifeCycle?.name}';
     var message2 =
         'Notification displayed at ${receivedNotification.displayedDate}';
 
-    logger.d(message1);
-    logger.d(message2);
-    logger.d(receivedNotification.toMap());
+    AppLogger.d(message1);
+    AppLogger.d(message2);
+    AppLogger.d(receivedNotification.toMap());
   }
 
   /// Use this method to detect if the user dismissed a notification
   @pragma("vm:entry-point")
   static Future<void> onDismissActionReceivedMethod(
-      ReceivedAction receivedAction,
-      ) async {
+    ReceivedAction receivedAction,
+  ) async {
     var message =
         'Notification dismissed on ${receivedAction.dismissedLifeCycle?.name}';
-    logger.w(message);
+    AppLogger.w(message);
   }
 
   /// Use this method to detect when the user taps on a notification or action button
   @pragma("vm:entry-point")
   static Future<void> onActionReceivedMethod(
-      ReceivedAction receivedAction,
-      ) async {
+    ReceivedAction receivedAction,
+  ) async {
     if (receivePort != null) {
       await onActionReceivedMethodImpl(receivedAction);
     } else {
-      logger.d(
+      AppLogger.d(
         'onActionReceivedMethod was called inside a parallel dart isolate, where receivePort was never initialized.',
       );
       SendPort? sendPort = IsolateNameServer.lookupPortByName(
@@ -194,7 +192,7 @@ class NotificationsController {
       );
 
       if (sendPort != null) {
-        logger.d(
+        AppLogger.d(
           'Redirecting the execution to main isolate process in listening...',
         );
         dynamic serializedData = receivedAction.toMap();
@@ -204,11 +202,11 @@ class NotificationsController {
   }
 
   static Future<void> onActionReceivedMethodImpl(
-      ReceivedAction receivedAction,
-      ) async {
+    ReceivedAction receivedAction,
+  ) async {
     var message =
         'Action ${receivedAction.actionType?.name} received on ${receivedAction.actionLifeCycle?.name}';
-    logger.d(message);
+    AppLogger.d(message);
 
     // Always ensure that all plugins was initialized
     WidgetsFlutterBinding.ensureInitialized();
@@ -349,20 +347,20 @@ class NotificationsController {
         payload: payload,
       ),
       schedule:
-      NotificationCalendar
-      // .fromDate(
-      // date: date, allowWhileIdle: true, preciseAlarm: true));
-        (
-        year: date.year,
-        month: date.month,
-        day: date.day,
-        hour: date.hour,
-        minute: date.minute,
-        second: date.second,
-        allowWhileIdle: true,
-        preciseAlarm: true,
-        repeats: true,
-      ),
+          NotificationCalendar
+          // .fromDate(
+          // date: date, allowWhileIdle: true, preciseAlarm: true));
+          (
+            year: date.year,
+            month: date.month,
+            day: date.day,
+            hour: date.hour,
+            minute: date.minute,
+            second: date.second,
+            allowWhileIdle: true,
+            preciseAlarm: true,
+            repeats: true,
+          ),
       actionButtons: [
         // NotificationActionButton(
         //   key: AppStrings.navigateToStore,
@@ -378,9 +376,9 @@ class NotificationsController {
   }
 
   static void handleNotificationPayload(
-      BuildContext context,
-      Map<String, dynamic> payload,
-      ) {
+    BuildContext context,
+    Map<String, dynamic> payload,
+  ) {
     // final notificationCubit = context.read<NotificationsCubit>();
     //
     // final notificationModel = NotificationPayloadModel.fromJson(payload);
@@ -405,8 +403,8 @@ class NotificationsController {
 
   static Future<void> getAllScheduleNotifications() async {
     List<NotificationModel> allScheduleNotifications =
-    await AwesomeNotifications().listScheduledNotifications();
-    logger.e(allScheduleNotifications.length);
-    logger.e("Scheduled Notifications :$allScheduleNotifications");
+        await AwesomeNotifications().listScheduledNotifications();
+    AppLogger.e(allScheduleNotifications.length);
+    AppLogger.e("Scheduled Notifications :$allScheduleNotifications");
   }
 }

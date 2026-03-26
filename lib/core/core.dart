@@ -11,6 +11,7 @@ export 'cubit/token/token_cubit.dart';
 export 'dependencies/dependencies_injection.dart';
 // Enum Folder
 export 'enum/datasource_enum.dart';
+export 'logger/app_logger.dart';
 // Error Folder
 export 'errors/dio_exception.dart';
 export 'errors/dio_interceptor.dart';

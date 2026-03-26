@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../../../main.dart';
 // import '../../constant/firebase_topic.dart';
+import '../../logger/app_logger.dart';
 import 'awesome_notification.service.dart';
 
 class FcmHelper {
@@ -22,7 +22,7 @@ class FcmHelper {
       FirebaseMessaging.onMessage.listen(_fcmForegroundHandler);
       FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
     } catch (error) {
-      logger.e(error);
+      AppLogger.e(error);
     }
   }
 
@@ -50,9 +50,9 @@ class FcmHelper {
       } else if (Platform.isIOS) {
         token = await messaging.getAPNSToken();
       }
-      logger.w("FCM Token : $token");
+      AppLogger.w("FCM Token : $token");
     } catch (error) {
-      logger.e(error);
+      AppLogger.e(error);
     }
   }
 

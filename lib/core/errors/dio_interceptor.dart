@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../main.dart';
+import '../core.dart';
 
 class DioInterceptor extends Interceptor {
   @override
@@ -11,7 +11,7 @@ class DioInterceptor extends Interceptor {
 
     final dataLog = _formatData(options.data);
 
-    logger.i('''
+    AppLogger.i('''
 ==================== START REQUEST ====================
 HTTP Method => ${options.method}
 URL => ${options.baseUrl}${options.path}$query
@@ -28,7 +28,7 @@ Data => $dataLog
     final options = err.requestOptions;
     final dataLog = _formatData(options.data);
 
-    logger.e('''
+    AppLogger.e('''
 ==================== ERROR ====================
 Error => ${err.error}
 Message => ${err.message}
@@ -44,7 +44,7 @@ Data => $dataLog
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    logger.w('''
+    AppLogger.w('''
 ==================== RESPONSE ====================
 Status Code => ${response.statusCode}
 Body => ${response.data}

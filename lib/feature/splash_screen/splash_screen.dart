@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen>
 
 
     } catch (e) {
-      logger.e("Init error: $e");
+      AppLogger.e("Init error: $e");
     }
   }
 

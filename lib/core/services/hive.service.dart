@@ -26,7 +26,7 @@ class HiveServices {
         getIt.registerSingleton<Box<T>>(box);
       }
     } on Exception catch (e) {
-      logger.e('Error while opening box $boxName : $e');
+      AppLogger.e('Error while opening box $boxName : $e');
     }
   }
 }

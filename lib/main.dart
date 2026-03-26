@@ -1,6 +1,5 @@
 import 'global_imports.dart';
 
-var logger = Logger(printer: PrettyPrinter(colors: true, printEmojis: true));
 
 class MyHttpOverrides extends HttpOverrides {
   @override
