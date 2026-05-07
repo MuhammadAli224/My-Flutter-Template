@@ -46,14 +46,14 @@ class DefaultColors {
 enum BarPosition { top, bottom }
 
 void showBar(
-    BuildContext context, {
-      required String title,
-      required String message,
-      required BarContentType contentType,
-      Duration duration = const Duration(seconds: 3),
-      BarPosition position = BarPosition.top,
-      bool useSafeArea = true,
-    }) {
+  BuildContext context, {
+  required String title,
+  required String message,
+  required BarContentType contentType,
+  Duration duration = const Duration(seconds: 3),
+  BarPosition position = BarPosition.top,
+  bool useSafeArea = true,
+}) {
   final overlay = GlobalContext.navigatorKey.currentState?.overlay;
   if (overlay == null) return;
 
@@ -142,12 +142,10 @@ class _AnimatedOverlayBarState extends State<_AnimatedOverlayBar>
   @override
   Widget build(BuildContext context) {
     final padding = MediaQuery.of(context).padding;
-    final top =
-    widget.position == BarPosition.top
+    final top = widget.position == BarPosition.top
         ? (widget.useSafeArea ? padding.top + 20 : 20)
         : null;
-    final bottom =
-    widget.position == BarPosition.bottom
+    final bottom = widget.position == BarPosition.bottom
         ? (widget.useSafeArea ? padding.bottom + 20 : 20)
         : null;
     return Positioned(

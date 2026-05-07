@@ -3,24 +3,22 @@ import '../../global_imports.dart';
 final getIt = GetIt.instance;
 
 Future<void> initGetIt() async {
+  if (getIt.isRegistered<AppServices>()) {
+    return;
+  }
+
   //======================== Services ===============================================
-  getIt.registerSingleton<AppServices>(AppServices());
+  getIt.registerLazySingleton<AppServices>(AppServices.new);
 
-  //======================== Local Storage =====================================
-  final appBox = await Hive.openBox(BoxKey.appBox);
-  getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
-
-  AndroidOptions getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
-
-  getIt.registerSingleton<FlutterSecureStorage>(
-    FlutterSecureStorage(aOptions: getAndroidOptions()),
-  );
+  getIt.registerSingleton<FlutterSecureStorage>(const FlutterSecureStorage());
 
   //======================== Token ============================================
-  getIt.registerLazySingleton<TokenCubit>(
+  getIt.registerFactory<TokenCubit>(
     () => TokenCubit(getIt<FlutterSecureStorage>()),
   );
+
+  //======================== App Settings =====================================
+  getIt.registerLazySingleton<SettingsCubit>(SettingsCubit.new);
 
   //======================== Headers Provider ==================================
   getIt.registerLazySingleton<HeadersProvider>(
@@ -37,7 +35,9 @@ Future<void> initGetIt() async {
   dio.interceptors.add(HeaderInterceptor(headersProvider));
   dio.interceptors.add(DioInterceptor());
 
-  getIt.registerSingleton<ApiServices>(ApiServices(dio, headersProvider));
+  getIt.registerLazySingleton<ApiServices>(
+    () => ApiServices(dio, headersProvider),
+  );
   //======================== Network ==========================================
   getIt.registerLazySingleton<NetworkInfo>(
     () => NetworkInfoImpl(Connectivity()),
@@ -45,5 +45,4 @@ Future<void> initGetIt() async {
   getIt.registerLazySingleton(() => ConnectionCubit(getIt<NetworkInfo>()));
 
   //======================== Features =========================================
-  initAuthDI();
 }

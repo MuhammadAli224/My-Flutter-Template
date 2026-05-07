@@ -28,9 +28,9 @@ class HeaderInterceptor extends Interceptor {
 
   @override
   void onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     final headers = await headersProvider.getHeaders();
     headers.forEach((key, value) {
       options.headers.putIfAbsent(key, () => value);

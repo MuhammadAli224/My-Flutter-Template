@@ -22,14 +22,15 @@ class WidgetLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
-      highlightColor: color ?? Colors.black87.withOpacity(0.2),
+      highlightColor: color ?? Colors.black87.withValues(alpha: 0.2),
       child: Container(
         width: width,
         height: height ?? 9.0,
         padding: padding,
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(radius ?? 8.0)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(radius ?? 8.0),
+        ),
       ),
     );
   }

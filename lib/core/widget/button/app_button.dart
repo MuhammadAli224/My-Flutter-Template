@@ -55,7 +55,7 @@ class AppButton extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: fontColor ?? AppColor.white,
-          fontSize: fontSize??AppButtonTextFontSize.fromButtonHeights(height),
+          fontSize: fontSize ?? AppButtonTextFontSize.fromButtonHeights(height),
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -125,7 +125,7 @@ class AppButton extends StatelessWidget {
             style: TextStyle(
               color: fontColor ?? AppColor.white,
               fontSize:
-              fontSize ?? AppButtonTextFontSize.fromButtonHeights(height),
+                  fontSize ?? AppButtonTextFontSize.fromButtonHeights(height),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -225,21 +225,21 @@ class AppButton extends StatelessWidget {
         gradient: color == null ? AppGradient.green : null,
         border: border,
         borderRadius:
-        borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
+            borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
       ),
       child: InkWell(
         borderRadius:
-        borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
+            borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
 
         onTap: onPressed,
         child: Container(
           decoration: BoxDecoration(
             borderRadius:
-            borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
+                borderRadius ?? BorderRadius.circular(AppBorderRadius.xl50),
           ),
           child: Padding(
             padding:
-            contentPadding ?? AppButtonPadding.fromButtonHeights(height),
+                contentPadding ?? AppButtonPadding.fromButtonHeights(height),
             child: builder(context, true, true),
           ),
         ),

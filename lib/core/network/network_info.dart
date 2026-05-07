@@ -18,7 +18,7 @@ class NetworkInfoImpl implements NetworkInfo {
   Stream<bool> get onConnectionChange async* {
     yield await isConnected;
     yield* connectivity.onConnectivityChanged.asyncMap(
-          (_) async => await _hasInternet(),
+      (_) async => await _hasInternet(),
     );
   }
 

@@ -17,8 +17,6 @@ mixin SyncHiveMixin<T> {
     final toRemove = existingIds.difference(newIds);
     await box.deleteAll(toRemove);
 
-    await box.putAll({
-      for (var item in newItems) getId(item): item,
-    });
+    await box.putAll({for (var item in newItems) getId(item): item});
   }
 }

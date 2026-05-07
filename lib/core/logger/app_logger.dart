@@ -42,24 +42,26 @@ class AppLogger {
   // ─── Web print helper ─────────────────────────────────────────────────────
 
   static void _webPrint(
-      String label,
-      dynamic message, {
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    String label,
+    dynamic message, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     // ignore: avoid_print
-    print('[$label] $message${error != null ? ' | ERROR: $error' : ''}${stackTrace != null ? '\n$stackTrace' : ''}');
+    print(
+      '[$label] $message${error != null ? ' | ERROR: $error' : ''}${stackTrace != null ? '\n$stackTrace' : ''}',
+    );
   }
 
   // ─── Static Logging Methods ───────────────────────────────────────────────
 
   /// Log a **trace** message (most verbose – useful for step-by-step tracing).
   static void t(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('TRACE', message, error: error, stackTrace: stackTrace);
     } else {
@@ -69,11 +71,11 @@ class AppLogger {
 
   /// Log a **debug** message (general development information).
   static void d(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('DEBUG', message, error: error, stackTrace: stackTrace);
     } else {
@@ -83,11 +85,11 @@ class AppLogger {
 
   /// Log an **info** message (notable but expected events).
   static void i(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('INFO', message, error: error, stackTrace: stackTrace);
     } else {
@@ -97,11 +99,11 @@ class AppLogger {
 
   /// Log a **warning** message (unexpected but non-critical situations).
   static void w(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('WARNING', message, error: error, stackTrace: stackTrace);
     } else {
@@ -111,11 +113,11 @@ class AppLogger {
 
   /// Log an **error** message (failures that affect functionality).
   static void e(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('ERROR', message, error: error, stackTrace: stackTrace);
     } else {
@@ -125,11 +127,11 @@ class AppLogger {
 
   /// Log a **fatal** message (critical failures / crashes).
   static void f(
-      dynamic message, {
-        DateTime? time,
-        Object? error,
-        StackTrace? stackTrace,
-      }) {
+    dynamic message, {
+    DateTime? time,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
     if (kIsWeb) {
       _webPrint('FATAL', message, error: error, stackTrace: stackTrace);
     } else {

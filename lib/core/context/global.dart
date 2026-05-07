@@ -6,5 +6,4 @@ class GlobalContext {
 
   static BuildContext get context => navigatorKey.currentContext!;
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
 }

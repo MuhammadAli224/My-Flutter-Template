@@ -11,8 +11,12 @@ class ErrorScreen extends StatelessWidget {
   final String? buttonName;
   final void Function()? onTap;
 
-  const ErrorScreen(
-      {super.key, required this.errorMessage, this.buttonName, this.onTap});
+  const ErrorScreen({
+    super.key,
+    required this.errorMessage,
+    this.buttonName,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,7 @@ class ErrorScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.warning_rounded,
-                color: Colors.red, size: 100.sp),
+            Icon(Icons.warning_rounded, color: Colors.red, size: 100.sp),
             10.gap,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

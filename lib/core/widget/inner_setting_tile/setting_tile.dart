@@ -12,16 +12,17 @@ class SettingTile extends StatelessWidget {
   final TextStyle? titleTextStyle;
   final Widget? trailingWidget;
 
-  const SettingTile(
-      {super.key,
-      required this.title,
-      this.subtitle,
-      this.leading,
-      this.trailing,
-      this.onTap,
-      this.titleTextStyle,
-      this.trailingWidget,
-      this.leadingColor});
+  const SettingTile({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
+    this.onTap,
+    this.titleTextStyle,
+    this.trailingWidget,
+    this.leadingColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,15 +30,13 @@ class SettingTile extends StatelessWidget {
       children: [
         ListTile(
           onTap: onTap,
-          trailing: trailingWidget ??
+          trailing:
+              trailingWidget ??
               Icon(trailing ?? Icons.arrow_forward_ios_outlined, size: 15.h),
           title: AutoSizeText(title, style: titleTextStyle),
           subtitle: subtitle != null ? AutoSizeText(subtitle!) : null,
           leading: leading != null
-              ? Icon(
-                  size: 23.h,
-                   leading!,
-                  color: leadingColor ?? Colors.black)
+              ? Icon(size: 23.h, leading!, color: leadingColor ?? Colors.black)
               : null,
         ),
         const Divider(height: 0),

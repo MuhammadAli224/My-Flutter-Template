@@ -43,7 +43,6 @@ class FcmHelper {
 
   static Future<void> _generateFcmToken() async {
     try {
-
       String? token;
       if (Platform.isAndroid) {
         token = await messaging.getToken();
@@ -72,10 +71,11 @@ class FcmHelper {
   static void _handleNotification(RemoteMessage message) {
     if (message.notification != null) {
       NotificationsController.createNewNotification(
-          title: message.notification!.title!,
-          body: message.notification!.body!,
-          bigPicture: '',
-          payload: message.data.cast<String, String>());
+        title: message.notification!.title!,
+        body: message.notification!.body!,
+        bigPicture: '',
+        payload: message.data.cast<String, String>(),
+      );
     }
   }
 }

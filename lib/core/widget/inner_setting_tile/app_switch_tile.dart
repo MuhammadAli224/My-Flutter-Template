@@ -11,13 +11,14 @@ class AppSwitchTile extends StatelessWidget {
   final void Function()? onTap;
   final void Function(bool)? onChanged;
 
-  const AppSwitchTile(
-      {super.key,
-      required this.title,
-      // required this.subTitle,
-      required this.isActive,
-      this.onTap,
-      this.onChanged});
+  const AppSwitchTile({
+    super.key,
+    required this.title,
+    // required this.subTitle,
+    required this.isActive,
+    this.onTap,
+    this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,16 @@ class AppSwitchTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-            child: AutoSizeText(title,
-                minFontSize: 8, maxFontSize: 16, style: AppTextStyle.style16)),
+          child: AutoSizeText(
+            title,
+            minFontSize: 8,
+            maxFontSize: 16,
+            style: AppTextStyle.style16,
+          ),
+        ),
         onChanged == null
             ? const SizedBox.shrink()
-            : Switch(
-                value: isActive,
-                onChanged: onChanged,
-              ),
+            : Switch(value: isActive, onChanged: onChanged),
       ],
     );
   }

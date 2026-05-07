@@ -88,7 +88,9 @@ class _AppMultiSelectDropDownState<T> extends State<AppMultiSelectDropDown<T>> {
                             ..remove(value);
                           widget.onChanged(updated);
                         },
-                        backgroundColor: AppColor.primaryColor.withValues(alpha: 0.1),
+                        backgroundColor: AppColor.primaryColor.withValues(
+                          alpha: 0.1,
+                        ),
                         side: const BorderSide(color: AppColor.primaryColor),
                       );
                     }).toList(),

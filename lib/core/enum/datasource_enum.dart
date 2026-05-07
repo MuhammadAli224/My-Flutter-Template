@@ -1,5 +1,1 @@
-enum DataSource {
-  local,
-  remote,
-  unknown,
-}
+enum DataSource { local, remote, unknown }

@@ -211,10 +211,10 @@ class NotificationsController {
     // Always ensure that all plugins was initialized
     WidgetsFlutterBinding.ensureInitialized();
 
-    // if (receivedAction.buttonKeyPressed == AppStrings.call) {
+    // if (receivedAction.buttonKeyPressed == LocaleKeys.call) {
     //   // launchCall(receivedAction.payload!['phone']!);
     // }
-    // if (receivedAction.buttonKeyPressed == AppStrings.navigateToStore) {
+    // if (receivedAction.buttonKeyPressed == LocaleKeys.navigateToStore) {
     //   launchMap(
     //       latitude: double.parse(receivedAction.payload!['lat']!),
     //       longitude: double.parse(receivedAction.payload!['lon']!));
@@ -363,12 +363,12 @@ class NotificationsController {
           ),
       actionButtons: [
         // NotificationActionButton(
-        //   key: AppStrings.navigateToStore,
-        //   label: AppStrings.navigateToStore,
+        //   key: LocaleKeys.navigateToStore,
+        //   label: LocaleKeys.navigateToStore,
         // ),
         // NotificationActionButton(
-        //   key: AppStrings.call,
-        //   label: AppStrings.call,
+        //   key: LocaleKeys.call,
+        //   label: LocaleKeys.call,
         //   color: Colors.green,
         // ),
       ],

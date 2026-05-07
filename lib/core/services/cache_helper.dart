@@ -58,7 +58,7 @@ class CacheHelper {
             ),
           );
         }
-        return left(ServerFailure(message: AppStrings.socketException));
+        return left(ServerFailure(message: LocaleKeys.socketException));
       }
 
       final apiResponse = await fetchRemote();
@@ -106,7 +106,7 @@ class CacheHelper {
             ),
           );
         }
-        return left(ServerFailure(message: AppStrings.socketException));
+        return left(ServerFailure(message: LocaleKeys.socketException));
       }
 
       final apiResponse = await fetchRemote();

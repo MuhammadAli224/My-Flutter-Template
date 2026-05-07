@@ -1,23 +1,23 @@
-
 import '../../global_imports.dart';
 
 class HiveServices {
   Future<void> init() async {
     await Hive.initFlutter();
-    // Hive.registerAdapters();
+    // Hive.registerAdapter;
 
     await Future.wait([
       _initAppBox(),
-      _initializeBoxModel<AuthUserModel>(boxName: BoxKey.authUserBox),
     ]);
   }
 
 
+
   Future<void> _initAppBox() async {
-    await Hive.openBox(BoxKey.appBox);
+    final appBox = await Hive.openBox(BoxKey.appBox);
+    if (!getIt.isRegistered<Box>(instanceName: BoxKey.appBox)) {
+      getIt.registerSingleton<Box>(appBox, instanceName: BoxKey.appBox);
+    }
   }
-
-
 
   Future<void> _initializeBoxModel<T>({required String boxName}) async {
     try {

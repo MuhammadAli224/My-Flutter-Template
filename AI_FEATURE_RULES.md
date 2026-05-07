@@ -1,251 +1,109 @@
-# Antigravity Feature Creation Rules (Generic)
+# Additional Strict Rules (MUST FOLLOW)
 
-This document defines how AI agents must create new features in the project.
-
-The project follows **Feature-First Clean Architecture**.
-
-When a new feature is requested, AI must:
-
-1. Generate the feature structure
-2. Integrate it with routing
-3. Export it in global imports
-4. Register dependency injection
+These rules are mandatory for all AI-generated code.
 
 ---
 
-# Feature Folder Structure
+## UI Rules
 
-Every feature must be created inside:
-
-```
-lib/features/{feature_name}/
-```
-
-Structure:
-
-```
-feature_name/
-├── data/
-│   ├── datasource/
-│   │   ├── local_{feature}_data_source.dart
-│   │   └── {feature}_remote_data_source.dart
-│   ├── endpoint/
-│   │   └── {feature}_endpoint.dart
-│   ├── model/
-│   │   └── {feature}_dto.dart
-│   └── repository/
-│       └── {feature}_repository_impl.dart
-│
-├── domain/
-│   ├── entities/
-│   │   └── {feature}_entity.dart
-│   ├── repository/
-│   │   └── {feature}_repository.dart
-│   └── usecases/
-│       └── get_{feature}_use_case.dart
-│
-├── presentation/
-│   ├── cubit/
-│   │   ├── {feature}_cubit.dart
-│   │   └── {feature}_state.dart
-│   ├── pages/
-│   │   └── {feature}_page.dart
-│   ├── widget/
-│   └── shared/
-│
-├── di/
-│   └── {feature}_di.dart
-│
-└── {feature}_barrel.dart
-```
-
----
-
-# Barrel File
-
-Each feature must contain a barrel file:
-
-```
-{feature}_barrel.dart
-```
-
-Example content:
-
-```
-export 'presentation/pages/{feature}_page.dart';
-export 'presentation/cubit/{feature}_cubit.dart';
-export 'domain/entities/{feature}_entity.dart';
-```
-
----
-
-# Update Global Imports
-
-After creating the feature, AI must update:
-
-```
-global_imports.dart
-```
-
-Add:
-
-```
-export 'features/{feature}/{feature}_barrel.dart';
-```
-
----
-
-# Register Route Constant
-
-AI must update:
-
-```
-core/constants/routes.dart
-```
-
-Add route:
-
-```
-static const {feature} = "/{feature}";
-```
+- NEVER create large widgets inside one file
+- Each reusable widget MUST be in a separate file
+- Widgets must be small, reusable, and clean
 
 Example:
-
-```
-static const products = "/products";
-```
+❌ Wrong: Page + all widgets in same file  
+✅ Correct: Each widget in its own file
 
 ---
 
-# Register GoRouter Page
+## Spacing Rules
 
-AI must update:
-
-```
-core/router/routes.dart
-```
-
-Add a new `GoRoute` inside the router list:
-
-```
-GoRoute(
-  path: AppRoutes.{feature},
-  builder: (context, state) => const {Feature}Page(),
-),
-```
-
----
-
-# Register Dependency Injection
-
-AI must update:
-
-```
-core/dependencies/dependencies_injection.dart
-```
-
-Add:
-
-```
-init{Feature}DI();
-```
+- ALWAYS use gap extension for spacing
+- DO NOT use SizedBox directly for spacing
 
 Example:
-
-```
-initProductsDI();
-```
+❌ SizedBox(height: 10)
+✅ 10.gap
 
 ---
 
-# Dependency Injection File
+## Text & Localization
 
-Feature DI must register:
+- NEVER hardcode text in UI
+- ALWAYS use localization
 
-* remote datasource
-* local datasource (optional)
-* repository
-* use case
-* cubit
-
-Example pattern:
-
-```
-void init{Feature}DI() {
-
-  getIt.registerLazySingleton<{Feature}RemoteDataSource>(
-    () => {Feature}RemoteDataSourceImpl(getIt()),
-  );
-
-  getIt.registerLazySingleton<{Feature}Repository>(
-    () => {Feature}RepositoryImpl(
-      remote: getIt(),
-      networkInfo: getIt(),
-    ),
-  );
-
-  getIt.registerLazySingleton<Get{Feature}UseCase>(
-    () => Get{Feature}UseCase(getIt()),
-  );
-
-  getIt.registerFactory(() => {Feature}Cubit(getIt()));
-}
-```
+Example:
+❌ Text("Hello")
+✅ Text(LocaleKeys.hello.tr())
 
 ---
 
-# DTO Rules
+## Models Rules
 
-DTO must:
-
-* use Freezed
-* support JSON serialization
-* support Hive caching if needed
-* include AutoMappr mappings
+- ALL models must use Freezed
+- NEVER use Map<String, dynamic> directly in UI or state
 
 ---
 
-# Entity Rules
+## DTO & Local Cache Rules
 
-Entities must:
+- DTOs MUST support Hive for caching
 
-* use Freezed
-* contain only domain data
-* not include JSON or Hive annotations
+Required:
+- @HiveType
+- @HiveField
 
----
+- Local caching must be handled via:
+  core/services/hive.service.dart
 
-# Repository Rules
-
-Repositories must:
-
-* extend `BaseRepository`
-* return `Either<Failure, ApiResponse<Entity>>`
-* use `CacheHelper.fetchWithCache()` when caching is required
+- DO NOT open Hive boxes randomly
+- ALWAYS use centralized Hive service
 
 ---
 
-# Cubit Rules
+## Architecture Rules
 
-Cubits must:
-
-* use `CubitLifecycleMixin`
-* support cancellation tokens
-* emit `initial`, `loading`, `loaded`, `error` states
+- UI → Cubit → UseCase → Repository ONLY
+- NEVER skip layers
+- NEVER call repository directly from UI
+- NEVER call API inside Cubit
 
 ---
 
-# Feature Integration Checklist
+## Widget Design Rules
 
-Whenever a feature is generated AI must verify:
+- Follow existing design system (AppColor, AppTextStyle)
+- Reuse shared widgets from core/
+- DO NOT duplicate UI components
 
-✓ Feature folder created
-✓ Barrel file created
-✓ global_imports updated
-✓ route constant added
-✓ router page added
-✓ DI registered
-✓ Cubit implemented
-✓ UseCase implemented
+---
 
-If any step is missing, the feature is considered incomplete.
+## Performance Rules
+
+- Avoid unnecessary rebuilds
+- Use const constructors where possible
+- Split widgets for better performance
+
+---
+
+## Code Cleanliness
+
+- Remove unused imports
+- Keep functions small
+- Use meaningful names
+- Follow existing naming conventions
+
+---
+
+## Feature Consistency
+
+- Follow EXACT same structure as existing features
+- DO NOT invent new architecture patterns
+- ALWAYS match project style
+
+---
+
+## Important
+
+If any rule conflicts:
+→ Follow project rules over general Flutter practices

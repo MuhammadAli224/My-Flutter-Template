@@ -26,8 +26,6 @@ class TokenCubit extends Cubit<TokenState> {
     emit(TokenState.loaded(token));
   }
 
-
-
   String? get currentToken =>
       state.maybeWhen(loaded: (token) => token, orElse: () => null);
 

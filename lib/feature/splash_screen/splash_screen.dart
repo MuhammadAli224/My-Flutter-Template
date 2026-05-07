@@ -11,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  final String appName = "Ibn Rushd Academy";
   int currentIndex = 0;
   Timer? _timer;
 
@@ -35,22 +34,21 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _startLetterAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 90), (timer) async {
+      final appName = LocaleKeys.appName.tr();
+
       if (currentIndex < appName.length) {
         setState(() {
           currentIndex++;
         });
-      } else {
-        _timer?.cancel();
-        _fadeController.forward();
-        await _initializeApp();
-        // Future.delayed(const Duration(seconds: 2), () async {
-        // final token = await getIt<AuthLocalDataSource>().getToken();
-        // if (token != null) {
-          context.go(AppRoutes.home);
-        // } else {
-        //   // context.go(AppRoutes.mainScreen);
-        // }
-        // });
+        return;
+      }
+
+      _timer?.cancel();
+      _fadeController.forward();
+      await Future<void>.delayed(Duration.zero);
+
+      if (mounted) {
+        context.go(AppRoutes.home);
       }
     });
   }
@@ -59,67 +57,41 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _timer?.cancel();
     _fadeController.dispose();
-
     super.dispose();
-  }
-
-  Future<void> _initializeApp() async {
-    try {
-
-
-      await getIt<AppServices>().initAppServices();
-
-
-    } catch (e) {
-      AppLogger.e("Init error: $e");
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String firstWord = 'Ibn Rushd';
-    String visibleText = appName.substring(0, currentIndex);
-    String firstVisible = '';
-    String secondVisible = '';
+    final appName = LocaleKeys.appName.tr();
+    final splitIndex = appName.length >= 9 ? 9 : appName.length;
+    final visibleText = appName.substring(0, currentIndex);
+    final firstVisible = visibleText.substring(
+      0,
+      currentIndex > splitIndex ? splitIndex : currentIndex,
+    );
+    final secondVisible = currentIndex > splitIndex
+        ? visibleText.substring(splitIndex)
+        : '';
 
-    if (currentIndex <= firstWord.length) {
-      firstVisible = visibleText;
-    } else {
-      firstVisible = visibleText.substring(0, firstWord.length);
-      secondVisible = visibleText.substring(firstWord.length);
-    }
-
-    if (currentIndex <= firstWord.length) {
-      firstVisible = visibleText;
-    } else {
-      firstVisible = visibleText.substring(0, firstWord.length);
-      secondVisible = visibleText.substring(firstWord.length);
-    }
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                style: const TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
+                style: AppTextStyle.style28B.copyWith(letterSpacing: 0),
                 children: [
                   TextSpan(
                     text: firstVisible,
                     style: const TextStyle(
-                      color: Color(0xFF002754),
+                      color: AppColor.primaryColor,
                       shadows: [
                         Shadow(
                           blurRadius: 5,
-                          color: Color(0xFF02438E),
+                          color: AppColor.primaryColor200,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -128,11 +100,11 @@ class _SplashScreenState extends State<SplashScreen>
                   TextSpan(
                     text: secondVisible,
                     style: const TextStyle(
-                      color: Color(0xFF00A665),
+                      color: AppColor.secondaryColor,
                       shadows: [
                         Shadow(
                           blurRadius: 5,
-                          color: Color(0xFF04B670),
+                          color: AppColor.secondaryColor100,
                           offset: Offset(0, 0),
                         ),
                       ],
@@ -144,13 +116,10 @@ class _SplashScreenState extends State<SplashScreen>
             10.gap,
             FadeTransition(
               opacity: _fadeAnimation,
-              child: const Text(
-                "المركز الافضل في قطر لخدمتك",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                  // fontStyle: FontStyle.italic,
-                ),
+              child: Text(
+                LocaleKeys.appTagline.tr(),
+                style: AppTextStyle.style16.copyWith(color: AppColor.textMuted),
+                textAlign: TextAlign.center,
               ),
             ),
           ],

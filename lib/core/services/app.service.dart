@@ -6,14 +6,10 @@ import 'notification/fcm.service.dart';
 
 class AppServices {
   Future<void> initAppServices() async {
-
-
     // await Firebase.initializeApp(
     //   options: DefaultFirebaseOptions.currentPlatform,
     // );
-    HttpOverrides.global = MyHttpOverrides();
-    Bloc.observer = AppBlocObserver();
-    Future.wait([
+    await Future.wait([
       ScreenUtil.ensureScreenSize(),
       SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
@@ -21,8 +17,8 @@ class AppServices {
       ]),
     ]);
 
-    await FcmHelper.initFcm();
-    await NotificationsController.initializeLocalNotifications();
+    // await FcmHelper.initFcm();
+    // await NotificationsController.initializeLocalNotifications();
     // await NotificationsController.initializeIsolateReceivePort();
     // NotificationsController.startListeningNotificationEvents();
   }

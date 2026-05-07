@@ -1,4 +1,6 @@
  {
+  "appName": "Ibn Rushd Academy",
+  "appTagline": "The best center in Qatar to serve you",
   "now": "Now",
   "badRequest": "Invalid connection request",
   "unauthorized": "Unauthorized",
@@ -27,6 +29,7 @@
   "year": "Year",
   "login": "Login",
   "email": "Email",
+  "password": "Password",
 
   "emptyMobileHint": "Enter your phone number",
   "notValidMobileHint": "Invalid phone number",
@@ -49,7 +52,7 @@
   "settings": "Settings",
 
   "noDataFound": "No Data Found!",
-  "Error": "Error",
+  "error": "Error",
   "modelNotFound": "The {} was not found",
   "user": "user",
   "users": "users",
@@ -110,6 +113,7 @@
   "enterEmailHint": "Please enter your email to continue.",
   "enterPasswordHint": "Please enter the password",
   "dontHaveAccount": "don't have an account ,",
+  "emptyUserNameHint": "Please enter your username",
   "userNameHint": "Please enter your username",
   "loginFailed": "login failed, please try again.",
   "userExists": "User already exists",

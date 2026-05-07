@@ -1,7 +1,1 @@
-enum CrudTypeEnum {
-  create,
-  read,
-  update,
-  delete,
-  none,
-}
+enum CrudTypeEnum { create, read, update, delete, none }

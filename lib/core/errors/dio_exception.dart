@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hive_ce/hive.dart';
 
-import '../constant/app_strings.dart';
+import '../../generated/app_strings.g.dart';
 import 'failure.dart';
 
 class ServerFailure extends Failure {
@@ -10,13 +10,13 @@ class ServerFailure extends Failure {
   factory ServerFailure.fromDioError(DioException dioException) {
     switch (dioException.type) {
       case DioExceptionType.cancel:
-        return ServerFailure(message: AppStrings.cancelRequest);
+        return ServerFailure(message: LocaleKeys.cancelRequest);
 
       case DioExceptionType.connectionTimeout:
-        return ServerFailure(message: AppStrings.connectionTimeOut);
+        return ServerFailure(message: LocaleKeys.connectionTimeOut);
 
       case DioExceptionType.receiveTimeout:
-        return ServerFailure(message: AppStrings.receiveTimeOut);
+        return ServerFailure(message: LocaleKeys.receiveTimeOut);
 
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
@@ -25,13 +25,13 @@ class ServerFailure extends Failure {
         );
 
       case DioExceptionType.sendTimeout:
-        return ServerFailure(message: AppStrings.sendTimeOut);
+        return ServerFailure(message: LocaleKeys.sendTimeOut);
 
       case DioExceptionType.connectionError:
-        return ServerFailure(message: AppStrings.socketException);
+        return ServerFailure(message: LocaleKeys.socketException);
 
       default:
-        return ServerFailure(message: AppStrings.unknownError);
+        return ServerFailure(message: LocaleKeys.unknownError);
     }
   }
 
@@ -42,21 +42,21 @@ class ServerFailure extends Failure {
   factory ServerFailure.fromResponse(int? statusCode, dynamic error) {
     switch (statusCode) {
       case 400:
-        return ServerFailure(message: AppStrings.badRequest);
+        return ServerFailure(message: LocaleKeys.badRequest);
       case 401:
-        return ServerFailure(message: AppStrings.unauthorized);
+        return ServerFailure(message: LocaleKeys.unauthorized);
       case 403:
-        return ServerFailure(message: AppStrings.forbidden);
+        return ServerFailure(message: LocaleKeys.forbidden);
       case 404:
-        return ServerFailure(message: AppStrings.notFoundServer);
+        return ServerFailure(message: LocaleKeys.notFoundServer);
       case 422:
-        return ServerFailure(message: AppStrings.duplicateEmail);
+        return ServerFailure(message: LocaleKeys.duplicateEmail);
       case 500:
-        return ServerFailure(message: AppStrings.internalServerError);
+        return ServerFailure(message: LocaleKeys.internalServerError);
       case 502:
-        return ServerFailure(message: AppStrings.badGateway);
+        return ServerFailure(message: LocaleKeys.badGateway);
       default:
-        return ServerFailure(message: AppStrings.unknownError);
+        return ServerFailure(message: LocaleKeys.unknownError);
     }
   }
 

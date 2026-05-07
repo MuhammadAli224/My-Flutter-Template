@@ -1,4 +1,3 @@
-
 import '../../global_imports.dart';
 
 part 'connection_cubit.freezed.dart';
@@ -36,8 +35,8 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   void _showConnectedBar() {
     showBar(
       GlobalContext.navigatorKey.currentContext!,
-      title: AppStrings.connected.tr(),
-      message: AppStrings.internetConnectionRestored.tr(),
+      title: LocaleKeys.connected.tr(),
+      message: LocaleKeys.internetConnectionRestored.tr(),
       contentType: BarContentType.success,
       position: BarPosition.top,
     );
@@ -46,8 +45,8 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   void _showDisconnectedBar() {
     showBar(
       GlobalContext.navigatorKey.currentContext!,
-      title: AppStrings.noInternet.tr(),
-      message: AppStrings.youAreOffline.tr(),
+      title: LocaleKeys.noInternet.tr(),
+      message: LocaleKeys.youAreOffline.tr(),
       contentType: BarContentType.failure,
       position: BarPosition.top,
     );

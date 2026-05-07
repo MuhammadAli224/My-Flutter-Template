@@ -26,12 +26,12 @@ class ApiServices {
 
   /// POST
   Future<Map<String, dynamic>> postData(
-      String url,
-      Map<String, dynamic> data, {
-        CancelToken? cancelToken,
-        Map<String, String>? headers,
-        bool isFormData = false,
-      }) async {
+    String url,
+    Map<String, dynamic> data, {
+    CancelToken? cancelToken,
+    Map<String, String>? headers,
+    bool isFormData = false,
+  }) async {
     final response = await _dio.post(
       url,
       data: isFormData ? FormData.fromMap({...data}) : data,
@@ -43,20 +43,20 @@ class ApiServices {
 
   /// PUT
   Future<Map<String, dynamic>> putData(
-      String url,
-      Map<String, dynamic> data, {
-        CancelToken? cancelToken,
-      }) async {
+    String url,
+    Map<String, dynamic> data, {
+    CancelToken? cancelToken,
+  }) async {
     final response = await _dio.put(url, data: data, cancelToken: cancelToken);
     return _parseResponse(response);
   }
 
   /// GET
   Future<Map<String, dynamic>> getData(
-      String url, {
-        Map<String, dynamic>? queryParameters,
-        CancelToken? cancelToken,
-      }) async {
+    String url, {
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+  }) async {
     final response = await _dio.get(
       url,
       queryParameters: queryParameters,
@@ -67,11 +67,11 @@ class ApiServices {
 
   /// POST with File upload
   Future<Map<String, dynamic>> postWithImage(
-      String url,
-      Map<String, dynamic> data,
-      File image, {
-        CancelToken? cancelToken,
-      }) async {
+    String url,
+    Map<String, dynamic> data,
+    File image, {
+    CancelToken? cancelToken,
+  }) async {
     final fileName = image.path.split('/').last;
 
     final formData = FormData.fromMap({

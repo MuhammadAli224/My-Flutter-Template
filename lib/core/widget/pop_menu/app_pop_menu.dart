@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../model/pop_menu_model/pop_menu_model.dart';
 
-
 class AppPopMenu extends StatelessWidget {
   final List<AppPopMenuItemModel> items;
   final Widget? child;
   final void Function(int)? onSelected;
   final Offset? offset;
 
-  const AppPopMenu(
-      {super.key,
-      required this.items,
-      this.child,
-      this.onSelected,
-      this.offset});
+  const AppPopMenu({
+    super.key,
+    required this.items,
+    this.child,
+    this.onSelected,
+    this.offset,
+  });
 
   @override
   Widget build(BuildContext context) {

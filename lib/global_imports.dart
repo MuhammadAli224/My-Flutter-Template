@@ -15,11 +15,12 @@ export 'package:get_it/get_it.dart';
 export 'package:go_router/go_router.dart';
 export 'package:hive_ce/hive.dart';
 export 'package:hive_ce_flutter/adapters.dart';
+export 'package:hydrated_bloc/hydrated_bloc.dart';
 export 'package:logger/logger.dart';
 export 'package:onesignal_flutter/onesignal_flutter.dart';
 
 export 'core/core.dart';
 ////////////// Features
 
-export 'feature/auth/auth_barrel.dart';
-export 'main.dart';
+export 'feature/settings/settings_barrel.dart';
+export 'generated/app_strings.g.dart';

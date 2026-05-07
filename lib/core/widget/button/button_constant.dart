@@ -4,34 +4,19 @@ import '../../../../core/utils/font_size.dart';
 
 class AppButtonPadding {
   /// Small (SM) button content padding.
-  static const sm = EdgeInsets.symmetric(
-    vertical: 8.0,
-    horizontal: 14.0,
-  );
+  static const sm = EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0);
 
   /// Medium (MD) button content padding.
-  static const md = EdgeInsets.symmetric(
-    vertical: 10.0,
-    horizontal: 16.0,
-  );
+  static const md = EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0);
 
   /// Large (LG) button content padding.
-  static const lg = EdgeInsets.symmetric(
-    vertical: 10.0,
-    horizontal: 18.0,
-  );
+  static const lg = EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0);
 
   /// Extra Large (XL) button content padding.
-  static const xl = EdgeInsets.symmetric(
-    vertical: 12.0,
-    horizontal: 20.0,
-  );
+  static const xl = EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0);
 
   /// Extra Large 2 (2XL) button content padding.
-  static const xl2 = EdgeInsets.symmetric(
-    vertical: 16.0,
-    horizontal: 28.0,
-  );
+  static const xl2 = EdgeInsets.symmetric(vertical: 16.0, horizontal: 28.0);
 
   static EdgeInsetsGeometry fromButtonHeights(double buttonHeights) {
     if (buttonHeights <= AppButtonHeights.sm) {

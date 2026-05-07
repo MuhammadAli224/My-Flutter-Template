@@ -22,10 +22,10 @@ class ApiResponse<T> {
   });
 
   factory ApiResponse.fromJson(
-      Map<String, dynamic> json,
-      T Function(dynamic) fromJsonT, {
-        String? path,
-      }) {
+    Map<String, dynamic> json,
+    T Function(dynamic) fromJsonT, {
+    String? path,
+  }) {
     dynamic rawData = json['data'];
     if (path != null) {
       rawData = rawData[path];
@@ -34,12 +34,11 @@ class ApiResponse<T> {
     final paginationJson = json['pagination'];
     return ApiResponse<T>(
       hasError: json['hasError'] ?? false,
-      description: json['description'] ?? AppStrings.unknownError.tr(),
+      description: json['description'] ?? LocaleKeys.unknownError.tr(),
       code: json['code'] ?? 200,
       error: json['error'] is String ? json['error'] : null,
       token: json['token'] is String ? json['token'] : null,
-      pagination:
-      paginationJson is Map<String, dynamic>
+      pagination: paginationJson is Map<String, dynamic>
           ? ServerPagination.fromJson(paginationJson)
           : null,
       data: rawData is Map<String, dynamic> ? fromJsonT(rawData) : null,

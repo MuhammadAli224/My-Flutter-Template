@@ -5,7 +5,7 @@ import '../../../../global_imports.dart';
 void init{{name.pascalCase()}}DI() {
   getIt.registerLazySingleton < {{name.pascalCase()}}RemoteDataSource > (() =>
   {{name.pascalCase()}}RemoteDataSourceImpl(
-      getIt(),getIt()));
+      getIt()));
 
   getIt.registerLazySingleton < {{name.pascalCase()}}LocalDataSource > (() =>
   {{name.pascalCase()}}LocalDataSourceImpl(
