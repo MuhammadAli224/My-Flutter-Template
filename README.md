@@ -1,252 +1,482 @@
-# 🚀 Flutter MVVM Clean Architecture Template
+# Flutter App
 
-A production-ready Flutter project template built using **Clean Architecture**, **Cubit**, **Hive CE**, **Dio**, **Freezed**, and **Mason Bricks** for feature generation. This template provides a scalable and modular approach for developing Flutter apps efficiently.
+A Flutter application scaffold built around feature-first clean architecture, Cubit state management, centralized app bootstrapping, generated localization keys, GetIt dependency injection, Hive CE local storage, HydratedBloc app settings, Dio networking, Freezed models, and AutoMappr mapping.
+
+The project is structured so app startup, shared infrastructure, feature logic, UI, storage, routing, and generated code each have a clear owner.
 
 ---
 
-## 📁 Project Structure
+## Architecture Overview
 
+The app follows a feature-first clean architecture.
+
+```txt
+UI
+  -> Cubit
+  -> UseCase
+  -> Repository interface
+  -> Repository implementation
+  -> Datasource
+  -> API / Cache
 ```
+
+Core rules:
+
+- UI does not call APIs, datasources, or repositories directly.
+- Cubits call use cases, except small app-level cubits such as settings.
+- Repository implementations coordinate remote data, local cache, network checks, and DTO to entity mapping.
+- DTOs stay in the data layer.
+- Entities are the safe models for domain, state, and UI.
+- Shared infrastructure lives in `lib/core/`.
+- Feature code lives in `lib/feature/`.
+
+---
+
+## Current Project Structure
+
+```txt
 lib/
-├── core/                   # Shared utilities, errors, themes, services
-├── features/               # All app features live here
-│   └── new_feature/
-│       ├── data/
-│       │   ├── datasource/
-│       │   │   └── new_feature/
-│       │   │       ├── local_new_feature_data_source.dart
-│       │   │       └── remote_new_feature_data_source.dart
-│       │   ├── endpoint/
-│       │   │   └── new_feature_endpoint.dart
-│       │   ├── model/
-│       │   │   └── new_feature_dto.dart
-│       │   └── repository/
-│       │       └── new_feature_repository_impl.dart
-│       ├── domain/
-│       │   ├── entities/
-│       │   │   └── new_feature_entity.dart
-│       │   ├── usecases/
-│       │   │   └── get_new_feature_use_case.dart
-│       │   └── repository/
-│       │       └── new_feature_repository.dart
-│       ├── di/
-│       │   └── new_feature_di.dart
-│       └── presentation/
-│           └── new_feature/
-│               ├── cubit/
-│               │   ├── new_feature_cubit.dart
-│               │   └── new_feature_state.dart
-│               ├── pages/
-│               │   └── new_feature_page.dart
-│               ├── shared/
-│               └── widget/
-│                   └── new_feature_body.dart
-├── new_feature_barrel.dart  # Barrel file for re-exports
+  app.dart
+  main.dart
+  global_imports.dart
+
+  core/
+    bloc/observer/
+      block_observer.dart
+    bootstrap/
+      app_initializer.dart
+    constant/
+      box_key.dart
+      env_constant.dart
+      routes.dart
+    context/
+      global.dart
+    cubit/
+      token/
+    dependencies/
+      dependencies_injection.dart
+    errors/
+    extension/
+    function/
+    localization/
+      app_localization.dart
+    logger/
+    mixin/
+    model/
+    network/
+    router/
+      routes.dart
+    services/
+      hive.service.dart
+      app.service.dart
+      api.service.dart
+      header_provider.service.dart
+      notification/
+      background/
+    theme/
+      app_theme.dart
+      light_theme.dart
+      dark_theme.dart
+    utils/
+      color.dart
+      text_style.dart
+    widget/
+
+  feature/
+    settings/
+      settings_barrel.dart
+      presentation/cubit/
+        settings_cubit.dart
+        settings_state.dart
+    splash_screen/
+      splash_screen.dart
+
+  generated/
+    app_strings.g.dart
+    assets.dart
 ```
+
+Mason feature templates are stored under `bricks/`. They are excluded from analyzer because they contain template placeholders before generation.
 
 ---
 
-## ⚙️ Getting Started
+## App Startup Flow
 
-### 1. Clone the Repository
+`main.dart` is intentionally small. It only ensures Flutter is initialized, calls the app initializer, and runs the app wrapped with `EasyLocalization`.
 
-```bash
-git clone https://github.com/MuhammadAli224/My-Flutter-Template.git
-cd My-Flutter-Template
+Startup is centralized in:
+
+```txt
+lib/core/bootstrap/app_initializer.dart
 ```
 
-Or click **"Use this template"** on GitHub to start a new project based on it.
+Initialization order:
 
-### 2. Install Dependencies
+1. Environment variables via `EnvConstant.init()`
+2. EasyLocalization
+3. Hive CE through `HiveServices`
+4. HydratedBloc storage
+5. GetIt dependency registration
+6. `AppBlocObserver`
+7. Core app services
+8. Debug-friendly error widget
 
-```bash
-flutter pub get
+This keeps `main.dart` from becoming a dumping place for service setup.
+
+---
+
+## App Widget
+
+`lib/app.dart` owns the root widget.
+
+It configures:
+
+- `MultiBlocProvider`
+- `ScreenUtilInit`
+- `MaterialApp.router`
+- App themes
+- Theme mode from `SettingsCubit`
+- EasyLocalization delegates, supported locales, and current locale
+- GoRouter configuration
+- Global scaffold messenger key
+
+No service initialization should be added to `build`.
+
+---
+
+## Core Layer
+
+`lib/core/` contains shared infrastructure used by multiple features.
+
+Important areas:
+
+- `bootstrap/`: app initialization flow
+- `dependencies/`: GetIt registration
+- `services/`: API, Hive, headers, app services, notifications
+- `theme/`: light and dark `ThemeData`
+- `utils/`: colors, text styles, borders, gradients
+- `network/`: connection monitoring
+- `errors/`: failures and Dio error mapping
+- `router/`: GoRouter setup
+- `localization/`: supported locales and translation path
+- `bloc/observer/`: global Bloc observer logging
+
+Keep business rules out of core unless they are genuinely shared.
+
+---
+
+## Dependency Injection
+
+GetIt is configured in:
+
+```txt
+lib/core/dependencies/dependencies_injection.dart
 ```
 
-### 3. Generate Code
+Registration guidelines:
 
-The project uses [Freezed](https://pub.dev/packages/freezed), so after creating new models or states:
+- Core services are registered first.
+- Feature dependencies should be registered from each feature's `di/` module.
+- Services, repositories, and datasources are usually `lazySingleton`.
+- Cubits are usually `factory`, unless they represent app-level persisted state.
+- Do not instantiate registered dependencies manually inside widgets.
+
+Current app-level registrations include:
+
+- `AppServices`
+- `FlutterSecureStorage`
+- `TokenCubit`
+- `SettingsCubit`
+- `HeadersProvider`
+- `ApiServices`
+- `NetworkInfo`
+- `ConnectionCubit`
+
+---
+
+## Settings and Theme State
+
+App settings live in:
+
+```txt
+lib/feature/settings/
+```
+
+`SettingsCubit` extends `HydratedCubit<AppSettingsState>`.
+
+It currently owns:
+
+- `ThemeMode`
+- dark mode state
+- theme toggling and updates
+
+Because it uses HydratedBloc, theme preference is persisted automatically. Theme state should not be manually written to Hive from the cubit.
+
+---
+
+## Theme System
+
+Theme files live in:
+
+```txt
+lib/core/theme/
+```
+
+Color and typography sources:
+
+```txt
+lib/core/utils/color.dart
+lib/core/utils/text_style.dart
+```
+
+Rules:
+
+- `AppColor` is the single source of truth for app colors.
+- `AppTheme.light` and `AppTheme.dark` build the actual `ThemeData`.
+- Do not hardcode repeated hex colors in screens.
+- Use `AppTextStyle` for shared text styles.
+- Keep theme logic out of cubits.
+
+---
+
+## Localization
+
+The app uses EasyLocalization with JSON assets:
+
+```txt
+assets/translations/en.json
+assets/translations/ar.json
+```
+
+Localization config lives in:
+
+```txt
+lib/core/localization/app_localization.dart
+```
+
+Generated keys live in:
+
+```txt
+lib/generated/app_strings.g.dart
+```
+
+Regenerate keys after changing translation JSON:
+
+```bash
+dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+```
+
+Usage:
+
+```dart
+Text(LocaleKeys.login.tr())
+```
+
+Do not create a manual `app_strings.dart` constants file.
+
+---
+
+## Hive and Local Storage
+
+Hive CE initialization is centralized in:
+
+```txt
+lib/core/services/hive.service.dart
+```
+
+Rules:
+
+- Initialize Hive in one place only.
+- Register adapters in `HiveServices`.
+- Open shared boxes in `HiveServices`.
+- Do not open Hive boxes from widgets.
+- Local datasources should receive boxes through DI.
+
+HydratedBloc handles app settings persistence separately from feature cache boxes.
+
+---
+
+## Networking
+
+Networking is built around:
+
+```txt
+lib/core/services/api.service.dart
+lib/core/services/header_provider.service.dart
+lib/core/errors/dio_interceptor.dart
+lib/core/network/network_info.dart
+```
+
+Guidelines:
+
+- Remote datasources use `ApiServices` or Dio abstractions.
+- Repositories check network state when needed.
+- Dio errors are converted into `Failure` objects.
+- UI receives user-safe messages through Cubit state.
+
+---
+
+## Feature Structure
+
+New features should be placed under:
+
+```txt
+lib/feature/{feature_name}/
+```
+
+Recommended structure:
+
+```txt
+feature_name/
+  data/
+    datasource/
+    endpoint/
+    model/
+    repository/
+  domain/
+    entities/
+    repository/
+    usecases/
+    mappers/
+  di/
+  presentation/
+    cubit/
+    pages/
+    widget/
+    shared/
+  feature_name_barrel.dart
+```
+
+Layer responsibilities:
+
+- `data/model`: DTOs, JSON, Hive annotations when cached
+- `data/datasource`: remote and local data access
+- `data/repository`: repository implementation
+- `domain/entities`: pure app models
+- `domain/repository`: repository contracts
+- `domain/usecases`: business actions
+- `domain/mappers`: AutoMappr DTO/entity mapping
+- `presentation/cubit`: state management
+- `presentation/pages`: route-level screens
+- `presentation/widget`: feature-specific widgets
+- `di`: feature dependency registration
+
+---
+
+## Code Generation
+
+The project uses:
+
+- Freezed
+- JsonSerializable
+- Hive CE generator
+- AutoMappr
+- EasyLocalization key generation
+
+Run model and mapper generation:
 
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
+Run localization key generation:
+
+```bash
+dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+```
+
 ---
 
-## 🧱 Feature Generator via Mason
+## Mason Feature Generation
 
-This template uses [Mason](https://pub.dev/packages/mason_cli) to generate features.
+Mason is used for feature scaffolding.
 
-### 🔨 Setup Mason
-
-Install Mason CLI if you haven’t already:
+Install Mason if needed:
 
 ```bash
 dart pub global activate mason_cli
 ```
 
-### 📦 Use Brick to Generate a Feature
+Generate a feature:
 
 ```bash
 mason make feature
 ```
 
-This will prompt you for the feature name and generate a fully structured feature folder under `features/`.
+After generation:
+
+1. Review the generated names and folders.
+2. Register the feature DI module in `initGetIt()`.
+3. Add routes in `lib/core/router/routes.dart`.
+4. Add translation keys if the feature has UI text.
+5. Run build runner if DTOs, entities, mappers, or Hive adapters were generated.
 
 ---
 
-## 🧠 State Management
+## Common Commands
 
-This template uses **Cubit** (from the `flutter_bloc` package) for state management. Each feature includes:
-
-- A Cubit (`new_feature_cubit.dart`)
-- A State (`new_feature_state.dart`)
-
----
-
-## 📡 API & Data Handling
-
-### ✅ Dio
-
-Dio is used for making network requests. It is wrapped inside your custom remote data sources.
-
-### 💾 Hive CE
-
-Instead of Hive, this template uses `hive_ce` for local caching in the `local_new_feature_data_source.dart`. It provides lightweight, fast, and type-safe storage.
-
----
-
-## ❄️ Freezed for Models
-
-Freezed helps with:
-
-- Data classes
-- Union types (sealed classes)
-- Code generation (e.g., copyWith, equality)
-
-Used in:
-- DTOs
-- Cubit states
-- Entities if needed
-
----
-
-
-### 🔄 DTO ↔ Entity Mapping
-
-This template uses AutoMapper to `automatically` generate mapping code between:
-
-- DTOs (`new_feature_dto.dart`)
-
-- Entities (`new_feature_entity.dart`)
-
-This eliminates manual boilerplate mapping code and keeps your layers clean.
-
----
-## 🧪 Dependency Injection
-
-Each feature has its own `di/new_feature_di.dart`, which contains:
-
-- Data source registrations
-- Repository bindings
-- Use case injections
-- Cubit registration
-
-You can import this in the app-level DI container to initialize the feature.
-
----
-
-## ✅ How to Add a New Feature
+Install dependencies:
 
 ```bash
-mason make feature
+flutter pub get
 ```
 
-Then:
-1. Register the feature’s `di.dart` in your main DI.
-2. Use `GoRouter` or your preferred navigation method to navigate to the new feature page.
-3. Call the `UseCase` from the Cubit, which in turn calls the repository -> data source.
+Analyze:
 
----
-
-## 🧰 Tools Used
-
-| Tool           | Purpose                        |
-|----------------|--------------------------------|
-| 🧱 Mason       | Generate features via bricks   |
-| 🧠 Cubit       | Lightweight state management   |
-| 🧊 Freezed     | Code generation for classes    |
-| 🧪 Dio         | HTTP requests handling         |
-| 📦 Hive CE     | Local storage                  |
-| 🔧 BuildRunner | Code generation               |
-| 🔄 AutoMapper  | Auto-generate DTO ↔ Entity mapping|                
-
----
-
-### 🌍 Localization
-
-This template includes built-in support for multilingual apps using [`easy_localization`](https://pub.dev/packages/easy_localization).
-
-#### ✅ Supported Locales:
-- English (`en`)
-- Arabic (`ar`)
-
-#### 📁 Translation Files:
-
-```
-lib/core/localization/language/
-├── en.dart
-└── ar.dart
+```bash
+flutter analyze
 ```
 
-#### 🔧 Setup
+Generate Freezed, JSON, Hive, and AutoMappr code:
 
-1. **Wrap your app with `EasyLocalization`:**
-
-```dart
-return EasyLocalization(
-  supportedLocales: const [Locale('en'), Locale('ar')],
-  path: 'lib/core/localization/language',
-  fallbackLocale: const Locale('en'),
-  child: MyApp(),
-);
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-2. **Usage in widgets:**
+Generate localization keys:
 
-```dart
-Text('hello'.tr()), // loads value for 'hello' from en.json or ar.json
+```bash
+dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
 ```
 
-3. **Change language programmatically:**
+Run tests:
 
-```dart
-context.setLocale(Locale('ar'));
+```bash
+flutter test
 ```
 
 ---
 
-### 📝 Tip
+## Package Groups
 
-Make sure to register your `.dart` localization files if you're using code-based maps instead of JSON, using `EasyLocalizationLoader` or custom loaders.
+Main dependencies are grouped in `pubspec.yaml` by purpose:
 
+- Core utilities
+- Networking
+- State management
+- Dependency injection
+- Storage and security
+- Model/code generation annotations
+- Routing
+- UI
+- Files and images
+- Localization
+- Notifications
+- Firebase
+- Development code generation
+- Flutter tooling
 
 ---
 
-## 📖 License
+## Development Guidelines
 
-[MIT](LICENSE)
-
----
-
-## 🤝 Contributing
-
-Feel free to open issues or pull requests to improve the template!
-
----
-
-## 📬 Contact
-
-Created with 💙 by Muhammad Ali
-
-GitHub: [Muhammad Ali](https://github.com/MuhammadAli224)
+- Keep `main.dart` short.
+- Do not initialize services inside widget `build` methods.
+- Do not hardcode user-facing text; use `LocaleKeys`.
+- Do not duplicate colors; use `AppColor`.
+- Do not expose DTOs to UI/state.
+- Do not call repositories or datasources from widgets.
+- Keep feature dependencies registered through DI.
+- Keep Hive box opening centralized.
+- Use HydratedBloc for small persisted app preferences such as theme mode.
+- Run `flutter analyze` before finishing changes.
