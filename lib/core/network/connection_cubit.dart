@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../global_imports.dart';
 
 part 'connection_cubit.freezed.dart';
@@ -5,6 +7,7 @@ part 'connection_state.dart';
 
 class ConnectionCubit extends Cubit<ConnectionState> {
   final NetworkInfo networkInfo;
+  StreamSubscription<bool>? _connectionSubscription;
 
   ConnectionCubit(this.networkInfo) : super(const ConnectionInitial()) {
     _monitor();
@@ -13,7 +16,9 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   void _monitor() {
     bool isFirstCheck = true;
 
-    networkInfo.onConnectionChange.listen((connected) {
+    _connectionSubscription = networkInfo.onConnectionChange.listen((
+      connected,
+    ) {
       if (isFirstCheck) {
         isFirstCheck = false;
         emit(connected ? const ConnectionOnline() : const ConnectionOffline());
@@ -33,8 +38,11 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   }
 
   void _showConnectedBar() {
+    final context = GlobalContext.navigatorKey.currentContext;
+    if (context == null) return;
+
     showBar(
-      GlobalContext.navigatorKey.currentContext!,
+      context,
       title: LocaleKeys.connected.tr(),
       message: LocaleKeys.internetConnectionRestored.tr(),
       contentType: BarContentType.success,
@@ -43,12 +51,21 @@ class ConnectionCubit extends Cubit<ConnectionState> {
   }
 
   void _showDisconnectedBar() {
+    final context = GlobalContext.navigatorKey.currentContext;
+    if (context == null) return;
+
     showBar(
-      GlobalContext.navigatorKey.currentContext!,
+      context,
       title: LocaleKeys.noInternet.tr(),
       message: LocaleKeys.youAreOffline.tr(),
       contentType: BarContentType.failure,
       position: BarPosition.top,
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _connectionSubscription?.cancel();
+    return super.close();
   }
 }

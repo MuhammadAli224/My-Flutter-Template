@@ -33,8 +33,7 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   final AssetGenImage appNewIcon = const AssetGenImage(
-    'assets/images/app_new_icon.png',
-  );
+      'assets/images/app_new_icon.png');
 }
 
 class $AssetsLottieGen {
@@ -43,14 +42,11 @@ class $AssetsLottieGen {
   final LottieGenImage error = const LottieGenImage('assets/lottie/error.json');
   final LottieGenImage nfc = const LottieGenImage('assets/lottie/nfc.json');
   final LottieGenImage noData = const LottieGenImage(
-    'assets/lottie/no_data.json',
-  );
+      'assets/lottie/no_data.json');
   final LottieGenImage noOrder = const LottieGenImage(
-    'assets/lottie/no_order.json',
-  );
+      'assets/lottie/no_order.json');
   final LottieGenImage success = const LottieGenImage(
-    'assets/lottie/success.json',
-  );
+      'assets/lottie/success.json');
 }
 
 class $AssetsTranslationsGen {
@@ -64,6 +60,7 @@ class AssetGenImage {
   const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
+
 
   final Size? size;
   final Set<String> flavors;
@@ -121,8 +118,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   Widget custom({
@@ -208,3 +212,4 @@ class LottieGenImage {
 
   String get keyName => _assetName;
 }
+

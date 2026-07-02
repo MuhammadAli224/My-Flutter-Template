@@ -13,6 +13,12 @@ abstract class LocaleKeys {
   static const notFoundServer = 'notFoundServer';
   static const internalServerError = 'internalServerError';
   static const badGateway = 'badGateway';
+  static const badCertificate = 'badCertificate';
+  static const databaseError = 'databaseError';
+  static const requestTimeout = 'requestTimeout';
+  static const tooManyRequests = 'tooManyRequests';
+  static const serviceUnavailable = 'serviceUnavailable';
+  static const gatewayTimeout = 'gatewayTimeout';
   static const formValidateError = 'formValidateError';
   static const cancelRequest = 'cancelRequest';
   static const connectionTimeOut = 'connectionTimeOut';

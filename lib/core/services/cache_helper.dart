@@ -58,7 +58,7 @@ class CacheHelper {
             ),
           );
         }
-        return left(ServerFailure(message: LocaleKeys.socketException));
+        return left(AppFailure(message: LocaleKeys.socketException));
       }
 
       final apiResponse = await fetchRemote();
@@ -68,7 +68,7 @@ class CacheHelper {
 
         return right(apiResponse.map(mapper));
       } else {
-        return left(ServerFailure(message: apiResponse.description));
+        return left(AppFailure(message: apiResponse.description));
       }
     } catch (e, t) {
       return handleRepoDataError(e, t);
@@ -106,7 +106,7 @@ class CacheHelper {
             ),
           );
         }
-        return left(ServerFailure(message: LocaleKeys.socketException));
+        return left(AppFailure(message: LocaleKeys.socketException));
       }
 
       final apiResponse = await fetchRemote();
@@ -122,7 +122,7 @@ class CacheHelper {
           ),
         );
       } else {
-        return left(ServerFailure(message: apiResponse.description));
+        return left(AppFailure(message: apiResponse.description));
       }
     } catch (e, t) {
       return handleRepoDataError(e, t);
