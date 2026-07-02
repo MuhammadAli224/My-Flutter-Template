@@ -7,6 +7,7 @@ import '../../../core/extension/space_extension.dart';
 import '../../../core/utils/border.dart';
 import '../../../core/utils/color.dart';
 import '../../../core/utils/font_size.dart';
+import 'app_text.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String? label;
@@ -60,11 +61,11 @@ class AppTextFormField extends StatelessWidget {
   final TextSelectionControls? selectionControls;
   final InputBorder? customBorder;
   final Widget? Function(
-    BuildContext, {
-    required int currentLength,
-    required bool isFocused,
-    required int? maxLength,
-  })?
+      BuildContext, {
+      required int currentLength,
+      required bool isFocused,
+      required int? maxLength,
+      })?
   buildCounter;
   final AutovalidateMode? autoValidateMode;
 
@@ -143,7 +144,7 @@ class AppTextFormField extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Padding(
           padding: const EdgeInsets.only(left: 12.0, right: 8.0),
-          child: Center(child: Text(prefixText!)),
+          child: Center(child: AppText(prefixText!)),
         ),
       );
     } else if (prefixIconAssetName != null) {
@@ -176,7 +177,7 @@ class AppTextFormField extends StatelessWidget {
           child: Padding(
             padding: prefixAddOnTextContentPadding,
             child: Center(
-              child: Text(
+              child: AppText(
                 prefixAddOnText!,
                 // style: LibraryTextStyles.interMdRegularNeutral300,
               ),
@@ -202,15 +203,15 @@ class AppTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        label != null
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: AutoSizeText(
-                  label!,
-                  style: labelTextStyle ?? TextStyle(fontSize: AppFontSizes.sm),
-                ),
-              )
-            : Container(),
+        if ( label != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: AutoSizeText(
+              label!,
+              style: labelTextStyle ?? TextStyle(fontSize: AppFontSizes.sm),
+            ),
+          ),
+
         Container(
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
           child: TextFormField(
@@ -224,7 +225,7 @@ class AppTextFormField extends StatelessWidget {
               labelText: labelFloating,
               // label: Icon(Icons.abc),
               labelStyle:
-                  labelFloatingTextStyle ??
+              labelFloatingTextStyle ??
                   TextStyle(fontSize: AppFontSizes.lg),
               isDense: true,
               // counterText: '',
@@ -232,18 +233,18 @@ class AppTextFormField extends StatelessWidget {
               hintText: hintText,
               hintStyle: hintStyle,
               border:
-                  customBorder ??
+              customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.border
                       : AppWidgetBorder.errorBorder),
               enabledBorder:
-                  customBorder ??
+              customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.enabledBorder
                       : AppWidgetBorder.errorBorder),
               disabledBorder: customBorder ?? AppWidgetBorder.disabledBorder,
               focusedBorder:
-                  customBorder ??
+              customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.focusedBorder
                       : AppWidgetBorder.errorBorder),
@@ -253,20 +254,20 @@ class AppTextFormField extends StatelessWidget {
                 minHeight: 0.0,
               ),
               suffixIcon:
-                  (suffixIconAssetName != null || suffixIconWidget != null
+              (suffixIconAssetName != null || suffixIconWidget != null
                   ? FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: IconButton(
-                        onPressed: onTapSuffix,
-                        icon:
-                            suffixIconWidget ??
-                            Icon(
-                              suffixIconAssetName,
-                              color: suffixIconColor ?? AppColor.primaryColor,
-                              size: 25.0,
-                            ),
+                fit: BoxFit.scaleDown,
+                child: IconButton(
+                  onPressed: onTapSuffix,
+                  icon:
+                  suffixIconWidget ??
+                      Icon(
+                        suffixIconAssetName,
+                        color: suffixIconColor ?? AppColor.primaryColor,
+                        size: 25.0,
                       ),
-                    )
+                ),
+              )
                   : null),
             ),
             controller: controller,
@@ -303,18 +304,12 @@ class AppTextFormField extends StatelessWidget {
             style: styleText,
           ),
         ),
-        helperText != null && (errorText == null || enabled)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [6.gap, Text(helperText!)],
-              )
-            : Container(),
-        errorText != null && enabled
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [5.gap, Text(errorText!)],
-              )
-            : Container(),
+        if (helperText != null && (errorText == null || enabled)) ...[
+          6.gap,
+          AppText(helperText!),
+        ],
+
+        if (errorText != null && enabled) ...[5.gap, AppText(errorText!)],
       ],
     );
   }

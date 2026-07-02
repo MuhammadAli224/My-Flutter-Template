@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../core/widget/app_widget/app_text.dart';
 import '../../global_imports.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -116,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen>
             10.gap,
             FadeTransition(
               opacity: _fadeAnimation,
-              child: Text(
+              child: AppText(
                 LocaleKeys.appTagline.tr(),
                 style: AppTextStyle.style16.copyWith(color: AppColor.textMuted),
                 textAlign: TextAlign.center,
