@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 /// Shared text renderer. Translate UI keys at the call site:
-/// AppText(context.tr(LocaleKeys.someText)).
+/// AppText(context.tr(LocaleKeys.common_save)).
 /// Pass user/API content directly so it is not treated as a translation key.
 class AppText extends StatelessWidget {
   const AppText(

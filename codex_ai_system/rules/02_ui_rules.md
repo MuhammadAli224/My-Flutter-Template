@@ -4,7 +4,7 @@
 
 - Keep pages focused on layout; put custom reusable widgets in separate files.
 - Use core/widget/app_widget/app_text.dart for every displayed text widget.
-- Use AppText(context.tr(LocaleKeys.someText)) for translated UI labels.
+- Use AppText(context.tr(LocaleKeys.common_save)) for translated UI labels.
 - Use context.tr(key, args: [...], namedArgs: {...}) whenever BuildContext is
   available. Do not use key.tr() inside widget builds or context-aware callbacks.
 - Translate string-only framework properties such as hints, tooltips, and app titles
@@ -16,14 +16,16 @@
   maxFontSize, and maxLines. Use AppText.rich(TextSpan(...)) for styled spans.
 - In helpers without BuildContext, keep context-free translation; do not introduce
   global UI context dependencies just for localization.
-- Never hardcode UI labels. Add keys and translations to both ar.json and en.json,
-  then regenerate app_strings.g.dart.
+- Never hardcode UI labels. Reuse the common object first; otherwise add text under
+  the feature object in assets/translations/ar.json and en.json.
+- Follow 07_localization_rules.md to regenerate LocaleKeys after JSON changes.
+  Edit locale JSON directly; never edit app_strings.g.dart manually.
 
 Example:
 
 ```dart
 AppText(
-  context.tr(LocaleKeys.login),
+  context.tr(LocaleKeys.auth_login),
   style: AppTextStyle.style16B,
 )
 ```

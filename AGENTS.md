@@ -16,6 +16,11 @@ together. Do not spawn sub-agents unless the user explicitly requests delegation
 
 Use AppText for displayed text, with context.tr(key) for UI translations whenever
 BuildContext is available. Keep user/API content as plain text.
+Edit translations directly in assets/translations/ar.json and en.json.
+Reuse the common object before adding text under a feature object such as auth.
+Run `dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart`
+after dictionary changes. Only LocaleKeys is generated; the locale JSON files are
+editable sources. See codex_ai_system/rules/07_localization_rules.md.
 
 ## Verification
 

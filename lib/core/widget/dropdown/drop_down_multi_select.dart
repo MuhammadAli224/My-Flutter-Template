@@ -150,7 +150,7 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
           mainAxisSize: MainAxisSize.min,
           children: [
             AppText(
-              context.tr(LocaleKeys.select),
+              context.tr(LocaleKeys.common_select),
               style: TextStyle(
                 fontSize: AppFontSizes.md,
                 fontWeight: FontWeight.bold,
@@ -179,7 +179,7 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
               children: [
                 TextButton(
                   onPressed: () => context.pop(),
-                  child: AppText(context.tr(LocaleKeys.cancel)),
+                  child: AppText(context.tr(LocaleKeys.common_cancel)),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -190,7 +190,7 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
                   ),
                   onPressed: () => context.pop(_selected),
                   child: AppText(
-                    context.tr(LocaleKeys.apply),
+                    context.tr(LocaleKeys.common_apply),
                     style: const TextStyle(color: AppColor.white),
                   ),
                 ),

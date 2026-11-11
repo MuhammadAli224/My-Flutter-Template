@@ -246,7 +246,7 @@ Rules:
 
 ## Localization
 
-The app uses EasyLocalization with JSON assets:
+The app uses EasyLocalization with two editable locale dictionaries:
 
 ```txt
 assets/translations/en.json
@@ -265,18 +265,27 @@ Generated keys live in:
 lib/generated/app_strings.g.dart
 ```
 
-Regenerate keys after changing translation JSON:
+Edit `assets/translations/ar.json` and `assets/translations/en.json` directly.
+Reuse the nested `common` object for shared labels; add feature-specific objects
+such as `auth` inside these same files. `app` owns branding. Keep paths and
+placeholders identical across languages. Do not create separate feature files.
+
+Regenerate Dart keys after changing locale JSON:
 
 ```bash
-dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart
 ```
 
 Usage:
 
 ```dart
-AppText(context.tr(LocaleKeys.login))
+AppText(context.tr(LocaleKeys.auth_login))
 ```
 
+Shared actions use `AppText(context.tr(LocaleKeys.common_save))`. Dynamic labels
+use separate keys such as `common_saveItem` with `args: [itemName]`.
+Edit the root locale JSON directly; do not edit generated Dart keys manually.
+See [translation ownership and examples](codex_ai_system/rules/07_localization_rules.md).
 Do not create a manual `app_strings.dart` constants file.
 
 ---
@@ -387,7 +396,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 Run localization key generation:
 
 ```bash
-dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart
 ```
 
 ---
@@ -444,7 +453,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 Generate localization keys:
 
 ```bash
-dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart
 ```
 
 Check source code:

@@ -34,7 +34,7 @@ class ApiResponse<T> {
     final paginationJson = json['pagination'];
     return ApiResponse<T>(
       hasError: json['hasError'] ?? false,
-      description: json['description'] ?? LocaleKeys.unknownError.tr(),
+      description: json['description'] ?? LocaleKeys.common_unknownError.tr(),
       code: json['code'] ?? 200,
       error: json['error'] is String ? json['error'] : null,
       token: json['token'] is String ? json['token'] : null,

@@ -84,7 +84,7 @@ dev_dependencies:
 
   #  flutter pub run build_runner build --delete-conflicting-outputs
   #  flutter pub run build_runner watch --delete-conflicting-outputs
-  #  dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
+  #  dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart
 
 
 flutter:

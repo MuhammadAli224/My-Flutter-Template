@@ -12,9 +12,17 @@ Read [AGENTS.md](AGENTS.md) first. Canonical instructions live in
 - [State and cancellation](codex_ai_system/rules/04_state_management_rules.md)
 - [Verification](codex_ai_system/rules/05_code_quality_rules.md)
 - [Session ownership](codex_ai_system/rules/06_session_rules.md)
+- [Translation namespaces and generation](codex_ai_system/rules/07_localization_rules.md)
 - [Generator usage](codex_ai_system/README.md)
 
 Runtime features live under `lib/feature/`; shared infrastructure lives under
 `lib/core/`. SessionManager owns the active in-memory session, backed by secure
 storage. TokenCubit adapts that session for UI. Hive caches are optional and scoped
 by session and locale.
+
+Translations are edited directly in assets/translations/ar.json and en.json.
+Both contain common, auth, app, and commerce objects. Add future feature objects
+inside these same files; do not create separate feature translation files or a
+merge workflow. Regenerate LocaleKeys with EasyLocalization's key generator after
+editing dictionaries. Widgets use AppText(context.tr(LocaleKeys.common_save)) or
+a feature key. See the localization rules for the command and examples.

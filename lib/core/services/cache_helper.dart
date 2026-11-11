@@ -30,7 +30,7 @@ class CacheHelper {
     bool isCurrent() =>
         cancellation?.isCancelled != true && context.matches(currentContext());
     Either<Failure, Entity> changed() =>
-        left(AppFailure(message: LocaleKeys.cancelRequest));
+        left(AppFailure(message: LocaleKeys.common_cancelRequest));
 
     CacheEntry<DTO>? cached;
     if (policy != CachePolicy.networkOnly) {
@@ -61,7 +61,9 @@ class CacheHelper {
         if (policy != CachePolicy.networkOnly && hasValidCache()) {
           return fromCache();
         }
-        return left(AppFailure(message: LocaleKeys.noInternetConnection));
+        return left(
+          AppFailure(message: LocaleKeys.common_noInternetConnection),
+        );
       }
 
       final dto = await fetchRemote();

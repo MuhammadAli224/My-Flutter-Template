@@ -12,5 +12,7 @@
   builds, and analyzes both cache variants without creating or running tests.
 - Check module boundaries, cancellation, cache policies, and localization in review.
 - Use AppText with context.tr(...) for UI translation keys wherever context exists.
-- Add real translation keys when introducing labels.
+- Reuse common translation keys; edit feature objects in the main ar.json/en.json.
+- Check locale key/placeholder parity and regenerate LocaleKeys after changes.
+  Follow 07_localization_rules.md; do not create split-file translation sources.
 - Report commands run, outcomes, and any pre-existing analyzer findings.

@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _startLetterAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 90), (timer) async {
-      final appName = context.tr(LocaleKeys.appName);
+      final appName = context.tr(LocaleKeys.app_name);
 
       if (currentIndex < appName.length) {
         setState(() {
@@ -63,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final appName = context.tr(LocaleKeys.appName);
+    final appName = context.tr(LocaleKeys.app_name);
     final splitIndex = appName.length >= 9 ? 9 : appName.length;
     final visibleLength = currentIndex > appName.length
         ? appName.length
@@ -121,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
             FadeTransition(
               opacity: _fadeAnimation,
               child: AppText(
-                context.tr(LocaleKeys.appTagline),
+                context.tr(LocaleKeys.app_tagline),
                 style: AppTextStyle.style16.copyWith(color: AppColor.textMuted),
                 textAlign: TextAlign.center,
               ),

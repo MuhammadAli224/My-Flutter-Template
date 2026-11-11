@@ -20,7 +20,7 @@ Future<Either<Failure, TResult>> handleRepoRequest<TResponse, TResult>({
     if (!await networkInfo.isConnected) {
       return left(
         AppFailure(
-          message: LocaleKeys.noInternetConnection.tr(),
+          message: LocaleKeys.common_noInternetConnection.tr(),
           type: AppExceptionType.network,
         ),
       );

@@ -73,7 +73,7 @@ class AppInitializer {
                 ),
                 16.gap,
                 AppText(
-                  context.tr(LocaleKeys.unknownError),
+                  context.tr(LocaleKeys.common_unknownError),
                   style: AppTextStyle.style18B,
                 ),
                 if (kDebugMode) ...[

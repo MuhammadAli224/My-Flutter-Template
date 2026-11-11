@@ -43,8 +43,8 @@ class ConnectionCubit extends Cubit<ConnectionState> {
 
     showBar(
       context,
-      title: context.tr(LocaleKeys.connected),
-      message: context.tr(LocaleKeys.internetConnectionRestored),
+      title: context.tr(LocaleKeys.common_connected),
+      message: context.tr(LocaleKeys.common_internetConnectionRestored),
       contentType: BarContentType.success,
       position: BarPosition.top,
     );
@@ -56,8 +56,8 @@ class ConnectionCubit extends Cubit<ConnectionState> {
 
     showBar(
       context,
-      title: context.tr(LocaleKeys.noInternet),
-      message: context.tr(LocaleKeys.youAreOffline),
+      title: context.tr(LocaleKeys.common_noInternet),
+      message: context.tr(LocaleKeys.common_youAreOffline),
       contentType: BarContentType.failure,
       position: BarPosition.top,
     );

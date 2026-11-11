@@ -16,7 +16,7 @@ class {{name.pascalCase()}}Widget extends StatelessWidget {
           {{name.pascalCase()}}Initial() || {{name.pascalCase()}}Loading() =>
             const Center(child: CircularProgressIndicator()),
           {{name.pascalCase()}}Loaded(:final items) => items.isEmpty
-              ? Center(child: AppText(context.tr(LocaleKeys.noDataFound)))
+              ? Center(child: AppText(context.tr(LocaleKeys.common_noDataFound)))
               : ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (_, index) => ListTile(

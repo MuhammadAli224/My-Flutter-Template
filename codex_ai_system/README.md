@@ -42,6 +42,21 @@ variants, runs build_runner, and analyzes generated code without creating or
 running tests.
 It never adds example features to the working application's routes or DI.
 
+## Translations
+
+Edit assets/translations/ar.json and en.json directly. Reuse labels from the common
+object; group feature text under objects such as auth. Keep app branding under app
+and existing commerce wording under commerce. Do not create per-feature files.
+
+```sh
+dart run easy_localization:generate -S assets/translations -s en.json -f keys -o app_strings.g.dart
+```
+
+The command regenerates only LocaleKeys from the main locale dictionaries.
+Use AppText(context.tr(LocaleKeys.common_save)) or
+AppText(context.tr(LocaleKeys.auth_login)).
+See [translation rules](rules/07_localization_rules.md).
+
 ## Session and cache
 
 Use SessionReader for shared reads and SessionManager for sign-in/sign-out.

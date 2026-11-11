@@ -15,7 +15,7 @@ class {{name.pascalCase()}}Page extends StatelessWidget {
   Widget build(BuildContext context) => BlocProvider(
     create: (_) => getIt<{{name.pascalCase()}}Cubit>()..fetchItems(),
     child: Scaffold(
-      appBar: AppBar(title: AppText(context.tr(LocaleKeys.appName))),
+      appBar: AppBar(title: AppText(context.tr(LocaleKeys.app_name))),
       body: const {{name.pascalCase()}}Widget(),
     ),
   );

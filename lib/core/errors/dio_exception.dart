@@ -38,7 +38,10 @@ class AppException implements Exception {
   factory AppException.fromDioException(DioException error) {
     if (CancelToken.isCancel(error)) {
       return AppException(
-        message: _message(LocaleKeys.cancelRequest, 'Request was cancelled.'),
+        message: _message(
+          LocaleKeys.common_cancelRequest,
+          'Request was cancelled.',
+        ),
         type: AppExceptionType.cancelled,
         originalException: error,
       );
@@ -50,7 +53,7 @@ class AppException implements Exception {
       case DioExceptionType.connectionTimeout:
         return AppException(
           message: _message(
-            LocaleKeys.connectionTimeOut,
+            LocaleKeys.common_connectionTimeOut,
             'Connection timed out. Please try again.',
           ),
           type: AppExceptionType.timeout,
@@ -59,7 +62,7 @@ class AppException implements Exception {
       case DioExceptionType.sendTimeout:
         return AppException(
           message: _message(
-            LocaleKeys.sendTimeOut,
+            LocaleKeys.common_sendTimeOut,
             'Request timed out while sending data. Please try again.',
           ),
           type: AppExceptionType.timeout,
@@ -68,7 +71,7 @@ class AppException implements Exception {
       case DioExceptionType.receiveTimeout:
         return AppException(
           message: _message(
-            LocaleKeys.receiveTimeOut,
+            LocaleKeys.common_receiveTimeOut,
             'Request timed out while receiving data. Please try again.',
           ),
           type: AppExceptionType.timeout,
@@ -77,7 +80,7 @@ class AppException implements Exception {
       case DioExceptionType.badCertificate:
         return AppException(
           message: _message(
-            LocaleKeys.badCertificate,
+            LocaleKeys.common_badCertificate,
             'Unable to verify the server certificate.',
           ),
           type: AppExceptionType.network,
@@ -90,7 +93,10 @@ class AppException implements Exception {
         );
       case DioExceptionType.cancel:
         return AppException(
-          message: _message(LocaleKeys.cancelRequest, 'Request was cancelled.'),
+          message: _message(
+            LocaleKeys.common_cancelRequest,
+            'Request was cancelled.',
+          ),
           type: AppExceptionType.cancelled,
           originalException: error,
         );
@@ -111,7 +117,7 @@ class AppException implements Exception {
       case DioExceptionType.transformTimeout:
         return AppException(
           message: _message(
-            LocaleKeys.receiveTimeOut,
+            LocaleKeys.common_receiveTimeOut,
             'Request timed out while receiving data. Please try again.',
           ),
           type: AppExceptionType.timeout,
@@ -148,7 +154,7 @@ class AppException implements Exception {
     if (error is HiveError) {
       return AppException(
         message: _message(
-          LocaleKeys.databaseError,
+          LocaleKeys.common_databaseError,
           'Database error. Please try again.',
         ),
         type: AppExceptionType.unknown,
@@ -297,12 +303,12 @@ class ServerSuccess extends Success {
 }
 
 String get _genericMessage => _message(
-  LocaleKeys.unknownError,
+  LocaleKeys.common_unknownError,
   'Something went wrong. Please try again.',
 );
 
 String get _noInternetMessage => _message(
-  LocaleKeys.noInternetConnection,
+  LocaleKeys.common_noInternetConnection,
   'No internet connection. Please check your network.',
 );
 
@@ -356,40 +362,43 @@ AppExceptionType _typeForStatusCode(int? statusCode) {
 String _messageForStatusCode(int? statusCode) {
   switch (statusCode) {
     case 400:
-      return _message(LocaleKeys.badRequest, 'Invalid request.');
+      return _message(LocaleKeys.common_badRequest, 'Invalid request.');
     case 401:
-      return _message(LocaleKeys.unauthorized, 'Unauthorized request.');
+      return _message(LocaleKeys.common_unauthorized, 'Unauthorized request.');
     case 403:
-      return _message(LocaleKeys.forbidden, 'You do not have permission.');
+      return _message(
+        LocaleKeys.common_forbidden,
+        'You do not have permission.',
+      );
     case 404:
-      return _message(LocaleKeys.notFoundServer, 'Resource not found.');
+      return _message(LocaleKeys.common_notFoundServer, 'Resource not found.');
     case 408:
       return _message(
-        LocaleKeys.requestTimeout,
+        LocaleKeys.common_requestTimeout,
         'Request timeout. Please try again.',
       );
     case 422:
-      return _message(LocaleKeys.formValidateError, 'Validation error.');
+      return _message(LocaleKeys.common_formValidateError, 'Validation error.');
     case 429:
       return _message(
-        LocaleKeys.tooManyRequests,
+        LocaleKeys.common_tooManyRequests,
         'Too many requests. Please try again later.',
       );
     case 500:
       return _message(
-        LocaleKeys.internalServerError,
+        LocaleKeys.common_internalServerError,
         'Server error. Please try again later.',
       );
     case 502:
-      return _message(LocaleKeys.badGateway, 'Bad gateway.');
+      return _message(LocaleKeys.common_badGateway, 'Bad gateway.');
     case 503:
       return _message(
-        LocaleKeys.serviceUnavailable,
+        LocaleKeys.common_serviceUnavailable,
         'Service unavailable. Please try again later.',
       );
     case 504:
       return _message(
-        LocaleKeys.gatewayTimeout,
+        LocaleKeys.common_gatewayTimeout,
         'Gateway timeout. Please try again.',
       );
     default:

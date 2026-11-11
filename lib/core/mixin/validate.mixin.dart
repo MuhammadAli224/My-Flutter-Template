@@ -17,48 +17,48 @@ mixin FormValidationMixin {
 
   String? validateUserName(String? value) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyUserNameHint.tr();
+      return LocaleKeys.common_emptyUserNameHint.tr();
     }
     return null;
   }
 
   String? validateMobile(String? value) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyMobileHint.tr();
+      return LocaleKeys.common_emptyMobileHint.tr();
     }
     if (!_mobileRegEx.hasMatch(value)) {
-      return LocaleKeys.notValidMobileHint.tr();
+      return LocaleKeys.common_notValidMobileHint.tr();
     }
     return null;
   }
 
   String? validateNumber(String? value) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyFieldHint.tr();
+      return LocaleKeys.common_emptyFieldHint.tr();
     }
     if (!_numberRegEx.hasMatch(value)) {
-      return LocaleKeys.notValidNumberHint.tr();
+      return LocaleKeys.common_notValidNumberHint.tr();
     }
     return null;
   }
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyEmailHint.tr();
+      return LocaleKeys.common_emptyEmailHint.tr();
     }
     if (!_emailRegEx.hasMatch(value)) {
-      return LocaleKeys.notValidEmailHint.tr();
+      return LocaleKeys.common_notValidEmailHint.tr();
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyPasswordHint.tr();
+      return LocaleKeys.auth_emptyPasswordHint.tr();
     }
 
     if (value.length < 5) {
-      return LocaleKeys.passwordValidateLengthHint.tr(args: ['5']);
+      return LocaleKeys.auth_passwordValidateLengthHint.tr(args: ['5']);
     }
 
     if (!value.contains(_upperCaseRegEx)) {
@@ -89,13 +89,13 @@ mixin FormValidationMixin {
     required int maxLength,
   }) {
     if (value == null || value.isEmpty) {
-      return LocaleKeys.emptyFieldHint.tr();
+      return LocaleKeys.common_emptyFieldHint.tr();
     }
     if (value.length < minLength) {
-      return LocaleKeys.minValidateHint.tr(args: [minLength.toString()]);
+      return LocaleKeys.common_minValidateHint.tr(args: [minLength.toString()]);
     }
     if (value.length > maxLength) {
-      return LocaleKeys.maxValidateHint.tr(args: [maxLength.toString()]);
+      return LocaleKeys.common_maxValidateHint.tr(args: [maxLength.toString()]);
     }
     return null;
   }
@@ -104,7 +104,7 @@ mixin FormValidationMixin {
     final emailError = validateEmail(value);
     final mobileError = validateMobile(value);
     if (emailError != null && mobileError != null) {
-      return "${LocaleKeys.notValidEmailHint.tr()} ${LocaleKeys.or.tr()} ${LocaleKeys.notValidMobileHint.tr()}";
+      return "${LocaleKeys.common_notValidEmailHint.tr()} ${LocaleKeys.common_or.tr()} ${LocaleKeys.common_notValidMobileHint.tr()}";
     }
     return null;
   }
@@ -114,11 +114,11 @@ mixin FormValidationMixin {
     required String? confirmPassword,
   }) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
-      return LocaleKeys.emptyConfirmPasswordHint.tr();
+      return LocaleKeys.auth_emptyConfirmPasswordHint.tr();
     }
 
     if (password != confirmPassword) {
-      return LocaleKeys.passwordNotMatchHint.tr();
+      return LocaleKeys.auth_passwordNotMatchHint.tr();
     }
 
     return null;
