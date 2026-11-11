@@ -1,21 +1,28 @@
-# Architecture Rules
+# Architecture rules
 
-Required flow:
+Required feature flow:
 
-```txt
-UI → Cubit → UseCase → Repository Interface → RepositoryImpl → Datasource → API / Cache
+```text
+UI → Cubit → UseCase → Repository interface
+                           ↑
+                    RepositoryImpl → Datasources → API / Cache
 ```
 
-## Mandatory rules
-
-- Features must be created under `lib/feature/`.
-- Follow the existing feature structure exactly.
-- UI must never call APIs directly.
-- UI must never call repositories directly.
-- Cubits must call UseCases only.
-- UseCases must call Repository interfaces only.
-- RepositoryImpl handles datasource coordination and mapping.
-- DTOs must never reach the UI layer.
-- Entities are the only models allowed in UI/state.
-- Shared logic belongs in `lib/core/`.
-- Do not invent new architecture patterns.
+- Features live in `lib/feature/`. Match the Mason structure and feature template.
+- UI does not call repositories, datasources, storage, or APIs.
+- Business Cubits call use cases; session/settings infrastructure adapters may wrap
+  their dedicated services directly without artificial pass-through use cases.
+- Domain imports must be explicit. No Flutter, Dio, Hive, GetIt, localization,
+  global_imports.dart, data, or presentation dependencies in domain code.
+- Repositories return `Either<Failure, Entity>` or `Either<Failure, List<Entity>>`.
+  Add a pure domain pagination value when pagination is needed.
+- ApiResponse stays in remote/data code. DTOs never reach presentation.
+- Repository implementations coordinate data sources and mapping.
+- Use RequestCancellation in domain signatures; adapt it to Dio in data/network code.
+- Keep GetIt lookups in DI, bootstrap, or widget-provider composition only.
+- Feature barrels export public domain/page/DI contracts, never data implementations.
+- Shared contracts belong in focused core folders such as session, domain, or cache.
+  Shared widgets belong in core/widget. Do not put feature-specific business logic
+  into core just because two files need it.
+- Existing global barrels are legacy convenience imports. New domain code must not
+  use them, and new features must not be added to global_imports.dart.

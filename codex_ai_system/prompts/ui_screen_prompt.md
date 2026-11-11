@@ -1,7 +1,7 @@
 # UI Screen Prompt
 
 ```md
-Follow AI_CONTEXT.md and codex_ai_system rules strictly.
+Follow AGENTS.md and the canonical rules in codex_ai_system/rules/.
 
 Task:
 Build/update UI screen: [screen name]

@@ -1,25 +1,16 @@
-# Code Quality Rules
+# Quality and verification
 
-## General
-
-- Follow existing naming conventions.
-- Remove unused imports.
-- Use `const` constructors where possible.
-- Keep functions small.
-- Keep files focused.
-- Do not add unnecessary packages.
-- Do not duplicate existing helpers.
-- Do not change unrelated files.
-
-## Before finishing
-
-Codex must check:
-
-- Generated files follow project folders.
-- Imports are correct.
-- Build runner files are mentioned if needed.
-- Translation keys are added or listed.
-- Hive adapters/typeIds are registered when cache is used.
-- No DTO is exposed to UI/state.
-- No hardcoded UI text exists.
-- Widgets are split into separate files.
+- Keep changes focused, functions small, imports explicit, and constructors const
+  where possible. Reuse existing widgets and helpers.
+- Preserve unrelated user edits. Regenerate Freezed/JSON/mapper/localization output
+  instead of editing it manually.
+- Do not create test cases, test directories, test dependencies, or generated tests
+  unless the user explicitly requests them.
+- Run flutter analyze --no-pub for runtime changes.
+- Format changed Dart files, then check formatting without modifying them.
+- Run dart run tool/verify_generator.dart for generator changes; it generates,
+  builds, and analyzes both cache variants without creating or running tests.
+- Check module boundaries, cancellation, cache policies, and localization in review.
+- Use AppText with context.tr(...) for UI translation keys wherever context exists.
+- Add real translation keys when introducing labels.
+- Report commands run, outcomes, and any pre-existing analyzer findings.

@@ -1,11 +1,16 @@
-import '../../../../global_imports.dart';
+import 'package:dartz/dartz.dart';
 
+import '../../../../core/domain/request_cancellation.dart';
+import '../../../../core/errors/failure.dart';
+import '../entities/{{name.snakeCase()}}_entity.dart';
+import '../repository/{{name.snakeCase()}}_repository.dart';
 
 class Get{{name.pascalCase()}}UseCase {
-final {{name.pascalCase()}}Repository _repository;
-Get{{name.pascalCase()}}UseCase(this._repository);
+  Get{{name.pascalCase()}}UseCase(this._repository);
 
-Future<Either<Failure, ApiResponse<{{name.pascalCase()}}Entity>>> call(CancelToken? cancelToken) {
-return _repository.fetchAll(cancelToken:cancelToken);
-}
+  final {{name.pascalCase()}}Repository _repository;
+
+  Future<Either<Failure, List<{{name.pascalCase()}}Entity>>> call({
+    RequestCancellation? cancellation,
+  }) => _repository.fetchAll(cancellation: cancellation);
 }

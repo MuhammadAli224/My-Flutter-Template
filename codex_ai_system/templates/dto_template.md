@@ -1,29 +1,26 @@
-# DTO Template
+# DTO template
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hive/hive.dart';
 
-part '{name}_dto.freezed.dart';
-part '{name}_dto.g.dart';
+part 'product_dto.freezed.dart';
+part 'product_dto.g.dart';
 
 @freezed
-@HiveType(typeId: uniqueTypeId)
-class {Name}DTO with _${Name}DTO {
-  const factory {Name}DTO({
-    @HiveField(0) int? id,
-    @HiveField(1) String? title,
-    @HiveField(2) DateTime? cachedAt,
-    @HiveField(3) String? languageCode,
-  }) = _{Name}DTO;
+abstract class ProductDTO with _$ProductDTO {
+  const factory ProductDTO({
+    required String name,
+    required String image,
+    String? description,
+  }) = _ProductDTO;
 
-  factory {Name}DTO.fromJson(Map<String, dynamic> json) =>
-      _${Name}DTOFromJson(json);
+  factory ProductDTO.fromJson(Map<String, dynamic> json) =>
+      _$ProductDTOFromJson(json);
 }
 ```
 
-Rules:
-
-- Replace `uniqueTypeId` with a real unused Hive type id.
-- Add every field with a unique `@HiveField(index)`.
-- Do not expose this DTO to UI.
+Add the AutoMappr DTO-to-entity definition as shown in the Mason DTO template.
+For standard caching, store DTO JSON inside a CacheEntry envelope through the
+injected Hive box. Do not add cache metadata to the API schema.
+Typed Hive persistence is optional; if chosen, use hive_ce annotations with unique
+field/type IDs and centralized adapter registration. DTOs never reach UI/state.

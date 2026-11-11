@@ -1,131 +1,127 @@
-import '../../global_imports.dart';
+import 'dart:io';
 
-typedef Mapper<DTO, Entity> = Entity Function(DTO dto);
-typedef RemoteFetcher<DTO> = Future<ApiResponse<DTO>> Function();
-typedef LocalGetter<DTO> = Future<DTO?> Function();
-typedef LocalSaver<DTO> = Future<void> Function(DTO dto);
-typedef ListMapper<DTO, Entity> = List<Entity> Function(List<DTO> dtos);
-typedef LocalListGetter<DTO> = Future<List<DTO>?> Function();
-typedef LocalListSaver<DTO> = Future<void> Function(List<DTO> dto);
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
+import '../../generated/app_strings.g.dart';
+import '../cache/cache_entry.dart';
+import '../cache/cache_policy.dart';
+import '../domain/request_cancellation.dart';
+import '../errors/dio_exception.dart';
+import '../errors/failure.dart';
+import '../network/network_info.dart';
+
+/// Coordinates typed cache entries. API envelopes stay in the remote datasource.
 class CacheHelper {
-  static bool isCacheValid(
-    DateTime? cachedAt,
-    String? languageCode, {
-    int maxAgeHours = 24,
-  }) {
-    if (cachedAt == null) return false;
-    if (languageCode != null) {
-      if (languageCode != GlobalContext.context.locale.languageCode) {
-        return false;
-      }
-    } else {
-      return false;
-    }
-    final now = DateTime.now();
-    final difference = now.difference(cachedAt);
-    return difference.inHours < maxAgeHours;
-  }
-
-  static Future<Either<Failure, ApiResponse<Entity>>>
-  fetchWithCache<DTO, Entity>({
-    required DataSource datasource,
-    required LocalGetter<DTO> getLocal,
-    required LocalSaver<DTO> saveLocal,
-    required RemoteFetcher<DTO> fetchRemote,
-    required Mapper<DTO, Entity> mapper,
+  static Future<Either<Failure, Entity>> fetchWithCache<DTO, Entity>({
+    required CachePolicy policy,
+    required Future<CacheEntry<DTO>?> Function() getLocal,
+    required Future<void> Function(CacheEntry<DTO>) saveLocal,
+    required Future<DTO> Function() fetchRemote,
+    required Entity Function(DTO) mapper,
     required NetworkInfo networkInfo,
+    required CacheContext context,
+    required CacheContext Function() currentContext,
     Duration cacheDuration = const Duration(hours: 24),
+    DateTime Function()? clock,
+    RequestCancellation? cancellation,
   }) async {
+    final now = clock ?? DateTime.now;
+    bool isCurrent() =>
+        cancellation?.isCancelled != true && context.matches(currentContext());
+    Either<Failure, Entity> changed() =>
+        left(AppFailure(message: LocaleKeys.cancelRequest));
+
+    CacheEntry<DTO>? cached;
+    if (policy != CachePolicy.networkOnly) {
+      try {
+        cached = await getLocal();
+      } catch (_) {
+        // A damaged/unavailable cache is a miss, not a network failure.
+      }
+    }
+    bool hasValidCache() =>
+        cached?.isValid(context, now(), cacheDuration) ?? false;
+    Either<Failure, Entity> fromCache() {
+      try {
+        return right(mapper(cached!.value));
+      } catch (error, trace) {
+        return left(AppFailure.fromException(error, trace));
+      }
+    }
+
     try {
-      if (datasource == DataSource.local) {
-        final cached = await getLocal();
-        if (cached != null) {
-          return right(
-            ApiResponse(description: '', code: 200, data: mapper(cached)),
-          );
-        }
+      if (!isCurrent()) return changed();
+      if (policy == CachePolicy.cacheFirst && hasValidCache()) {
+        return fromCache();
       }
 
       if (!await networkInfo.isConnected) {
-        final cached = await getLocal();
-        if (cached != null) {
-          return right(
-            ApiResponse(
-              description: '${mapper(cached)} (offline cached)',
-              code: 200,
-              data: mapper(cached),
-            ),
-          );
+        if (!isCurrent()) return changed();
+        if (policy != CachePolicy.networkOnly && hasValidCache()) {
+          return fromCache();
         }
-        return left(AppFailure(message: LocaleKeys.socketException));
+        return left(AppFailure(message: LocaleKeys.noInternetConnection));
       }
 
-      final apiResponse = await fetchRemote();
-
-      if (!apiResponse.hasError && apiResponse.data != null) {
-        await saveLocal(apiResponse.data as DTO);
-
-        return right(apiResponse.map(mapper));
-      } else {
-        return left(AppFailure(message: apiResponse.description));
+      final dto = await fetchRemote();
+      if (!isCurrent()) return changed();
+      final entity = mapper(dto);
+      if (policy != CachePolicy.networkOnly) {
+        try {
+          await saveLocal(
+            CacheEntry(value: dto, cachedAt: now(), context: context),
+          );
+        } catch (_) {
+          // A cache write failure must not discard a valid network response.
+        }
       }
-    } catch (e, t) {
-      return handleRepoDataError(e, t);
+      if (!isCurrent()) return changed();
+      return right(entity);
+    } catch (error, trace) {
+      if (!isCurrent()) return changed();
+      if (policy == CachePolicy.networkFirst &&
+          _isTransportFailure(error) &&
+          hasValidCache()) {
+        return fromCache();
+      }
+      return left(AppFailure.fromException(error, trace));
     }
   }
 
-  static Future<Either<Failure, ApiResponse<Entity>>>
-  fetchListWithCache<DTO, Entity>({
-    required DataSource datasource,
-    required LocalListGetter<DTO> getLocal,
-    required LocalListSaver<DTO> saveLocal,
-    required RemoteFetcher<DTO> fetchRemote,
-    required ListMapper<DTO, Entity> mapper,
+  static Future<Either<Failure, List<Entity>>> fetchListWithCache<DTO, Entity>({
+    required CachePolicy policy,
+    required Future<CacheEntry<List<DTO>>?> Function() getLocal,
+    required Future<void> Function(CacheEntry<List<DTO>>) saveLocal,
+    required Future<List<DTO>> Function() fetchRemote,
+    required List<Entity> Function(List<DTO>) mapper,
     required NetworkInfo networkInfo,
+    required CacheContext context,
+    required CacheContext Function() currentContext,
     Duration cacheDuration = const Duration(hours: 24),
-  }) async {
-    try {
-      if (datasource == DataSource.local) {
-        final cached = await getLocal();
-        if (cached != null && cached.isNotEmpty) {
-          return right(
-            ApiResponse(description: '', code: 200, list: mapper(cached)),
-          );
-        }
-      }
+    DateTime Function()? clock,
+    RequestCancellation? cancellation,
+  }) => fetchWithCache<List<DTO>, List<Entity>>(
+    policy: policy,
+    getLocal: getLocal,
+    saveLocal: saveLocal,
+    fetchRemote: fetchRemote,
+    mapper: mapper,
+    networkInfo: networkInfo,
+    context: context,
+    currentContext: currentContext,
+    cacheDuration: cacheDuration,
+    clock: clock,
+    cancellation: cancellation,
+  );
 
-      if (!await networkInfo.isConnected) {
-        final cached = await getLocal();
-        if (cached != null && cached.isNotEmpty) {
-          return right(
-            ApiResponse(
-              description: '${mapper(cached)} (offline cached)',
-              code: 200,
-              list: mapper(cached),
-            ),
-          );
-        }
-        return left(AppFailure(message: LocaleKeys.socketException));
-      }
-
-      final apiResponse = await fetchRemote();
-
-      if (!apiResponse.hasError && apiResponse.list != null) {
-        await saveLocal(apiResponse.list!.cast<DTO>());
-
-        return right(
-          ApiResponse(
-            description: apiResponse.description,
-            code: apiResponse.code,
-            list: mapper(apiResponse.list!.cast<DTO>()),
-          ),
-        );
-      } else {
-        return left(AppFailure(message: apiResponse.description));
-      }
-    } catch (e, t) {
-      return handleRepoDataError(e, t);
-    }
-  }
+  static bool _isTransportFailure(Object error) =>
+      error is SocketException ||
+      (error is DioException &&
+          {
+            DioExceptionType.connectionError,
+            DioExceptionType.connectionTimeout,
+            DioExceptionType.sendTimeout,
+            DioExceptionType.receiveTimeout,
+          }.contains(error.type));
 }

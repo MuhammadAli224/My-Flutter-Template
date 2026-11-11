@@ -1,5 +1,8 @@
 # Flutter App
 
+Canonical development instructions: [AGENTS.md](AGENTS.md).
+Architecture rules and generator usage: [codex_ai_system](codex_ai_system/README.md).
+
 A Flutter application scaffold built around feature-first clean architecture, Cubit state management, centralized app bootstrapping, generated localization keys, GetIt dependency injection, Hive CE local storage, HydratedBloc app settings, Dio networking, Freezed models, and AutoMappr mapping.
 
 The project is structured so app startup, shared infrastructure, feature logic, UI, storage, routing, and generated code each have a clear owner.
@@ -178,14 +181,16 @@ Registration guidelines:
 - Core services are registered first.
 - Feature dependencies should be registered from each feature's `di/` module.
 - Services, repositories, and datasources are usually `lazySingleton`.
-- Cubits are usually `factory`, unless they represent app-level persisted state.
+- Provider-owned Cubits are factories. App-scoped services, including SessionManager,
+  are singletons; persistence alone does not make a Cubit a singleton.
 - Do not instantiate registered dependencies manually inside widgets.
 
 Current app-level registrations include:
 
 - `AppServices`
 - `FlutterSecureStorage`
-- `TokenCubit`
+- `SessionStore`, `SessionManager`, and `SessionReader`
+- `TokenCubit` (UI adapter)
 - `SettingsCubit`
 - `HeadersProvider`
 - `ApiServices`
@@ -269,7 +274,7 @@ dart run easy_localization:generate -S assets/translations -f keys -o app_string
 Usage:
 
 ```dart
-Text(LocaleKeys.login.tr())
+AppText(context.tr(LocaleKeys.login))
 ```
 
 Do not create a manual `app_strings.dart` constants file.
@@ -293,6 +298,9 @@ Rules:
 - Local datasources should receive boxes through DI.
 
 HydratedBloc handles app settings persistence separately from feature cache boxes.
+The shared feature cache stores JSON envelopes with timestamps, session scope, and
+locale. CacheHelper applies explicit networkOnly/cacheFirst/networkFirst policies.
+Session changes rotate the scope and clear feature caches.
 
 ---
 
@@ -329,7 +337,7 @@ Recommended structure:
 ```txt
 feature_name/
   data/
-    datasource/
+    datasources/{feature_name}/
     endpoint/
     model/
     repository/
@@ -337,25 +345,22 @@ feature_name/
     entities/
     repository/
     usecases/
-    mappers/
   di/
-  presentation/
+  presentation/{feature_name}/
     cubit/
     pages/
     widget/
-    shared/
   feature_name_barrel.dart
 ```
 
 Layer responsibilities:
 
-- `data/model`: DTOs, JSON, Hive annotations when cached
-- `data/datasource`: remote and local data access
+- `data/model`: DTOs, JSON, and AutoMappr definitions
+- `data/datasources/{feature_name}`: remote and optional local data access
 - `data/repository`: repository implementation
 - `domain/entities`: pure app models
 - `domain/repository`: repository contracts
 - `domain/usecases`: business actions
-- `domain/mappers`: AutoMappr DTO/entity mapping
 - `presentation/cubit`: state management
 - `presentation/pages`: route-level screens
 - `presentation/widget`: feature-specific widgets
@@ -400,7 +405,8 @@ dart pub global activate mason_cli
 Generate a feature:
 
 ```bash
-mason make feature
+mason get
+mason make feature --name products --with_cache false --on-conflict skip
 ```
 
 After generation:
@@ -410,6 +416,8 @@ After generation:
 3. Add routes in `lib/core/router/routes.dart`.
 4. Add translation keys if the feature has UI text.
 5. Run build runner if DTOs, entities, mappers, or Hive adapters were generated.
+6. For brick changes, run `dart run tool/verify_generator.dart` to build and analyze
+   both cache variants. Do not generate test cases.
 
 ---
 
@@ -439,11 +447,13 @@ Generate localization keys:
 dart run easy_localization:generate -S assets/translations -f keys -o app_strings.g.dart
 ```
 
-Run tests:
+Check source code:
 
 ```bash
-flutter test
+flutter analyze --no-pub
 ```
+
+Test cases and test generation are omitted by project preference.
 
 ---
 

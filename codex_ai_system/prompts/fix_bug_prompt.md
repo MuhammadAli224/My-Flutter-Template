@@ -1,7 +1,7 @@
 # Fix Bug Prompt
 
 ```md
-Follow AI_CONTEXT.md and codex_ai_system rules strictly.
+Follow AGENTS.md and the canonical rules in codex_ai_system/rules/.
 
 Bug:
 [describe bug]

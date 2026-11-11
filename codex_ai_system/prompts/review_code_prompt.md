@@ -1,26 +1,14 @@
-# Review Code Prompt
+# Review prompt
 
 ```md
-Follow AI_CONTEXT.md and codex_ai_system rules strictly.
+Follow AGENTS.md and the canonical rules in codex_ai_system/rules/.
 
-Task:
-Review this code for architecture, UI, state, cache, and code quality issues.
+Review [files/feature] without changing files.
 
-Focus on:
-- Clean Architecture violations
-- DTO leaking to UI/state
-- Missing UseCase/repository layers
-- Hardcoded text
-- Missing localization
-- Widgets not separated
-- Incorrect Hive/cache usage
-- Missing Freezed usage
-- Unnecessary rebuilds
-- Unused imports
+Prioritize correctness and user impact: shared session ownership, restoration and
+request races, cache scope/expiry, cancellation, loading/error behavior, domain
+boundaries, DI disposal, localization, and generator consistency.
 
-Output format:
-1. Critical issues
-2. Recommended fixes
-3. Files to change
-4. Safe patch plan
+Report findings by severity with file/line evidence, concrete failure scenarios,
+and recommended fixes. Distinguish verified findings from assumptions.
 ```

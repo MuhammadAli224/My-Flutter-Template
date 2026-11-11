@@ -1,29 +1,17 @@
-# Repository Template
+# Repository contract
 
 ```dart
-class {Name}RepositoryImpl implements {Name}Repository {
-  {Name}RepositoryImpl(
-    this._remoteDataSource,
-    this._localDataSource,
-  );
-
-  final {Name}RemoteDataSource _remoteDataSource;
-  final {Name}LocalDataSource _localDataSource;
-
-  @override
-  Future<Either<Failure, ApiResponse<{Name}Entity>>> fetch() async {
-    // 1. read cache if needed
-    // 2. fetch remote if needed
-    // 3. save DTO to cache
-    // 4. map DTO to Entity
-    // 5. return ApiResponse<Entity>
-  }
+abstract interface class ProductsRepository {
+  Future<Either<Failure, List<ProductsEntity>>> fetchAll({
+    RequestCancellation? cancellation,
+  });
 }
 ```
 
-Rules:
+Import dartz, Failure, RequestCancellation, and the entity explicitly.
+Do not import global_imports.dart, Dio, Hive, or ApiResponse in domain code.
 
-- Mapping happens here.
-- Datasources return DTOs.
-- Repository returns Entities.
-- Handle cache only here or local datasource/helper layer.
+The implementation follows the executable Mason repository template:
+capture CacheContext, select CachePolicy, call CacheHelper, map DTOs through
+AutoMappr, and forward cancellation through withRequestCancellation.
+Only cached variants inject a local datasource.

@@ -1,26 +1,25 @@
-# Cubit Template
+# Cubit request template
+
+Use the concrete Freezed declarations/imports in the Mason brick. Every asynchronous
+feature operation follows this shape:
 
 ```dart
-class {Name}Cubit extends Cubit<{Name}State> {
-  {Name}Cubit(this._useCase) : super(const {Name}State.initial());
-
-  final {Name}UseCase _useCase;
-
-  Future<void> fetch() async {
-    emit(const {Name}State.loading());
-
-    final result = await _useCase();
-
+Future<void> fetchItems() async {
+  if (isClosed) return;
+  final request = beginRequest('fetch');
+  safeEmit(const ProductsState.loading());
+  try {
+    final result = await useCase(cancellation: request);
+    if (!isCurrentRequest('fetch', request)) return;
     result.fold(
-      (failure) => emit({Name}State.error(failure.message)),
-      (response) => emit({Name}State.loaded(response.data)),
+      (failure) => safeEmit(ProductsState.error(failure.message)),
+      (items) => safeEmit(ProductsState.loaded(items)),
     );
+  } finally {
+    finishRequest('fetch', request);
   }
 }
 ```
 
-Rules:
-
-- Cubit calls UseCase only.
-- State contains Entity, not DTO.
-- Use existing lifecycle/safeEmit mixins if available.
+Apply CubitLifecycleMixin. Loaded states contain entities, not DTOs or ApiResponse.
+Use cases return Either results. Verify disposal and overlapping requests.

@@ -1,22 +1,18 @@
-# Entity Template
+# Entity template
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part '{name}_entity.freezed.dart';
+part 'product_entity.freezed.dart';
 
 @freezed
-class {Name}Entity with _${Name}Entity {
-  const factory {Name}Entity({
-    int? id,
-    String? title,
-  }) = _{Name}Entity;
+abstract class ProductEntity with _$ProductEntity {
+  const factory ProductEntity({
+    required String name,
+    required String image,
+    String? description,
+  }) = _ProductEntity;
 }
 ```
 
-Rules:
-
-- Entity must stay pure.
-- No JSON logic.
-- No Hive annotations.
-- No API/cache logic.
+Pure business data only. No JSON, Hive, Flutter, or API/cache logic.

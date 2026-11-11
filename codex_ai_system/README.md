@@ -1,30 +1,50 @@
-# Codex AI System
+# Flutter project guide
 
-Use this folder to guide Codex when working on the Flutter project.
+Start with [AGENTS.md](../AGENTS.md). The files in `rules/` are canonical.
+Prompts help describe tasks; they do not introduce additional architecture rules.
 
-## Recommended usage
+## Generate a feature
 
-For every new Codex chat, paste only:
+From the project root:
 
-```md
-Follow the rules in AI_CONTEXT.md and the files inside codex_ai_system/.
-
-Task:
-[write task here]
-
-Relevant files:
-[paste only needed files]
+```sh
+mason get
+mason make feature --name products --with_cache false --on-conflict skip
+# For offline-capable features:
+mason make feature --name articles --with_cache true --on-conflict skip
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-## Folder structure
+The brick expects a list endpoint shaped like `{data: [...], hasError: false}`.
+Adapt DTO fields, endpoint, and parsing to the actual API contract before use.
+Generated UI uses AppText(context.tr(...)) with existing app/empty-state keys; replace the page title
+with a feature-specific translation key when implementing the screen.
 
-```txt
-codex_ai_system/
-├── rules/
-├── templates/
-└── prompts/
+Explicitly import and call `initProductsDI()` from the composition root after core
+DI initializes, and register the page in GoRouter if needed. No global feature
+exports are required.
+
+The existing directory convention is `data/datasources/{feature}/` and
+`presentation/{feature}/`. Both the brick and templates follow it.
+With `with_cache: false`, no local datasource implementation is generated or
+registered (the scaffold retains an empty local file).
+
+## Verification
+
+```sh
+flutter pub get
+flutter analyze --no-pub
+dart run tool/verify_generator.dart
 ```
 
-## Token-saving rule
+The generator verifier builds disposable copies of this project, generates both
+variants, runs build_runner, and analyzes generated code without creating or
+running tests.
+It never adds example features to the working application's routes or DI.
 
-Do not paste all files every time. Paste only the prompt file that matches your task, plus any special rules needed.
+## Session and cache
+
+Use SessionReader for shared reads and SessionManager for sign-in/sign-out.
+TokenCubit is a presentation adapter. Storage can be SecureSessionStore or
+InMemorySessionStore. Cache entries carry creation time, session scope, and locale;
+account changes invalidate shared feature caches.

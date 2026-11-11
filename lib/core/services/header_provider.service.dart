@@ -1,16 +1,17 @@
 import '../../global_imports.dart';
+import '../session/session_reader.dart';
 
 class HeadersProvider {
   final Box<dynamic> hive;
-  final TokenCubit tokenCubit;
+  final SessionReader session;
 
-  HeadersProvider({required this.tokenCubit, required this.hive});
+  HeadersProvider({required this.session, required this.hive});
 
   static const String _acceptLanguage = "Accept-Language";
 
   Future<Map<String, String>> getHeaders() async {
     final language = await hive.get(BoxKey.languageCode, defaultValue: 'ar');
-    final token = tokenCubit.currentToken;
+    final token = session.current?.accessToken;
 
     final headers = <String, String>{
       _acceptLanguage: language,

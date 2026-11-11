@@ -1,46 +1,57 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../session/session.dart';
+import '../../session/session_manager.dart';
+
 part 'token_cubit.freezed.dart';
 part 'token_state.dart';
 
+/// UI adapter. SessionManager owns credentials and outlives this Cubit.
 class TokenCubit extends Cubit<TokenState> {
+  TokenCubit(this._session, this._storage)
+    : super(_stateFor(_session.current)) {
+    _subscription = _session.changes.listen((session) {
+      if (!isClosed) emit(_stateFor(session));
+    });
+  }
+
+  final SessionManager _session;
   final FlutterSecureStorage _storage;
-  static const _tokenKey = 'access_token';
+  late final StreamSubscription<Session?> _subscription;
   static const _fcmTokenKey = 'fcm_token';
 
-  TokenCubit(this._storage) : super(const TokenState.initial()) {
-    _loadToken();
-  }
+  static TokenState _stateFor(Session? session) => session == null
+      ? const TokenState.initial()
+      : TokenState.loaded(session.accessToken);
 
-  Future<void> _loadToken() async {
-    final token = await _storage.read(key: _tokenKey);
-    if (token != null) emit(TokenState.loaded(token));
-  }
+  Future<void> saveToken(
+    String token, {
+    bool rememberMe = true,
+    String? accountId,
+  }) => _session.saveToken(token, rememberMe: rememberMe, accountId: accountId);
 
-  Future<void> saveToken(String token, {bool rememberMe = true}) async {
-    if (rememberMe) {
-      await _storage.write(key: _tokenKey, value: token);
-    }
-    emit(TokenState.loaded(token));
-  }
+  String? get currentToken => _session.current?.accessToken;
 
-  String? get currentToken =>
-      state.maybeWhen(loaded: (token) => token, orElse: () => null);
+  Future<void> saveFcmToken(String token) =>
+      _storage.write(key: _fcmTokenKey, value: token);
 
-  Future<void> saveFcmToken(String token) async {
-    await _storage.write(key: _fcmTokenKey, value: token);
-  }
-
-  Future<String?> getFcmToken() async {
-    return await _storage.read(key: _fcmTokenKey);
-  }
+  Future<String?> getFcmToken() => _storage.read(key: _fcmTokenKey);
 
   Future<void> logout() async {
-    await _storage.delete(key: _tokenKey);
-    await _storage.delete(key: _fcmTokenKey);
+    try {
+      await _session.logout();
+    } finally {
+      await _storage.delete(key: _fcmTokenKey);
+    }
+  }
 
-    emit(const TokenState.initial());
+  @override
+  Future<void> close() async {
+    await _subscription.cancel();
+    return super.close();
   }
 }

@@ -1,59 +1,59 @@
 import 'dart:async';
 
-import '../../global_imports.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../domain/request_cancellation.dart';
 
 mixin CubitLifecycleMixin<S> on Cubit<S> {
-  late final CancelToken cancelToken = CancelToken();
   final Map<String, Timer> _debounceTimers = {};
-  final Map<String, CancelToken> _paginationTokens = {};
+  final Map<String, RequestCancellation> _requests = {};
 
   void safeEmit(S state) {
     if (!isClosed) emit(state);
   }
 
-  Future<T?> withRetry<T>({
-    required Future<T> Function() action,
-    int maxRetries = 2,
-    Duration delayBetween = const Duration(seconds: 2),
-  }) async {
-    int attempts = 0;
-    while (attempts <= maxRetries) {
-      try {
-        return await action();
-      } catch (e) {
-        if (attempts >= maxRetries) rethrow;
-        await Future.delayed(delayBetween);
-        attempts++;
-      }
+  /// Latest request wins for each operation key.
+  RequestCancellation beginRequest(String key) {
+    _requests.remove(key)?.cancel();
+    final request = RequestCancellation();
+    if (isClosed) {
+      request.cancel();
+    } else {
+      _requests[key] = request;
     }
-    return null;
+    return request;
+  }
+
+  bool isCurrentRequest(String key, RequestCancellation request) =>
+      !isClosed && !request.isCancelled && identical(_requests[key], request);
+
+  void finishRequest(String key, RequestCancellation request) {
+    if (identical(_requests[key], request)) _requests.remove(key);
   }
 
   void debounce({
     required String id,
     required Duration duration,
-    required VoidCallback action,
+    required void Function() action,
   }) {
+    if (isClosed) return;
     _debounceTimers[id]?.cancel();
-    _debounceTimers[id] = Timer(duration, action);
-  }
-
-  CancelToken getPaginationToken(String key) {
-    _paginationTokens[key]?.cancel("Previous pagination cancelled");
-    final token = CancelToken();
-    _paginationTokens[key] = token;
-    return token;
+    _debounceTimers[id] = Timer(duration, () {
+      _debounceTimers.remove(id);
+      if (!isClosed) action();
+    });
   }
 
   @override
   Future<void> close() {
-    cancelToken.cancel("Cubit was closed");
-    for (var timer in _debounceTimers.values) {
+    for (final timer in _debounceTimers.values) {
       timer.cancel();
     }
-    for (var token in _paginationTokens.values) {
-      token.cancel();
+    for (final request in _requests.values) {
+      request.cancel();
     }
+    _requests.clear();
+    _debounceTimers.clear();
     return super.close();
   }
 }

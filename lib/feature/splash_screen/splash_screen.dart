@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _startLetterAnimation() {
     _timer = Timer.periodic(const Duration(milliseconds: 90), (timer) async {
-      final appName = LocaleKeys.appName.tr();
+      final appName = context.tr(LocaleKeys.appName);
 
       if (currentIndex < appName.length) {
         setState(() {
@@ -63,14 +63,17 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final appName = LocaleKeys.appName.tr();
+    final appName = context.tr(LocaleKeys.appName);
     final splitIndex = appName.length >= 9 ? 9 : appName.length;
-    final visibleText = appName.substring(0, currentIndex);
+    final visibleLength = currentIndex > appName.length
+        ? appName.length
+        : currentIndex;
+    final visibleText = appName.substring(0, visibleLength);
     final firstVisible = visibleText.substring(
       0,
-      currentIndex > splitIndex ? splitIndex : currentIndex,
+      visibleLength > splitIndex ? splitIndex : visibleLength,
     );
-    final secondVisible = currentIndex > splitIndex
+    final secondVisible = visibleLength > splitIndex
         ? visibleText.substring(splitIndex)
         : '';
 
@@ -80,9 +83,8 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
+            AppText.rich(
+              TextSpan(
                 style: AppTextStyle.style28B.copyWith(letterSpacing: 0),
                 children: [
                   TextSpan(
@@ -113,12 +115,13 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ],
               ),
+              textAlign: TextAlign.center,
             ),
             10.gap,
             FadeTransition(
               opacity: _fadeAnimation,
               child: AppText(
-                LocaleKeys.appTagline.tr(),
+                context.tr(LocaleKeys.appTagline),
                 style: AppTextStyle.style16.copyWith(color: AppColor.textMuted),
                 textAlign: TextAlign.center,
               ),
