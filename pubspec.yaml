@@ -88,6 +88,8 @@ dev_dependencies:
 
 
 flutter:
+  config:
+    enable-swift-package-manager: true
   uses-material-design: true
   fonts:
     - family: Almarai

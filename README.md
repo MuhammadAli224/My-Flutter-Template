@@ -430,6 +430,16 @@ After generation:
 
 ---
 
+## iOS Swift Package Manager
+
+Swift Package Manager is enabled in the project's pubspec configuration. Runner
+links FlutterGeneratedPluginSwiftPackage, and its shared scheme prepares Flutter
+frameworks before building.
+
+Current native requirements are iOS 15.0+ and Xcode 26.2+ (Swift 6.2.3+), required
+by the pinned Firebase Apple SDK. Open ios/Runner.xcworkspace for Xcode builds.
+See [iOS setup and validation](ios/README.md) for commands and toolchain requirements.
+
 ## Common Commands
 
 Install dependencies:

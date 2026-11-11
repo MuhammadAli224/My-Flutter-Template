@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Ibn Rushd Academy",
-    "tagline": "The best center in Qatar to serve you"
+    "name": "App Name",
+    "tagline": "The best in serve you"
   },
   "auth": {
     "duplicateEmail": "Email is already in use",

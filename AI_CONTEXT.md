@@ -26,3 +26,9 @@ inside these same files; do not create separate feature translation files or a
 merge workflow. Regenerate LocaleKeys with EasyLocalization's key generator after
 editing dictionaries. Widgets use AppText(context.tr(LocaleKeys.common_save)) or
 a feature key. See the localization rules for the command and examples.
+
+The iOS project uses Swift Package Manager via project-level pubspec configuration.
+Runner targets iOS 15.0+. The current Firebase SDK requires Xcode 26.2+ and Swift
+6.2.3+; older toolchains fail package resolution. Keep the shared Runner scheme's
+Flutter prepare pre-action and generated package reference. Do not edit generated
+Flutter/ephemeral package files. See ios/README.md for setup and validation.
