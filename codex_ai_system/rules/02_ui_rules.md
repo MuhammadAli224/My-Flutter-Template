@@ -1,50 +1,35 @@
-# UI Rules
+# UI rules
 
-## Widget structure
+## Widgets and text
 
-- Do not create large widgets inside one file.
-- New UI widgets must be separate classes in separate files.
-- Keep pages clean and only responsible for layout composition.
-- Reusable UI must go under `presentation/widget/` or shared `core/widget/`.
+- Keep pages focused on layout; put custom reusable widgets in separate files.
+- Use core/widget/app_widget/app_text.dart for every displayed text widget.
+- Use AppText(context.tr(LocaleKeys.someText)) for translated UI labels.
+- Use context.tr(key, args: [...], namedArgs: {...}) whenever BuildContext is
+  available. Do not use key.tr() inside widget builds or context-aware callbacks.
+- Translate string-only framework properties such as hints, tooltips, and app titles
+  with context.tr(...), even though those properties cannot accept a widget.
+- Pass already translated labels and user/API content directly to AppText.
+  Do not translate arbitrary names, descriptions, identifiers, or debug details.
+- AppText is the only place that directly uses Text, Text.rich, or AutoSizeText.
+- Use AppText(autoSize: true, ...) for shrinking text, preserving minFontSize,
+  maxFontSize, and maxLines. Use AppText.rich(TextSpan(...)) for styled spans.
+- In helpers without BuildContext, keep context-free translation; do not introduce
+  global UI context dependencies just for localization.
+- Never hardcode UI labels. Add keys and translations to both ar.json and en.json,
+  then regenerate app_strings.g.dart.
 
-## Spacing
-
-- Always use the gap extension for spacing.
-- Do not use `SizedBox(height: x)` or `SizedBox(width: x)` for normal gaps.
-
-Correct:
-
-```dart
-10.gap
-```
-
-Wrong:
-
-```dart
-const SizedBox(height: 10)
-```
-
-## Localization
-
-- Never hardcode text in UI.
-- Always use translation keys.
-
-Correct:
+Example:
 
 ```dart
-Text(LocaleKeys.someText.tr())
+AppText(
+  context.tr(LocaleKeys.login),
+  style: AppTextStyle.style16B,
+)
 ```
 
-Wrong:
+## Spacing and design system
 
-```dart
-Text('Some text')
-```
-
-## Design system
-
-- Use existing `AppColor`.
-- Use existing `AppTextStyle`.
-- Reuse shared widgets where possible.
-- Support dark mode if existing screens support it.
-- Avoid duplicated UI components.
+- Use the gap extension (10.gap) for normal gaps.
+- Use existing AppColor, AppTextStyle, and shared widgets.
+- Support existing dark-mode behavior and avoid duplicated components.

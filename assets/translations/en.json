@@ -162,6 +162,8 @@
   "daily": "Daily",
   "confirm": "Confirm",
   "apply": "Apply",
+  "select": "Select",
+  "cancel": "Cancel",
   "nameAr": "Name Arabic",
   "nameEn": "Name English",
   "warning": "Warning",

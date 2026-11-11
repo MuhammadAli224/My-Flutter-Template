@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const appName = 'appName';
   static const appTagline = 'appTagline';
   static const now = 'now';
@@ -144,15 +144,18 @@ abstract class LocaleKeys {
   static const tryAgain = 'tryAgain';
   static const yearly = 'yearly';
   static const daily = 'daily';
+  static const confirm = 'confirm';
+  static const apply = 'apply';
+  static const select = 'select';
+  static const cancel = 'cancel';
   static const nameAr = 'nameAr';
   static const nameEn = 'nameEn';
   static const warning = 'warning';
-  static const confirm = 'confirm';
-  static const apply = 'apply';
   static const youAreOffline = 'youAreOffline';
   static const noInternet = 'noInternet';
   static const internetConnectionRestored = 'internetConnectionRestored';
   static const connected = 'connected';
   static const passwordNotMatchHint = 'passwordNotMatchHint';
   static const emptyConfirmPasswordHint = 'emptyConfirmPasswordHint';
+
 }

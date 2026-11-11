@@ -1,10 +1,10 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../extension/space_extension.dart';
 import '../../utils/text_style.dart';
+import '../app_widget/app_text.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String errorMessage;
@@ -21,7 +21,7 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => showSnackBar(errorMessage.tr(), context, color: Colors.red));
+    //     (_) => showSnackBar(context.tr(errorMessage), context, color: Colors.red));
     return Center(
       child: SizedBox(
         height: 0.5.sh,
@@ -33,8 +33,9 @@ class ErrorScreen extends StatelessWidget {
             10.gap,
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: AutoSizeText(
-                errorMessage.tr(),
+              child: AppText(
+                autoSize: true,
+                context.tr(errorMessage),
                 textAlign: TextAlign.center,
                 style: AppTextStyle.style24B,
                 maxLines: 3,
@@ -47,8 +48,9 @@ class ErrorScreen extends StatelessWidget {
               20.gap,
               TextButton(
                 onPressed: onTap,
-                child: AutoSizeText(
-                  buttonName!.tr(),
+                child: AppText(
+                  autoSize: true,
+                  context.tr(buttonName!),
                   style: AppTextStyle.style16B,
                   maxLines: 1,
                 ),

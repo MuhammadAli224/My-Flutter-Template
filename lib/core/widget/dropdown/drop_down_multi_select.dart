@@ -1,5 +1,6 @@
 import '../../../global_imports.dart';
 import '../../utils/font_size.dart';
+import '../app_widget/app_text.dart';
 
 class AppMultiSelectDropDown<T> extends StatefulWidget {
   final String? title;
@@ -49,7 +50,7 @@ class _AppMultiSelectDropDownState<T> extends State<AppMultiSelectDropDown<T>> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.title != null)
-          Text(widget.title!, style: TextStyle(fontSize: AppFontSizes.sm)),
+          AppText(widget.title!, style: TextStyle(fontSize: AppFontSizes.sm)),
         6.gap,
         GestureDetector(
           onTap: _showMultiSelectDialog,
@@ -78,7 +79,7 @@ class _AppMultiSelectDropDownState<T> extends State<AppMultiSelectDropDown<T>> {
                     runSpacing: 4,
                     children: widget.selectedValues.map((value) {
                       return Chip(
-                        label: Text(
+                        label: AppText(
                           widget.itemLabel(value),
                           style: const TextStyle(fontSize: 12),
                         ),
@@ -148,8 +149,8 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              'اختر',
+            AppText(
+              context.tr(LocaleKeys.select),
               style: TextStyle(
                 fontSize: AppFontSizes.md,
                 fontWeight: FontWeight.bold,
@@ -178,7 +179,7 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
               children: [
                 TextButton(
                   onPressed: () => context.pop(),
-                  child: const Text('إلغاء'),
+                  child: AppText(context.tr(LocaleKeys.cancel)),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -188,9 +189,9 @@ class _MultiSelectDialogState<T> extends State<_MultiSelectDialog<T>> {
                     ),
                   ),
                   onPressed: () => context.pop(_selected),
-                  child: const Text(
-                    'تطبيق',
-                    style: TextStyle(color: AppColor.white),
+                  child: AppText(
+                    context.tr(LocaleKeys.apply),
+                    style: const TextStyle(color: AppColor.white),
                   ),
                 ),
               ],

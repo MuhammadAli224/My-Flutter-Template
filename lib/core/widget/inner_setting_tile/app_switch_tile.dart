@@ -1,5 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+
+import '../app_widget/app_text.dart';
 
 import '../../utils/text_style.dart';
 
@@ -26,7 +27,8 @@ class AppSwitchTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: AutoSizeText(
+          child: AppText(
+            autoSize: true,
             title,
             minFontSize: 8,
             maxFontSize: 16,

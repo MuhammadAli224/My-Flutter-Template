@@ -1,5 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+
+import '../app_widget/app_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingTile extends StatelessWidget {
@@ -33,8 +34,10 @@ class SettingTile extends StatelessWidget {
           trailing:
               trailingWidget ??
               Icon(trailing ?? Icons.arrow_forward_ios_outlined, size: 15.h),
-          title: AutoSizeText(title, style: titleTextStyle),
-          subtitle: subtitle != null ? AutoSizeText(subtitle!) : null,
+          title: AppText(autoSize: true, title, style: titleTextStyle),
+          subtitle: subtitle != null
+              ? AppText(autoSize: true, subtitle!)
+              : null,
           leading: leading != null
               ? Icon(size: 23.h, leading!, color: leadingColor ?? Colors.black)
               : null,

@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,11 +60,11 @@ class AppTextFormField extends StatelessWidget {
   final TextSelectionControls? selectionControls;
   final InputBorder? customBorder;
   final Widget? Function(
-      BuildContext, {
-      required int currentLength,
-      required bool isFocused,
-      required int? maxLength,
-      })?
+    BuildContext, {
+    required int currentLength,
+    required bool isFocused,
+    required int? maxLength,
+  })?
   buildCounter;
   final AutovalidateMode? autoValidateMode;
 
@@ -203,10 +202,11 @@ class AppTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if ( label != null)
+        if (label != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
-            child: AutoSizeText(
+            child: AppText(
+              autoSize: true,
               label!,
               style: labelTextStyle ?? TextStyle(fontSize: AppFontSizes.sm),
             ),
@@ -225,7 +225,7 @@ class AppTextFormField extends StatelessWidget {
               labelText: labelFloating,
               // label: Icon(Icons.abc),
               labelStyle:
-              labelFloatingTextStyle ??
+                  labelFloatingTextStyle ??
                   TextStyle(fontSize: AppFontSizes.lg),
               isDense: true,
               // counterText: '',
@@ -233,18 +233,18 @@ class AppTextFormField extends StatelessWidget {
               hintText: hintText,
               hintStyle: hintStyle,
               border:
-              customBorder ??
+                  customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.border
                       : AppWidgetBorder.errorBorder),
               enabledBorder:
-              customBorder ??
+                  customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.enabledBorder
                       : AppWidgetBorder.errorBorder),
               disabledBorder: customBorder ?? AppWidgetBorder.disabledBorder,
               focusedBorder:
-              customBorder ??
+                  customBorder ??
                   (errorText == null
                       ? AppWidgetBorder.focusedBorder
                       : AppWidgetBorder.errorBorder),
@@ -254,20 +254,20 @@ class AppTextFormField extends StatelessWidget {
                 minHeight: 0.0,
               ),
               suffixIcon:
-              (suffixIconAssetName != null || suffixIconWidget != null
+                  (suffixIconAssetName != null || suffixIconWidget != null
                   ? FittedBox(
-                fit: BoxFit.scaleDown,
-                child: IconButton(
-                  onPressed: onTapSuffix,
-                  icon:
-                  suffixIconWidget ??
-                      Icon(
-                        suffixIconAssetName,
-                        color: suffixIconColor ?? AppColor.primaryColor,
-                        size: 25.0,
+                      fit: BoxFit.scaleDown,
+                      child: IconButton(
+                        onPressed: onTapSuffix,
+                        icon:
+                            suffixIconWidget ??
+                            Icon(
+                              suffixIconAssetName,
+                              color: suffixIconColor ?? AppColor.primaryColor,
+                              size: 25.0,
+                            ),
                       ),
-                ),
-              )
+                    )
                   : null),
             ),
             controller: controller,

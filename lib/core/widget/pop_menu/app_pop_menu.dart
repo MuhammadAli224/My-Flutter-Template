@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../model/pop_menu_model/pop_menu_model.dart';
+import '../app_widget/app_text.dart';
 
 class AppPopMenu extends StatelessWidget {
   final List<AppPopMenuItemModel> items;
@@ -26,7 +27,7 @@ class AppPopMenu extends StatelessWidget {
           onTap: items[index].onTap,
           enabled: items[index].enabled,
           child: ListTile(
-            title: Text(items[index].title),
+            title: AppText(items[index].title),
             leading: Icon(
               items[index].leading,
               color: items[index].leadingColor,

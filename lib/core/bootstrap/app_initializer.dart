@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../global_imports.dart' hide AppBlocObserver;
 import '../bloc/observer/block_observer.dart';
+import '../widget/app_widget/app_text.dart';
 
 class AppInitializer {
   AppInitializer._();
@@ -57,25 +58,34 @@ class AppInitializer {
 
   static void _configureErrorWidget() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.error_outline, color: AppColor.error, size: 56),
-              16.gap,
-              Text(LocaleKeys.unknownError.tr(), style: AppTextStyle.style18B),
-              if (kDebugMode) ...[
-                8.gap,
-                Text(
-                  details.exceptionAsString(),
-                  style: AppTextStyle.style12.copyWith(color: AppColor.grey),
-                  textAlign: TextAlign.center,
+      return Builder(
+        builder: (context) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColor.error,
+                  size: 56,
                 ),
+                16.gap,
+                AppText(
+                  context.tr(LocaleKeys.unknownError),
+                  style: AppTextStyle.style18B,
+                ),
+                if (kDebugMode) ...[
+                  8.gap,
+                  AppText(
+                    details.exceptionAsString(),
+                    style: AppTextStyle.style12.copyWith(color: AppColor.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       );

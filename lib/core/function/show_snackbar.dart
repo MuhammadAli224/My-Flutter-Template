@@ -1,8 +1,8 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../context/global.dart';
 import '../utils/text_style.dart';
+import '../widget/app_widget/app_text.dart';
 
 class BarContentType {
   final String message;
@@ -182,14 +182,15 @@ class _AnimatedOverlayBarState extends State<_AnimatedOverlayBar>
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    AppText(
                       widget.title,
                       style: AppTextStyle.style22B.copyWith(
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    AutoSizeText(
+                    AppText(
+                      autoSize: true,
                       widget.message,
                       style: AppTextStyle.style14.copyWith(color: Colors.white),
                       maxLines: 3,
